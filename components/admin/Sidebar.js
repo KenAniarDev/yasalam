@@ -64,9 +64,7 @@ export default function Sidebar({ children }) {
         style={{ height: 'calc(100vh - 110px)' }}
       >
         <input id='my-drawer-2' type='checkbox' className='drawer-toggle' />
-        <div className='flex flex-col items-center justify-center drawer-content'>
-          {children}
-        </div>
+        <div className='p-4 drawer-content'>{children}</div>
         <div className='drawer-side'>
           <label htmlFor='my-drawer-2' className='drawer-overlay'></label>
           <ul className='menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content'>
