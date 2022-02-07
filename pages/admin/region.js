@@ -65,6 +65,7 @@ export default function Region() {
 
   const deleteReg = (id) => {
     deleteRegion(id);
+    toast.success('Region Deleted');
     fetchData();
   };
 

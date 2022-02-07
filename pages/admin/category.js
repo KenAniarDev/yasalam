@@ -102,6 +102,7 @@ export default function Category() {
 
   const deleteCat = (id) => {
     deleteCategory(id);
+    toast.success('Category Deleted');
     fetchData();
   };
 

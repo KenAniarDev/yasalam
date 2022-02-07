@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Container from '../../../components/admin/';
 import toast from 'react-hot-toast';
 
-import { getOutlets } from '../../../utils/firebase';
+import { getOutlets, deleteOutlet } from '../../../utils/firebase';
 
 export default function Index() {
   const [outlets, setOutlets] = useState([]);
@@ -23,10 +23,19 @@ export default function Index() {
     }
   };
 
-  const deleteOut = () => {};
+  const deleteOut = (id) => {
+    deleteOutlet(id);
+    toast.success('Outlet Deleted');
+    fetchData();
+  };
 
   useEffect(() => {
     fetchData();
+
+    return () => {
+      setOutlets([]);
+      setLoading(false);
+    };
   }, []);
 
   return (
@@ -35,7 +44,7 @@ export default function Index() {
       <div className='flex flex-wrap justify-between items-center p-2'>
         <div className='flex items-center mb-2'>
           <h2 className='text-4xl font-medium mr-2'>Outlets</h2>
-          <Link href='/admin/outlet/add-outlet'>
+          <Link href='/admin/outlet/add'>
             <a className='btn btn-primary'> Add New</a>
           </Link>
         </div>
@@ -125,7 +134,7 @@ export default function Index() {
                           </Link>
                         </li>
                         <li>
-                          <Link href={`/admin/outlet/edit/${outlet.id}`}>
+                          <Link href={`/admin/outlet/${outlet.id}`}>
                             <a>Edit</a>
                           </Link>
                         </li>

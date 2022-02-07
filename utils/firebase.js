@@ -1,8 +1,10 @@
+import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
   addDoc,
   doc,
   deleteDoc,
@@ -146,6 +148,35 @@ export const getOutlets = async () => {
   });
   return outlet;
 };
+export const getOutlet = async (id) => {
+  const docRef = doc(db, 'outlets', id);
+  const docSnap = await getDoc(docRef);
+  const data = await docSnap.data();
+
+  return data;
+};
+export const addOutlet = async (outlet) => {
+  addDoc(outletColRef, {
+    ...outlet,
+    categoryRef: doc(db, 'categories', outlet.categoryRef),
+    featureRef: doc(db, 'features', outlet.featureRef),
+    regionRef: doc(db, 'regions', outlet.regionRef),
+    createdAt: new Date(),
+  });
+};
+export const updateOutlet = async (id, outlet) => {
+  const docRef = doc(db, 'outlets', id);
+  await updateDoc(docRef, {
+    ...outlet,
+    categoryRef: doc(db, 'categories', outlet.categoryRef),
+    featureRef: doc(db, 'features', outlet.featureRef),
+    regionRef: doc(db, 'regions', outlet.regionRef),
+  });
+};
+export const deleteOutlet = async (id) => {
+  const docRef = doc(db, 'outlets', id);
+  await deleteDoc(docRef);
+};
 
 export const fileUploader = (folder, file, setUrl) => {
   if (!file) return;
@@ -155,7 +186,11 @@ export const fileUploader = (folder, file, setUrl) => {
 
   uploadTask.on(
     'state_changed',
-    (snapshot) => {},
+    (snapshot) => {
+      const progress = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+    },
     (err) => {
       return err;
     },

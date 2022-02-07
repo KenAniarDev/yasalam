@@ -68,6 +68,7 @@ export default function Feature() {
 
   const deleteFeat = (id) => {
     deleteFeature(id);
+    toast.success('Feature Deleted');
     fetchData();
   };
 
