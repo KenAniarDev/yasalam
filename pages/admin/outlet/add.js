@@ -115,10 +115,10 @@ export default function Add() {
       categoryId: cat.id,
       categoryRef: cat.id,
       regionName: reg.name,
-      featureId: reg.id,
       regionId: reg.id,
       regionRef: reg.id,
       featureName: feat.name,
+      featureId: feat.id,
       featureRef: feat.id,
       latitude: coords.lat,
       longitude: coords.long,
@@ -342,7 +342,7 @@ export default function Add() {
             </label>
             <input
               type='text'
-              placeholder='username'
+              placeholder='latitude'
               className='input input-bordered'
               value={coords.lat}
               onChange={(e) => setCoords({ coords, lat: e.target.value })}
@@ -354,7 +354,7 @@ export default function Add() {
             </label>
             <input
               type='text'
-              placeholder='username'
+              placeholder='longitude'
               className='input input-bordered'
               value={coords.lat}
               onChange={(e) => setCoords({ coords, lat: e.target.value })}

@@ -9,6 +9,7 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  setDoc,
 } from 'firebase/firestore';
 import {
   ref,
@@ -16,6 +17,13 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
+
+import {
+  getAuth,
+  signOut,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -30,12 +38,33 @@ export const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore();
 
+export const auth = getAuth();
+
 export const storage = getStorage();
 
 export const categoryColRef = collection(db, 'categories');
 export const featureColRef = collection(db, 'features');
 export const regionColRef = collection(db, 'regions');
 export const outletColRef = collection(db, 'outlets');
+
+// AUTH
+export const signOutUser = async () => {
+  try {
+    await signOut(auth);
+    return 'Success logging out';
+  } catch (error) {
+    return 'Error logging out';
+  }
+};
+
+export const signInUser = async (email, password) => {
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    return cred.user;
+  } catch (error) {
+    return error.message;
+  }
+};
 
 // CATEGORIES CRUD
 export const addCategory = async (name, image, yasalam, experience, order) => {
@@ -166,7 +195,7 @@ export const addOutlet = async (outlet) => {
 };
 export const updateOutlet = async (id, outlet) => {
   const docRef = doc(db, 'outlets', id);
-  await updateDoc(docRef, {
+  await setDoc(docRef, {
     ...outlet,
     categoryRef: doc(db, 'categories', outlet.categoryRef),
     featureRef: doc(db, 'features', outlet.featureRef),

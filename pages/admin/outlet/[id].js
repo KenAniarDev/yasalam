@@ -111,19 +111,19 @@ export default function Add() {
       if (!cat) {
         setCategory(category[0].id);
       } else {
-        setCategories(cat);
+        setCategory(data.categoryId);
       }
       const feat = feature.find((el) => el.id === data.featureId);
       if (!feat) {
         setFeature(feature[0].id);
       } else {
-        setFeature(feat);
+        setFeature(data.featureId);
       }
       const reg = region.find((el) => el.id === data.regionId);
       if (!reg) {
         setRegion(region[0].id);
       } else {
-        setRegion(reg);
+        setRegion(data.regionId);
       }
 
       setLogo(data.logo);
@@ -168,19 +168,19 @@ export default function Add() {
       categoryId: cat.id,
       categoryRef: cat.id,
       regionName: reg.name,
-      featureId: reg.id,
       regionId: reg.id,
       regionRef: reg.id,
       featureName: feat.name,
+      featureId: feat.id,
       featureRef: feat.id,
       latitude: coords.lat,
       longitude: coords.long,
     };
+
     try {
       await updateOutlet(id, outlet);
       toast.success('Outlet updated');
     } catch (error) {
-      console.log(error);
       toast.error('Error updating outlet');
     }
   };
@@ -197,7 +197,7 @@ export default function Add() {
 
   return (
     <Container>
-      <h2 className='text-4xl font-medium'>Add Outlet</h2>
+      <h2 className='text-4xl font-medium'>Update Outlet</h2>
       <form onSubmit={(e) => handleSubmit(e)}>
         {/* first row */}
         <div className='md:flex'>
@@ -278,9 +278,9 @@ export default function Add() {
                 }}
                 className='select select-bordered w-full'
               >
-                {categories.map((category, i) => (
-                  <option key={i} value={category.id}>
-                    {category.name}
+                {categories.map((cat, i) => (
+                  <option key={i} value={cat.id} selected={cat.id === category}>
+                    {cat.name}
                   </option>
                 ))}
               </select>
@@ -295,9 +295,9 @@ export default function Add() {
                   setRegion(e.target.value);
                 }}
               >
-                {regions.map((region, i) => (
-                  <option key={i} value={region.id}>
-                    {region.name}
+                {regions.map((reg, i) => (
+                  <option key={i} value={reg.id} selected={reg.id === region}>
+                    {reg.name}
                   </option>
                 ))}
               </select>
@@ -312,9 +312,13 @@ export default function Add() {
                   setFeature(e.target.value);
                 }}
               >
-                {features.map((feature, i) => (
-                  <option key={i} value={feature.id}>
-                    {feature.name}
+                {features.map((feat, i) => (
+                  <option
+                    key={i}
+                    value={feat.id}
+                    selected={feat.id === feature}
+                  >
+                    {feat.name}
                   </option>
                 ))}
               </select>
@@ -396,7 +400,7 @@ export default function Add() {
             </label>
             <input
               type='text'
-              placeholder='username'
+              placeholder='latitude'
               className='input input-bordered'
               value={coords.lat}
               onChange={(e) => setCoords({ coords, lat: e.target.value })}
@@ -408,7 +412,7 @@ export default function Add() {
             </label>
             <input
               type='text'
-              placeholder='username'
+              placeholder='longitude'
               className='input input-bordered'
               value={coords.lat}
               onChange={(e) => setCoords({ coords, lat: e.target.value })}

@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 
 export default function Home() {
-  useEffect(() => {}, []);
-
-  return <></>;
+  return <h1>choose</h1>;
 }
