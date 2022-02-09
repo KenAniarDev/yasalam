@@ -45,9 +45,7 @@ export const assignManager = async () => {
 export const checkIfMemberExist = async (req, res) => {
   try {
     let count = 0;
-    let query = db
-      .collection('members')
-      .where('email', '==', 'ken.aniar.dev@gmail.com');
+    let query = db.collection('members').where('email', '==', req.query.email);
     const querySnapshot = await query.get();
     querySnapshot.forEach((doc) => {
       count++;
@@ -75,7 +73,6 @@ export const addMember = async (req, res) => {
       frontimageID,
       backimageID,
       userType,
-      origin,
     } = req.body;
 
     const otp = generateOTP(6);
@@ -117,7 +114,7 @@ export const addMember = async (req, res) => {
       notificationToken: '',
     });
 
-    const link = `${origin}/${docRef.id}`;
+    const link = `${req.headers.origin}/${docRef.id}`;
 
     const message = `Hi ${name}! Thank you for availing Yasalam Membership.  You may continue to the payment of your membership in this link: ${link}`;
     const htmlMessage = `Dear  ${name}!

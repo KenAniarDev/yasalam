@@ -30,7 +30,6 @@ export default function Home() {
     frontimageID: '',
     backimageID: '',
     userType: 'individual', // individual || family || secondary
-    origin: '',
   });
 
   const uploadImage = (file, type) => {
@@ -76,20 +75,12 @@ export default function Home() {
       return toast.error('Please Upload Back Image ID');
 
     try {
-      const existing = await axios.post('../api/checkEmail', {
-        email: formValues.email,
-      });
-      console.log(existing.data);
+      const existing = await axios.get(`../api/member/${formValues.email}`);
       if (existing.data) return toast.error('Email already exist');
       console.log('pasok');
       // await axios.post('../api/createMember', formValues);
     } catch (error) {}
   };
-
-  useEffect(() => {
-    setFormValues({ ...formValues, origin: window.location.origin });
-    console.log(window.location.origin);
-  }, []);
 
   return (
     <>
@@ -276,7 +267,7 @@ export default function Home() {
           <div className='flex flex-col justify-center items-center'>
             {formValues.backimageID.length > 1 && (
               <Image
-                src={formValues.frontimageID}
+                src={formValues.backimageID}
                 alt='Logo'
                 width={150}
                 height={150}
