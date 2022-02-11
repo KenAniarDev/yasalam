@@ -1,7 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function Home() {
-  useEffect(() => {}, []);
+   useEffect(() => {}, []);
 
-  return <></>;
+   return (
+      <>
+         <h1>yoi</h1>
+      </>
+   );
 }
