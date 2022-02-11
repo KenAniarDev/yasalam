@@ -3,5 +3,9 @@ import { useEffect } from "react";
 export default function Home() {
    useEffect(() => {}, []);
 
-   return <>wazzuo</>;
+   return (
+      <>
+         <h1>yoi</h1>
+      </>
+   );
 }
