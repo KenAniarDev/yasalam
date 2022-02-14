@@ -9,9 +9,10 @@ import { storage } from '../../utils/firebase';
 import { getAge } from '../../utils/functionHelpers';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { async } from '@firebase/util';
+import { useRouter } from 'next/router';
 
-export default function Home() {
+export default function individual() {
+  const router = useRouter();
   const date = new Date();
   const [formValues, setFormValues] = useState({
     firstname: '',
@@ -77,9 +78,12 @@ export default function Home() {
     try {
       const existing = await axios.get(`../api/member/${formValues.email}`);
       if (existing.data) return toast.error('Email already exist');
-      console.log('pasok');
-      // await axios.post('../api/createMember', formValues);
-    } catch (error) {}
+      await axios.post('../api/createMember', formValues);
+
+      return router.push('/create-account-success');
+    } catch (error) {
+      return toast.error('Error! Please try again ');
+    }
   };
 
   return (
