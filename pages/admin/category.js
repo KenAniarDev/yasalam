@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import {
   getCategories,
@@ -63,7 +62,6 @@ export default function Category() {
 
       fetchData();
     } catch (error) {
-      console.log(error);
       toast.error('Error adding category');
     }
   };
@@ -102,6 +100,7 @@ export default function Category() {
 
   const deleteCat = (id) => {
     deleteCategory(id);
+    toast.success('Category Deleted');
     fetchData();
   };
 

@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function Home() {
-  useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_SOMETHING);
-  }, []);
+   useEffect(() => {}, []);
 
-  return <></>;
+   return (
+      <>
+         <h1>yoi</h1>
+      </>
+   );
 }

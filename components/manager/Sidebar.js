@@ -4,59 +4,23 @@ import Link from 'next/link';
 const sidebarLinks = [
   {
     title: 'Dashboard',
-    link: '/admin',
+    link: '/manager',
   },
   {
-    title: 'Manager',
-    link: '/admin/manager',
-  },
-  {
-    title: 'Outlet',
-    link: '/admin/outlet',
-  },
-  {
-    title: 'Category',
-    link: '/admin/category',
-  },
-  {
-    title: 'Feature',
-    link: '/admin/feature',
-  },
-  {
-    title: 'Region',
-    link: '/admin/region',
-  },
-  {
-    title: 'Member',
-    link: '/admin/member',
+    title: 'Visit',
+    link: '/manager/visit',
   },
   {
     title: 'Transaction',
-    link: '/admin/transaction',
+    link: '/manager/transaction',
   },
   {
-    title: 'Register Transaction',
-    link: '/admin/registertransaction',
+    title: 'QR Page',
+    link: '/manager/qr',
   },
   {
-    title: 'Refferal',
-    link: '/admin/refferal',
-  },
-  {
-    title: 'Product',
-    link: '/admin/product',
-  },
-  {
-    title: 'Product History',
-    link: '/admin/producthistory',
-  },
-  {
-    title: 'Notification',
-    link: '/admin/notification',
-  },
-  {
-    title: 'Account Setting',
-    link: '/admin/account',
+    title: 'Payment',
+    link: '/manager/payment',
   },
 ];
 

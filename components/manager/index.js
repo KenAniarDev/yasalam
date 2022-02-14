@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import Navbar from '../../components/admin/Navbar';
-import Sidebar from '../../components/admin/Sidebar';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../utils/firebase';
 import { useRouter } from 'next/router';
@@ -10,10 +10,10 @@ export default function Index({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) return router.push('/admin/login');
+      if (!user) return router.push('/manager/login');
       if (typeof user.reloadUserInfo.customAttributes === 'undefined')
         return router.push('/');
-      if (!JSON.parse(user.reloadUserInfo.customAttributes).admin)
+      if (!JSON.parse(user.reloadUserInfo.customAttributes).manager)
         return router.push('/');
     });
 

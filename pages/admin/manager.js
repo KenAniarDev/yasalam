@@ -1,29 +1,41 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import Container from '../../../components/admin/';
+import Container from '../../components/admin/';
 import toast from 'react-hot-toast';
-
-import { getOutlets, deleteOutlet } from '../../../utils/firebase';
+import { auth } from '../../utils/firebase';
+import axios from 'axios';
 
 export default function Index() {
-  const [outlets, setOutlets] = useState([]);
+  const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const data = await getOutlets();
-      setOutlets(data);
+      const idToken = await auth.currentUser.getIdToken(true);
+
+      const users = await axios.post('../api/manager', { idToken });
+      const userManager = users.data.users.filter((element) => {
+        if (
+          typeof element.customClaims !== 'undefined' &&
+          typeof element.customClaims.admin !== 'undefined'
+        ) {
+          return false;
+        }
+
+        return true;
+      });
+      setManagers(userManager);
       toast.success('Data fetching success!');
     } catch (error) {
+      console.log(error);
       toast.error('Error fetching data');
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteOut = (id) => {
+  const deleteManager = (id) => {
     deleteOutlet(id);
     toast.success('Outlet Deleted');
     fetchData();
@@ -33,7 +45,7 @@ export default function Index() {
     fetchData();
 
     return () => {
-      setOutlets([]);
+      setManagers([]);
       setLoading(false);
     };
   }, []);
@@ -43,7 +55,7 @@ export default function Index() {
       {/* first row */}
       <div className='flex flex-wrap justify-between items-center p-2'>
         <div className='flex items-center mb-2'>
-          <h2 className='text-4xl font-medium mr-2'>Outlets</h2>
+          <h2 className='text-4xl font-medium mr-2'>Manager</h2>
           <Link href='/admin/outlet/add'>
             <a className='btn btn-primary'> Add New</a>
           </Link>
@@ -81,45 +93,37 @@ export default function Index() {
         </div>
       </div>
       {/* second row */}
-      {outlets.length === 0 && (
+      {managers.length === 0 && (
         <p className='text-center text-2xl font-bold'>loading....</p>
       )}
-      {outlets.length > 0 && (
+      {managers.length > 0 && (
         <table className='table w-full mt-4'>
           <thead>
             <tr>
               <th></th>
-              <th>Name</th>
-              <th>Category</th>
+              <th>Email</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {outlets.map((outlet, i) => (
-              <tr key={outlet.id}>
+            {managers.map((manager, i) => (
+              <tr key={manager.uid}>
                 <th>{i + 1}</th>
                 <td>
                   <div className='flex items-center space-x-3'>
-                    <div className='avatar'>
-                      <div className='w-12 h-12 mask mask-squircle'>
-                        <Image
-                          src={outlet.logo}
-                          alt='outlet logo'
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
                     <div>
-                      <div className='font-bold'>{outlet.name}</div>
-                      <div className='text-sm opacity-50'>
-                        {/* {outlet.region} */}Outlet Region
-                      </div>
+                      <div className='font-bold'>{manager.email}</div>
+                      {/* <div className='text-sm opacity-50'>
+                      
+                      </div> */}
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className='flex justify-between items-center'>
-                    {/* {outlet.category.name} */}Category Name
+                    {typeof manager.customClaims !== 'undefined'
+                      ? manager.customClaims.outletName
+                      : 'Not Assigned'}
                     <div className='dropdown dropdown-end ml-2'>
                       <div tabIndex='0' className='m-1 btn btn-xs btn-accent'>
                         <i className='fas fa-ellipsis-v'></i>{' '}
@@ -129,17 +133,17 @@ export default function Index() {
                         className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
                       >
                         <li>
-                          <Link href={`/outlet/${outlet.id}`}>
+                          <Link href={`/outlet/${manager.id}`}>
                             <a>View</a>
                           </Link>
                         </li>
                         <li>
-                          <Link href={`/admin/outlet/${outlet.id}`}>
+                          <Link href={`/admin/outlet/${manager.id}`}>
                             <a>Edit</a>
                           </Link>
                         </li>
                         <li>
-                          <a onClick={() => deleteOut(outlet.id)}>Delete</a>
+                          <a onClick={() => deleteOut(manager.id)}>Delete</a>
                         </li>
                       </ul>
                     </div>

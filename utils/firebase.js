@@ -1,12 +1,15 @@
+import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
   addDoc,
   doc,
   deleteDoc,
   updateDoc,
+  setDoc,
 } from 'firebase/firestore';
 import {
   ref,
@@ -14,6 +17,13 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
+
+import {
+  getAuth,
+  signOut,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -28,12 +38,33 @@ export const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore();
 
+export const auth = getAuth();
+
 export const storage = getStorage();
 
 export const categoryColRef = collection(db, 'categories');
 export const featureColRef = collection(db, 'features');
 export const regionColRef = collection(db, 'regions');
 export const outletColRef = collection(db, 'outlets');
+
+// AUTH
+export const signOutUser = async () => {
+  try {
+    await signOut(auth);
+    return 'Success logging out';
+  } catch (error) {
+    return 'Error logging out';
+  }
+};
+
+export const signInUser = async (email, password) => {
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    return cred.user;
+  } catch (error) {
+    return error.message;
+  }
+};
 
 // CATEGORIES CRUD
 export const addCategory = async (name, image, yasalam, experience, order) => {
@@ -146,6 +177,35 @@ export const getOutlets = async () => {
   });
   return outlet;
 };
+export const getOutlet = async (id) => {
+  const docRef = doc(db, 'outlets', id);
+  const docSnap = await getDoc(docRef);
+  const data = await docSnap.data();
+
+  return data;
+};
+export const addOutlet = async (outlet) => {
+  addDoc(outletColRef, {
+    ...outlet,
+    categoryRef: doc(db, 'categories', outlet.categoryRef),
+    featureRef: doc(db, 'features', outlet.featureRef),
+    regionRef: doc(db, 'regions', outlet.regionRef),
+    createdAt: new Date(),
+  });
+};
+export const updateOutlet = async (id, outlet) => {
+  const docRef = doc(db, 'outlets', id);
+  await setDoc(docRef, {
+    ...outlet,
+    categoryRef: doc(db, 'categories', outlet.categoryRef),
+    featureRef: doc(db, 'features', outlet.featureRef),
+    regionRef: doc(db, 'regions', outlet.regionRef),
+  });
+};
+export const deleteOutlet = async (id) => {
+  const docRef = doc(db, 'outlets', id);
+  await deleteDoc(docRef);
+};
 
 export const fileUploader = (folder, file, setUrl) => {
   if (!file) return;
@@ -155,7 +215,11 @@ export const fileUploader = (folder, file, setUrl) => {
 
   uploadTask.on(
     'state_changed',
-    (snapshot) => {},
+    (snapshot) => {
+      const progress = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+    },
     (err) => {
       return err;
     },
