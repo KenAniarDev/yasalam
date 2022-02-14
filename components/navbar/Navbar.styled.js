@@ -2,7 +2,6 @@ import tw from "tailwind-styled-components";
 
 export const Nav = tw.nav`
     navbar 
-    mb-2 
     shadow-lg 
     bg-neutral-content
     text-neutral
@@ -24,4 +23,3 @@ export const NavLogo = tw.div`
     relative
     cursor-pointer
 `;
-
