@@ -8,7 +8,6 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  console.log('called');
   const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
   if (req.method === 'POST') {
     const buf = await buffer(req);
@@ -26,13 +25,9 @@ export default async function handler(req, res) {
       // payment_intent.succeeded
       event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
       if (event.type === 'payment_intent.succeeded') {
-        const bufObj = JSON.parse(buf);
-        // console.log('buf', buf);
-        // console.log('bufObj', bufObj);
         const customer = await stripe.customers.retrieve(
           event.data.object.customer
         );
-
         console.log(customer.email);
       }
     } catch (error) {

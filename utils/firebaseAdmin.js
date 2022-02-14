@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { getAuth } from 'firebase-admin/auth';
+import { getAuth, doc } from 'firebase-admin/auth';
 import { collection } from 'firebase/firestore';
 import serviceAccount from '../ServiceAccountKey.json';
 import { generateOTP } from '../utils/functionHelpers';
@@ -55,6 +55,7 @@ export const checkIfMemberExist = async (req, res) => {
   } catch (error) {
     res.send(true);
   }
+  res.send(true);
 };
 export const addMember = async (req, res) => {
   try {
@@ -114,7 +115,7 @@ export const addMember = async (req, res) => {
       notificationToken: '',
     });
 
-    const link = `${req.headers.origin}/${docRef.id}`;
+    const link = `${req.headers.origin}/payment/${docRef.id}?name=${name}&type=${userType}`;
 
     const message = `Hi ${name}! Thank you for availing Yasalam Membership.  You may continue to the payment of your membership in this link: ${link}`;
     const htmlMessage = `Dear  ${name}!
@@ -144,8 +145,21 @@ export const addMember = async (req, res) => {
       html: htmlMessage,
     };
     mailHelper(mailOptions);
+
+    return res.status(201).send(true);
   } catch (error) {
     console.log(error);
-    res.send('Error');
+    return res.send('Error');
+  }
+  return res.send('Error');
+};
+
+export const getMember = async (req, res) => {
+  try {
+    let doc = await db.collection('members').doc(req.body.id).get();
+    return doc.data();
+  } catch (error) {
+    console.log(error);
+    return new Error('Cannot find user, pls try again');
   }
 };
