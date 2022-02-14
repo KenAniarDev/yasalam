@@ -2,7 +2,6 @@ import { Squash as Hamburger } from "hamburger-react";
 import { BurgerButtonContainer } from "./Menu.styled";
 
 const Menu = ({ toggle, open }) => {
-   console.log(open);
    return (
       <BurgerButtonContainer>
          <Hamburger

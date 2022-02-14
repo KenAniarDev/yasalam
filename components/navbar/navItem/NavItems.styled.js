@@ -1,16 +1,16 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
-import styled from "styled-components";
 import tw from "tailwind-styled-components";
+export const NavList = tw.ul`
+    flex
+    list-none
+    z-40
+    transition-all
 
 export const NavList = tw.ul`
     flex
     list-none
 
-    md:px-2 
-    md:mx-2  
-    md:items-center
-    md:flex-row
-    ml-auto
+
     md:relative
     md:pt-0
     md:whitespace-normal
@@ -42,11 +42,9 @@ export const NavItem = tw.li`
     hover:text-primary
 `;
 
-export const MobileNavContainer = styled.div`
-   display: none;
-   @media (max-width: 768px) {
-      display: block;
-   }
+export const MobileNavContainer = tw.div`
+   block
+   md:hidden
 `;
 
 export const DropDown = tw(NavItem)`
