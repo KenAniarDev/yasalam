@@ -1,4 +1,3 @@
-import Logo from "assets/images/yasalamlogo.png";
 import useToggle from "hooks/useToggle";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +15,7 @@ const Navbar = () => {
             <Link href="/" passHref>
                <NavLogo>
                   <Image
-                     src={Logo}
+                     src="/yasalamlogo.png"
                      alt="YaSalam Logo"
                      layout="fixed"
                      width={24}
@@ -24,7 +23,6 @@ const Navbar = () => {
                   />
                </NavLogo>
             </Link>
-
             <NavItems open={state} />
             <HamburgerMenu toggle={toggle} open={state} />
          </NavContainer>

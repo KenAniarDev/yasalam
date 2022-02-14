@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import HeroSection from "components/heroSection/HeroSection";
 
 export default function Home() {
-   useEffect(() => {}, []);
-
-
-   return <>Nothing</>;
+   return (
+      <>
+         <HeroSection />
+      </>
+   );
 
 }
