@@ -1,3 +1,4 @@
+import Footer from "components/footer/Footer";
 import Navbar from "components/navbar/Navbar";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }) {
          <Navbar />
          <Toaster />
          <Component {...pageProps} />
+         <Footer />
       </>
    );
 }

@@ -15,7 +15,6 @@ const NavListMobile = styled.ul`
       background-color: #fff;
       width: ${(props) => (props.open ? "15rem" : "0")};
       white-space: nowrap;
-      overflow: hidden;
       height: 100vh;
       box-shadow: -9px 4px 73px -25px rgba(48, 48, 48, 0.75);
       -webkit-box-shadow: -9px 4px 73px -25px rgba(48, 48, 48, 0.75);
@@ -24,13 +23,34 @@ const NavListMobile = styled.ul`
    }
 `;
 
-export const NavList = tw(NavListMobile)`
+export const NavList = tw.ul`
+    flex
+    list-none
+
     md:px-2 
     md:mx-2  
     md:items-center
     md:flex-row
     ml-auto
+    md:relative
+    md:pt-0
+    md:whitespace-normal
+    md:h-auto
+    md:w-auto
+    md:shadow-none
     
+    flex-col
+    fixed
+    top-0
+    right-0
+    pt-16
+    bg-white
+    ${(props) => (props.open ? "w-64" : "w-0")}
+    whitespace-nowrap
+    h-screen
+    shadow-2xl
+    transition-all
+    z-20
 `;
 
 export const NavItem = tw.li`

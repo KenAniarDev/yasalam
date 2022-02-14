@@ -4,4 +4,5 @@ export const BurgerButtonContainer = tw.div`
     flex-none 
     md:hidden
     px-2
+    z-30
 `;
