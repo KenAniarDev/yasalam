@@ -2,27 +2,6 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 
-const NavListMobile = styled.ul`
-   display: flex;
-   list-style: none;
-
-   @media (max-width: 768px) {
-      flex-flow: column nowrap;
-      position: fixed;
-      top: 0;
-      right: 0;
-      padding-top: 6rem;
-      background-color: #fff;
-      width: ${(props) => (props.open ? "15rem" : "0")};
-      white-space: nowrap;
-      height: 100vh;
-      box-shadow: -9px 4px 73px -25px rgba(48, 48, 48, 0.75);
-      -webkit-box-shadow: -9px 4px 73px -25px rgba(48, 48, 48, 0.75);
-      -moz-box-shadow: -9px 4px 73px -25px rgba(48, 48, 48, 0.75);
-      transition: width 0.3s ease-in-out;
-   }
-`;
-
 export const NavList = tw.ul`
     flex
     list-none
