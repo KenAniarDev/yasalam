@@ -6,29 +6,30 @@ export const NavList = tw.ul`
     z-40
     transition-all
 
-    md:px-2 
-    md:mx-2  
-    md:items-center
-    md:flex-row
-    ml-auto
-    md:h-auto
+export const NavList = tw.ul`
+    flex
+    list-none
+
+
     md:relative
     md:pt-0
-    md:w-auto
     md:whitespace-normal
+    md:h-auto
+    md:w-auto
     md:shadow-none
-
+    
     flex-col
-    flex-nowrap
     fixed
     top-0
     right-0
     pt-16
     bg-white
-    h-screen
+    ${(props) => (props.open ? "w-64" : "w-0")}
     whitespace-nowrap
+    h-screen
     shadow-2xl
-    ${(p) => (p.open ? "w-72" : "w-0")}
+    transition-all
+    z-20
 `;
 
 export const NavItem = tw.li`
