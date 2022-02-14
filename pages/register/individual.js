@@ -77,10 +77,12 @@ export default function individual() {
 
     try {
       const existing = await axios.get(`../api/member/${formValues.email}`);
-      if (existing.data) return toast.error('Email already exist');
-      await axios.post('../api/createMember', formValues);
-
-      return router.push('/create-account-success');
+      if (existing.data) {
+        return toast.error('Email already exist');
+      } else {
+        await axios.post('../api/createMember', formValues);
+        return router.push('/create-account-success');
+      }
     } catch (error) {
       return toast.error('Error! Please try again ');
     }

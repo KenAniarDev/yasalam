@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { buffer } from 'micro';
+import { memberPaid, addRegisterTransaction } from '../../utils/firebaseAdmin';
 
 export const config = {
   api: {
@@ -8,6 +9,7 @@ export const config = {
 };
 
 export default async function handler(req, res) {
+  const date = new Date();
   const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
   if (req.method === 'POST') {
     const buf = await buffer(req);
@@ -28,8 +30,29 @@ export default async function handler(req, res) {
         const customer = await stripe.customers.retrieve(
           event.data.object.customer
         );
-        console.log(customer.email);
+        let year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDay();
+
+        const issueDate = year + '-' + month + '-' + day;
+        year++;
+        const expiryDate = year + '-' + month + '-' + day;
+        year--;
+        console.log(event.data.object.amount_received);
+        const member = await memberPaid(customer.email, {
+          isPaid: true,
+          issueDate: issueDate,
+          expiryDate: expiryDate,
+        });
+        await addRegisterTransaction({
+          ...member,
+          amountPaid: event.data.object.amount_received / 100,
+          day,
+          month,
+          year,
+        });
       }
+      return res.status(200).send();
     } catch (error) {
       console.log('Webhook Error: ' + error.message);
       return res.status(400).send('Webhook Error: ' + error.message);

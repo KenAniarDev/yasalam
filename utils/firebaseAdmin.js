@@ -4,6 +4,7 @@ import { collection } from 'firebase/firestore';
 import serviceAccount from '../ServiceAccountKey.json';
 import { generateOTP } from '../utils/functionHelpers';
 import { mailHelper } from '../utils/emailHelper';
+import { async } from '@firebase/util';
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -83,7 +84,6 @@ export const addMember = async (req, res) => {
     const day = date.getDay();
 
     const issueDate = year + '-' + month + '-' + day;
-    year++;
     const expiryDate = year + '-' + month + '-' + day;
 
     //   const expiryDate = new Date(2022, 0, 3)
@@ -115,7 +115,7 @@ export const addMember = async (req, res) => {
       notificationToken: '',
     });
 
-    const link = `${req.headers.origin}/payment/${docRef.id}?name=${name}&type=${userType}`;
+    const link = `${req.headers.origin}/api/payment/${docRef.id}?name=${name}&type=${userType}`;
 
     const message = `Hi ${name}! Thank you for availing Yasalam Membership.  You may continue to the payment of your membership in this link: ${link}`;
     const htmlMessage = `Dear  ${name}!
@@ -154,12 +154,121 @@ export const addMember = async (req, res) => {
   return res.send('Error');
 };
 
-export const getMember = async (req, res) => {
+export const getMember = async (id) => {
   try {
-    let doc = await db.collection('members').doc(req.body.id).get();
+    let doc = await db.collection('members').doc(id).get();
     return doc.data();
   } catch (error) {
     console.log(error);
     return new Error('Cannot find user, pls try again');
   }
+};
+
+export const getMemberByEmail = async (email) => {
+  try {
+    let query = db.collection('members').where('email', '==', email);
+    const querySnapshot = await query.get();
+    const member = querySnapshot.docs[0].data();
+
+    if (!member) {
+      return null;
+    }
+
+    return member;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const memberPaid = async (email, update) => {
+  try {
+    let query = db.collection('members').where('email', '==', email);
+    const querySnapshot = await query.get();
+    const member = querySnapshot.docs[0].data();
+
+    await db.collection('members').doc(querySnapshot.docs[0].id).update(update);
+
+    const message = `Hi ${member.name}! <br />
+      Welcome to YaSalam  <br /> <br />
+
+      UAE’s leading lifestyle membership platform. <br/> <br/>
+
+      Your YaSalam account OTP is ${member.otp}<br/>
+      Please don’t share your one time password (OTP) with anyone.<br/> <br/>
+
+      Get started and be “YaSalam” in 3 easy steps <br/><br/>
+      1-	Download YaSalam App
+      2-	Login by using your email and your OTP
+      3-	Start Exploring and enjoy.
+
+      <br/><br/>
+      Please feel free to contact our support team if you need any help <br/>
+       support@yasalamae.ae .
+
+       <br/><br/><br/>
+       Stay healthy and YaSalam
+
+       <br/><br/>
+      Sincerely,  <br/>
+      YaSalam Team`;
+    const htmlMessage = `Hi ${member.name}! <br />
+      Welcome to YaSalam  <br /> <br />
+
+      UAE’s leading lifestyle membership platform. <br/> <br/>
+
+      Your YaSalam account OTP is ${member.otp}<br/>
+      Please don’t share your one time password (OTP) with anyone.<br/> <br/>
+
+      Get started and be “YaSalam” in 3 easy steps <br/><br/>
+      1-	Download YaSalam App
+      2-	Login by using your email and your OTP
+      3-	Start Exploring and enjoy.
+
+      <br/><br/>
+      Please feel free to contact our support team if you need any help <br/>
+       support@yasalamae.ae .
+
+       <br/><br/><br/>
+       Stay healthy and YaSalam
+
+       <br/><br/>
+      Sincerely,  <br/>
+      YaSalam Team`;
+    const mailOptions = {
+      from: 'confirmation@yasalamae.ae',
+      to: email,
+      subject: `Welcome to Yasalam ${member.userType} Membership - Account Activation`,
+      text: message,
+      html: htmlMessage,
+    };
+    mailHelper(mailOptions);
+
+    return member;
+  } catch (error) {
+    console.log(error);
+    return new Error('error updating user');
+  }
+};
+export const checkIfReferralExist = async (referral) => {
+  try {
+    let doc = await db.collection('referrals').doc(referral).get();
+    if (doc.exists) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+};
+
+export const addRegisterTransaction = async (member) => {
+  await db.collection('registerTransactions').add({
+    name: member.name,
+    userType: member.userType,
+    amountPaid: member.amountPaid,
+    day: member.day,
+    month: member.month,
+    year: member.year,
+  });
 };
