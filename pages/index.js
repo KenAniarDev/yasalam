@@ -1,11 +1,9 @@
-import { useEffect } from 'react';
+import HeroSection from "components/heroSection/HeroSection";
 
 export default function Home() {
-  useEffect(() => {}, []);
-
-  return (
-    <>
-      <h1>yoi</h1>
-    </>
-  );
+   return (
+      <>
+         <HeroSection />
+      </>
+   );
 }
