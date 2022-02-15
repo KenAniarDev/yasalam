@@ -23,7 +23,7 @@ const Navbar = () => {
                   />
                </NavLogo>
             </Link>
-            <NavItems open={state} />
+            <NavItems open={state} toggle={toggle} />
             <HamburgerMenu toggle={toggle} open={state} />
          </NavContainer>
       </Nav>

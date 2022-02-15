@@ -2,20 +2,28 @@ import Link from "next/link";
 import React from "react";
 import { NavItem } from "./NavItems.styled";
 
-const MobileNav = () => {
+const MobileNav = ({ toggle }) => {
    return (
       <>
          <NavItem>
-            <Link href="/about-us">About Us</Link>
+            <Link href="/about-us">
+               <a onClick={toggle}>About Us</a>
+            </Link>
          </NavItem>
          <NavItem>
-            <Link href="/contact-us">Contact Us</Link>
+            <Link href="/contact-us">
+               <a onClick={toggle}> Contact Us</a>
+            </Link>
          </NavItem>
          <NavItem>
-            <Link href="/terms">Terms and Conditions</Link>
+            <Link href="/terms">
+               <a onClick={toggle}>Terms and Conditions</a>
+            </Link>
          </NavItem>
          <NavItem>
-            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/privacy">
+               <a onClick={toggle}>Privacy Policy</a>
+            </Link>
          </NavItem>
       </>
    );
