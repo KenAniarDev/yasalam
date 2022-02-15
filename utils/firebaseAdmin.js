@@ -161,10 +161,11 @@ export const addMember = async (req, res) => {
 export const getMember = async (id) => {
   try {
     let doc = await db.collection('members').doc(id).get();
-    return doc.data();
+    const member = doc.data();
+    delete member.otp;
+    return member;
   } catch (error) {
-    console.log(error);
-    return new Error('Cannot find user, pls try again');
+    return null;
   }
 };
 
