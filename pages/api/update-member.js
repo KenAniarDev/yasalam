@@ -38,7 +38,6 @@ export default async function handler(req, res) {
         year++;
         const expiryDate = year + '-' + month + '-' + day;
         year--;
-        console.log(event.data.object.amount_received);
         const member = await memberPaid(customer.email, {
           isPaid: true,
           issueDate: issueDate,

@@ -11,14 +11,17 @@ import {
   getFeatures,
   getRegions,
   addOutlet,
+  getAllOutletGroup,
 } from '../../../utils/firebase';
 import { async } from '@firebase/util';
 
 export default function Add() {
+  const [outletgroups, setOutletgroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
   const [regions, setRegions] = useState([]);
 
+  const [outletgroup, setOutletgroup] = useState(null);
   const [generalFields, setGeneralFields] = useState({
     name: '',
     address: '',
@@ -91,6 +94,10 @@ export default function Add() {
       const region = await getRegions();
       setRegions(region);
       setRegion(region[0].id);
+      const outletgroup = await getAllOutletGroup();
+      setOutletgroups(outletgroup);
+      const og = outletgroup.find((e) => e.name.toLowerCase() === 'single');
+      setOutletgroup(og);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -122,6 +129,8 @@ export default function Add() {
       featureRef: feat.id,
       latitude: coords.lat,
       longitude: coords.long,
+      outletgroupName: outletgroup.name,
+      outletgroupId: outletgroup.id,
     };
     try {
       await addOutlet(outlet);
@@ -145,6 +154,27 @@ export default function Add() {
     <Container>
       <h2 className='text-4xl font-medium'>Add Outlet</h2>
       <form onSubmit={(e) => handleSubmit(e)}>
+        <div className='md:flex'>
+          <div name='feature' className='form-control mr-1'>
+            <label className='label'>
+              <span className='label-text'>Outlet Group</span>
+            </label>
+            <select
+              className='select select-bordered w-full'
+              onChange={(e) => {
+                const og = outletgroups.find((og) => og.id === e.target.value);
+                setOutletgroup(og);
+                console.log(og);
+              }}
+            >
+              {outletgroups.map((og, i) => (
+                <option key={i} value={og.id}>
+                  {og.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         {/* first row */}
         <div className='md:flex'>
           <div className='form-control flex-grow mr-1'>
