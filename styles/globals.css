@@ -47,3 +47,11 @@ body {
 .login-logo {
    max-width: 100px;
 }
+
+.home-banner {
+   min-height: calc(100vh - 22px);
+}
+
+img.left-img {
+   max-height: 500px;
+}

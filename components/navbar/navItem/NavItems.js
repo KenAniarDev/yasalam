@@ -24,14 +24,14 @@ const NavItems = ({ open }) => {
             <Link href="/experience">Experience</Link>
          </NavItem>
          <NavItem>
-            <Link href="/loyalty-reward">Loyalty & Reward</Link>
+            <Link href="/loyaltyReward">Loyalty & Reward</Link>
          </NavItem>
          <DropDown>
-            <DropDownText tabindex="0">
+            <DropDownText tabIndex="0">
                More
                <DropDownIcon />
             </DropDownText>
-            <DropDownList tabindex="0">
+            <DropDownList tabIndex="0">
                <MobileNav />
             </DropDownList>
          </DropDown>

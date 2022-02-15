@@ -1,5 +1,4 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
-import styled from "styled-components";
 import tw from "tailwind-styled-components";
 
 export const NavList = tw.ul`
@@ -42,11 +41,9 @@ export const NavItem = tw.li`
     hover:text-primary
 `;
 
-export const MobileNavContainer = styled.div`
-   display: none;
-   @media (max-width: 768px) {
-      display: block;
-   }
+export const MobileNavContainer = tw.div`
+   block
+   md:hidden
 `;
 
 export const DropDown = tw(NavItem)`
@@ -79,5 +76,5 @@ export const NavButton = tw.button`
     btn
     btn-primary
     capitalize
-
+    font-normal
 `;
