@@ -19,7 +19,7 @@ const Navbar = () => {
                      alt="YaSalam Logo"
                      layout="fixed"
                      width={24}
-                     height={34}
+                     height={42}
                   />
                </NavLogo>
             </Link>

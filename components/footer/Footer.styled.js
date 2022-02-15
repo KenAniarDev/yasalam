@@ -40,3 +40,19 @@ export const Wrapper = tw.div``;
 export const GoogleTranslate = tw.div`
     
 `;
+
+export const Copyright = tw.div`
+    items-center 
+    grid-flow-col
+`;
+
+export const IconLinksContainer = tw.div`
+   md:place-self-center 
+   md:justify-self-end
+`;
+
+export const IconLinks = tw.div`
+   grid 
+   grid-flow-col 
+   gap-4
+`;

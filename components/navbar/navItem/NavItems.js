@@ -24,7 +24,7 @@ const NavItems = ({ open }) => {
             <Link href="/experience">Experience</Link>
          </NavItem>
          <NavItem>
-            <Link href="/loyalty-reward">Loyalty & Reward</Link>
+            <Link href="/loyaltyReward">Loyalty & Reward</Link>
          </NavItem>
          <DropDown>
             <DropDownText tabIndex="0">

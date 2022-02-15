@@ -5,6 +5,9 @@ export const Nav = tw.nav`
     shadow-lg 
     bg-neutral-content
     text-neutral
+    sticky
+    top-0
+    z-50
 `;
 
 export const NavContainer = tw.div`

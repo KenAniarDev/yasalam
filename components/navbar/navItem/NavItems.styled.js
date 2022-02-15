@@ -1,5 +1,6 @@
-import { RiArrowDropDownLine } from 'react-icons/ri';
-import tw from 'tailwind-styled-components';
+import { RiArrowDropDownLine } from "react-icons/ri";
+import tw from "tailwind-styled-components";
+
 
 export const NavList = tw.ul`
     flex
@@ -72,5 +73,5 @@ export const NavButton = tw.button`
     btn
     btn-primary
     capitalize
-
+    font-normal
 `;
