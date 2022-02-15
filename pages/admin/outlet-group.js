@@ -3,17 +3,17 @@ import Container from '../../components/admin/';
 import toast from 'react-hot-toast';
 
 import {
-  getRegions,
-  addRegion,
-  updateRegion,
-  deleteRegion,
+  getAllOutletGroup,
+  addOutletGroup,
+  updateOutletGroup,
+  deleteOutletGroup,
 } from '../../utils/firebase';
+import { async } from '@firebase/util';
 
-export default function Region() {
-  const [regions, setRegions] = useState([]);
+export default function OutletGroup() {
+  const [outletgroup, setOutletGroup] = useState([]);
 
   const [name, setName] = useState('');
-  const [order, setOrder] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const [isEdit, setIsEdit] = useState('');
@@ -22,9 +22,8 @@ export default function Region() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const data = await getRegions();
-      setOrder(data.length + 1);
-      setRegions(data);
+      const data = await getAllOutletGroup();
+      setOutletGroup(data);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -38,38 +37,38 @@ export default function Region() {
 
     try {
       if (!isEdit) {
-        if (order === 0) return toast.error('Please Wait');
-        await addRegion(name, order);
-        toast.success('Added new region');
+        await addOutletGroup(name);
+        toast.success('Added new outlet group');
       } else {
-        await updateRegion(id, name);
-        toast.success('Updated region');
+        await updateOutletGroup(id, name);
+        toast.success('Updated outlet group');
       }
 
       setName('');
       setId(null);
       fetchData();
     } catch (error) {
-      toast.error('Error adding region');
+      console.log(error);
+      toast.error('Error adding outlet group');
     }
   };
 
-  const editReg = (id) => {
+  const editOutGroup = (id) => {
     setId(id);
     setIsEdit(true);
 
-    const region = regions.find((region) => region.id === id);
+    const group = outletgroup.find((group) => group.id === id);
 
-    setName(region.name);
+    setName(group.name);
   };
 
   const deleteReg = async (id) => {
     try {
-      await deleteRegion(id);
-      toast.success('Region Deleted');
+      await deleteOutletGroup(id);
+      toast.success('Outlet Group Deleted');
       fetchData();
     } catch (error) {
-      toast.error('Region Delete Error');
+      toast.error('Outlet Group Delete Error');
     }
   };
 
@@ -77,19 +76,18 @@ export default function Region() {
     fetchData();
 
     return () => {
-      setRegions([]);
-      setOrder(0);
+      setOutletGroup([]);
       setLoading(false);
     };
   }, []);
 
   return (
     <Container>
-      <h2 className='text-4xl font-medium mb-2'>Region</h2>
+      <h2 className='text-4xl font-medium mb-2'>Outlet Group</h2>
       <div className='md:flex'>
         <div className='mt-6 flex-grow pl-1' style={{ maxWidth: '400px' }}>
           <h2 className='text-2xl font-medium'>
-            {isEdit ? 'Edit Region' : ' Add New'}
+            {isEdit ? 'Edit Outlet Group' : ' Add New'}
           </h2>
           <form className='mt-6' onSubmit={(e) => handleSubmit(e)}>
             <div className='form-control flex-grow mr-4 mb-4'>
@@ -99,7 +97,7 @@ export default function Region() {
               <input
                 type='text'
                 required
-                placeholder='region name'
+                placeholder='outlet group name'
                 className='input mb-2'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -132,11 +130,11 @@ export default function Region() {
                   </tr>
                 </>
               )}
-              {regions.map((region) => (
+              {outletgroup.map((region) => (
                 <tr key={region.id}>
                   <td>{region.name}</td>
                   <td>
-                    {region.name.toString().toLowerCase() !== 'no region' && (
+                    {region.name.toString().toLowerCase() !== 'single' && (
                       <div className='dropdown dropdown-end ml-2'>
                         <div tabIndex='0' className='m-1 btn btn-xs btn-accent'>
                           <i className='fas fa-ellipsis-v'></i>{' '}
@@ -146,7 +144,7 @@ export default function Region() {
                           className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
                         >
                           <li>
-                            <a onClick={() => editReg(region.id)}>Edit</a>
+                            <a onClick={() => editOutGroup(region.id)}>Edit</a>
                           </li>
                           <li>
                             <a onClick={() => deleteReg(region.id)}>Delete</a>

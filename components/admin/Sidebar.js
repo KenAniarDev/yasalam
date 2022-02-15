@@ -15,6 +15,10 @@ const sidebarLinks = [
     link: '/admin/outlet',
   },
   {
+    title: 'Outlet Group',
+    link: '/admin/outlet-group',
+  },
+  {
     title: 'Category',
     link: '/admin/category',
   },

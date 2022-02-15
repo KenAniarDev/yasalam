@@ -35,10 +35,14 @@ export default function Index() {
     }
   };
 
-  const deleteManager = (id) => {
-    deleteOutlet(id);
-    toast.success('Outlet Deleted');
-    fetchData();
+  const deleteManager = async (id) => {
+    try {
+      await deleteOutlet(id);
+      toast.success('Manager Deleted');
+      fetchData();
+    } catch (error) {
+      toast.success('Manager Delete Error');
+    }
   };
 
   useEffect(() => {

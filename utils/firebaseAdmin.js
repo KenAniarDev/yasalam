@@ -15,6 +15,8 @@ if (admin.apps.length === 0) {
 export const db = admin.firestore();
 export const auth = admin.auth();
 
+// managers
+
 export const getAllUsers = async (req, res) => {
   try {
     const decodedToken = await getAuth().verifyIdToken(req.body.idToken);
@@ -42,6 +44,8 @@ export const assignManager = async () => {
     outletName: 'Gold Gyms',
   });
 };
+
+// members
 
 export const checkIfMemberExist = async (req, res) => {
   try {
@@ -113,6 +117,7 @@ export const addMember = async (req, res) => {
       isActivate: false,
       isPaid: false,
       notificationToken: '',
+      createdAt: date,
     });
 
     const link = `${req.headers.origin}/api/payment/${docRef.id}?name=${name}&type=${userType}`;
@@ -151,7 +156,6 @@ export const addMember = async (req, res) => {
     console.log(error);
     return res.send('Error');
   }
-  return res.send('Error');
 };
 
 export const getMember = async (id) => {
@@ -262,13 +266,15 @@ export const checkIfReferralExist = async (referral) => {
   }
 };
 
+// transactions
+
 export const addRegisterTransaction = async (member) => {
   await db.collection('registerTransactions').add({
     name: member.name,
     userType: member.userType,
     amountPaid: member.amountPaid,
-    day: member.day,
-    month: member.month,
-    year: member.year,
+    createdAt: new Date(),
   });
 };
+
+// visits

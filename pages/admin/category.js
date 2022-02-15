@@ -98,10 +98,14 @@ export default function Category() {
     setExperience(category.experience);
   };
 
-  const deleteCat = (id) => {
-    deleteCategory(id);
-    toast.success('Category Deleted');
-    fetchData();
+  const deleteCat = async (id) => {
+    try {
+      await deleteCategory(id);
+      toast.success('Category Deleted');
+      fetchData();
+    } catch (error) {
+      toast.error('Category Delete Error');
+    }
   };
 
   useEffect(() => {

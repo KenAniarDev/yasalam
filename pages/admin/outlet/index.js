@@ -23,10 +23,14 @@ export default function Index() {
     }
   };
 
-  const deleteOut = (id) => {
-    deleteOutlet(id);
-    toast.success('Outlet Deleted');
-    fetchData();
+  const deleteOut = async (id) => {
+    try {
+      await deleteOutlet(id);
+      toast.success('Outlet Deleted');
+      fetchData();
+    } catch (error) {
+      toast.error('Outlet Delete Error');
+    }
   };
 
   useEffect(() => {
@@ -91,6 +95,7 @@ export default function Index() {
               <th></th>
               <th>Name</th>
               <th>Category</th>
+              <th>Group</th>
             </tr>
           </thead>
           <tbody>
@@ -112,14 +117,19 @@ export default function Index() {
                     <div>
                       <div className='font-bold'>{outlet.name}</div>
                       <div className='text-sm opacity-50'>
-                        {/* {outlet.region} */}Outlet Region
+                        {outlet.regionName}
                       </div>
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className='flex justify-between items-center'>
-                    {/* {outlet.category.name} */}Category Name
+                    {outlet.categoryName}
+                  </div>
+                </td>
+                <td>
+                  <div className='flex justify-between items-center'>
+                    {outlet.outletgroupName}
                     <div className='dropdown dropdown-end ml-2'>
                       <div tabIndex='0' className='m-1 btn btn-xs btn-accent'>
                         <i className='fas fa-ellipsis-v'></i>{' '}

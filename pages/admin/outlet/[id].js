@@ -13,12 +13,14 @@ import {
   getRegions,
   updateOutlet,
   getOutlet,
+  getAllOutletGroup,
 } from '../../../utils/firebase';
 
 export default function Add() {
   const router = useRouter();
   const { id } = router.query;
 
+  const [outletgroups, setOutletgroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
   const [regions, setRegions] = useState([]);
@@ -29,6 +31,7 @@ export default function Add() {
     phone: '',
     email: '',
   });
+  const [outletgroup, setOutletgroup] = useState(null);
   const [category, setCategory] = useState(null);
   const [region, setRegion] = useState(null);
   const [feature, setFeature] = useState(null);
@@ -90,6 +93,7 @@ export default function Add() {
       const category = await getCategories();
       const feature = await getFeatures();
       const region = await getRegions();
+      const outletgroup = await getAllOutletGroup();
 
       setGeneralFields({
         name: data.name,
@@ -106,6 +110,8 @@ export default function Add() {
         instagram: data.instagram,
         whatsapp: data.whatsapp,
       });
+
+      setOutletgroup({ id: data.outletgroupId, name: data.outletgroupName });
 
       const cat = category.find((el) => el.id === data.categoryId);
       if (!cat) {
@@ -144,6 +150,7 @@ export default function Add() {
       setCategories(category);
       setFeatures(feature);
       setRegions(region);
+      setOutletgroups(outletgroup);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -175,6 +182,8 @@ export default function Add() {
       featureRef: feat.id,
       latitude: coords.lat,
       longitude: coords.long,
+      outletgroupName: outletgroup.name,
+      outletgroupId: outletgroup.id,
     };
 
     try {
@@ -199,6 +208,31 @@ export default function Add() {
     <Container>
       <h2 className='text-4xl font-medium'>Update Outlet</h2>
       <form onSubmit={(e) => handleSubmit(e)}>
+        <div className='md:flex'>
+          <div name='feature' className='form-control mr-1'>
+            <label className='label'>
+              <span className='label-text'>Outlet Group</span>
+            </label>
+            <select
+              className='select select-bordered w-full'
+              onChange={(e) => {
+                const og = outletgroups.find((og) => og.id === e.target.value);
+                setOutletgroup(og);
+                console.log(og);
+              }}
+            >
+              {outletgroups.map((og, i) => (
+                <option
+                  key={i}
+                  value={og.id}
+                  selected={og.id === outletgroup.id}
+                >
+                  {og.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         {/* first row */}
         <div className='md:flex'>
           <div className='form-control flex-grow mr-1'>
