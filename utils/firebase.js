@@ -46,6 +46,7 @@ export const categoryColRef = collection(db, 'categories');
 export const featureColRef = collection(db, 'features');
 export const regionColRef = collection(db, 'regions');
 export const outletColRef = collection(db, 'outlets');
+export const outletgroupColRef = collection(db, 'outletgroup');
 
 // AUTH
 export const signOutUser = async () => {
@@ -204,6 +205,31 @@ export const updateOutlet = async (id, outlet) => {
 };
 export const deleteOutlet = async (id) => {
   const docRef = doc(db, 'outlets', id);
+  await deleteDoc(docRef);
+};
+export const getAllOutletGroup = async () => {
+  const outletgroup = await getDocs(outletgroupColRef).then((snapshot) => {
+    let data = [];
+    snapshot.docs.forEach((doc) => {
+      data.push({ ...doc.data(), id: doc.id });
+    });
+    return data;
+  });
+  return outletgroup;
+};
+export const addOutletGroup = async (name) => {
+  addDoc(outletgroupColRef, {
+    name,
+  });
+};
+export const updateOutletGroup = async (id, name) => {
+  const docRef = doc(db, 'outletgroup', id);
+  await updateDoc(docRef, {
+    name,
+  });
+};
+export const deleteOutletGroup = async (id) => {
+  const docRef = doc(db, 'outletgroup', id);
   await deleteDoc(docRef);
 };
 

@@ -8,6 +8,7 @@ import {
   updateFeature,
   deleteFeature,
 } from '../../utils/firebase';
+import { async } from '@firebase/util';
 
 export default function Feature() {
   const [features, setFeatures] = useState([]);
@@ -66,10 +67,14 @@ export default function Feature() {
     setIcon(feature.icon);
   };
 
-  const deleteFeat = (id) => {
-    deleteFeature(id);
-    toast.success('Feature Deleted');
-    fetchData();
+  const deleteFeat = async (id) => {
+    try {
+      await deleteFeature(id);
+      toast.success('Feature Deleted');
+      fetchData();
+    } catch (error) {
+      toast.error('Feature Delete Error');
+    }
   };
 
   useEffect(() => {

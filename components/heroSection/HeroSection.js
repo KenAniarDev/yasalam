@@ -1,6 +1,7 @@
 import Image from "next/image";
 import BannerImage from "public/banner-image-new.png";
 
+
 const HeroSection = () => {
    return (
       <div className="relative flex items-center py-40 home-banner">

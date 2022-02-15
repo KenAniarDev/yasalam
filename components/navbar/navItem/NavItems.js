@@ -40,7 +40,7 @@ const NavItems = ({ open }) => {
          </MobileNavContainer>
 
          <NavItem>
-            <Link href="" passHref>
+            <Link href="/buy-membership" passHref>
                <NavButton>Buy Membership</NavButton>
             </Link>
          </NavItem>
