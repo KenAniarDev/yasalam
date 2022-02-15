@@ -11,20 +11,28 @@ import {
    NavList,
 } from "./NavItems.styled";
 
-const NavItems = ({ open }) => {
+const NavItems = ({ open, toggle }) => {
    return (
       <NavList open={open}>
          <NavItem>
-            <Link href="/">Home</Link>
+            <Link href="/">
+               <a onClick={toggle}>Home</a>
+            </Link>
          </NavItem>
          <NavItem>
-            <Link href="/outlets">YaSalam</Link>
+            <Link href="/outlets">
+               <a onClick={toggle}>YaSalam</a>
+            </Link>
          </NavItem>
          <NavItem>
-            <Link href="/experience">Experience</Link>
+            <Link href="/experience">
+               <a onClick={toggle}>Experience</a>
+            </Link>
          </NavItem>
          <NavItem>
-            <Link href="/loyaltyReward">Loyalty & Reward</Link>
+            <Link href="/loyaltyReward">
+               <a onClick={toggle}>Loyalty & Reward</a>
+            </Link>
          </NavItem>
          <DropDown>
             <DropDownText tabIndex="0">
@@ -36,7 +44,7 @@ const NavItems = ({ open }) => {
             </DropDownList>
          </DropDown>
          <MobileNavContainer>
-            <MobileNav />
+            <MobileNav toggle={toggle} />
          </MobileNavContainer>
 
          <NavItem>

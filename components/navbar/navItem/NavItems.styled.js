@@ -1,13 +1,13 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
 import tw from "tailwind-styled-components";
 
-
 export const NavList = tw.ul`
     flex
     list-none
 
-
     md:relative
+    md:flex-row
+    md:items-center
     md:pt-0
     md:whitespace-normal
     md:h-auto
@@ -20,7 +20,7 @@ export const NavList = tw.ul`
     right-0
     pt-16
     bg-white
-    ${(props) => (props.open ? 'w-64' : 'w-0')}
+    ${(props) => (props.open ? "w-64" : "w-0")}
     whitespace-nowrap
     h-screen
     shadow-2xl
