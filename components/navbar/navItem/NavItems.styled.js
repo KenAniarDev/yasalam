@@ -1,10 +1,5 @@
-import { RiArrowDropDownLine } from "react-icons/ri";
-import tw from "tailwind-styled-components";
-export const NavList = tw.ul`
-    flex
-    list-none
-    z-40
-    transition-all
+import { RiArrowDropDownLine } from 'react-icons/ri';
+import tw from 'tailwind-styled-components';
 
 export const NavList = tw.ul`
     flex
@@ -24,7 +19,7 @@ export const NavList = tw.ul`
     right-0
     pt-16
     bg-white
-    ${(props) => (props.open ? "w-64" : "w-0")}
+    ${(props) => (props.open ? 'w-64' : 'w-0')}
     whitespace-nowrap
     h-screen
     shadow-2xl
