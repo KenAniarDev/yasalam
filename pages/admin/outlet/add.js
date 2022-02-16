@@ -15,7 +15,7 @@ import {
 } from '../../../utils/firebase';
 import { async } from '@firebase/util';
 
-export default function Add() {
+export default function AddOutletPage() {
   const [outletgroups, setOutletgroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);

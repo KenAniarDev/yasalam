@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import {
-  getCategories,
-  addCategory,
-  updateCategory,
-  deleteCategory,
+  getProducts,
+  addProduct,
+  updateProduct,
+  deleteProduct,
   storage,
 } from '../../utils/firebase';
 import Container from '../../components/admin/';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 
-export default function CategoryPage() {
-  const [categories, setCategories] = useState([]);
+export default function ProductPage() {
+  const [products, setProducts] = useState([]);
 
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
-  const [yasalam, setYasalam] = useState(true);
-  const [experience, setExperience] = useState(true);
-  const [order, setOrder] = useState(0);
+  const [description, setDescription] = useState('');
+  const [points, setPoints] = useState(1);
+  const [quantity, setQuantity] = useState(1);
 
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,9 +27,8 @@ export default function CategoryPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const data = await getCategories();
-      setOrder(data.length + 1);
-      setCategories(data);
+      const data = await getProducts();
+      setProducts(data);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -44,32 +43,33 @@ export default function CategoryPage() {
       if (!isEdit) {
         if (!image) return toast.error('Image Required');
 
-        if (order === 0) return toast.error('Please Wait');
+        await addProduct(name, image, description, points, quantity);
 
-        await addCategory(name, image, yasalam, experience, order);
-
-        toast.success('Added new category');
+        toast.success('Added new product');
       } else {
-        if (id === null) return toast.error('Error select a category');
-        await updateCategory(id, name, image, yasalam, experience);
+        if (id === null) return toast.error('Error select a product');
+        await updateProduct(id, name, image, description, points, quantity);
 
-        toast.success('Updated category');
+        toast.success('Updated product');
       }
 
       setId(null);
       setName('');
       setImage(null);
+      setDescription('');
+      setPoints(1);
+      setQuantity(1);
 
       fetchData();
     } catch (error) {
-      toast.error('Error adding category');
+      toast.error('Error adding product');
     }
   };
 
   const uploadImage = (file) => {
     if (!file) return;
 
-    const storageRef = ref(storage, `categories/${Date.now() + file.name}`);
+    const storageRef = ref(storage, `products/${Date.now() + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -90,21 +90,19 @@ export default function CategoryPage() {
     setId(id);
     setIsEdit(true);
 
-    const category = categories.find((category) => category.id === id);
+    const product = products.find((prod) => prod.id === id);
 
-    setName(category.name);
-    setImage(category.image);
-    setYasalam(category.yasalam);
-    setExperience(category.experience);
+    setName(product.name);
+    setImage(product.image);
   };
 
   const deleteCat = async (id) => {
     try {
-      await deleteCategory(id);
-      toast.success('Category Deleted');
+      await deleteProduct(id);
+      toast.success('Product Deleted');
       fetchData();
     } catch (error) {
-      toast.error('Category Delete Error');
+      toast.error('Product Delete Error');
     }
   };
 
@@ -112,18 +110,17 @@ export default function CategoryPage() {
     fetchData();
 
     return () => {
-      setCategories([]);
-      setOrder(0);
+      setProducts([]);
       setLoading(false);
     };
   }, []);
   return (
     <Container>
-      <h2 className='text-4xl font-medium mb-2'>Categories</h2>
+      <h2 className='text-4xl font-medium mb-2'>Products</h2>
       <div className='md:flex'>
         <div className='mt-6 max-w-2xl pl-1'>
           <h2 className='text-2xl font-medium'>
-            {isEdit ? 'Edit Category' : ' Add New'}
+            {isEdit ? 'Edit Product' : ' Add New'}
           </h2>
           <form className='mt-6' onSubmit={(e) => handleSubmit(e)}>
             <div className='form-control flex-grow mr-4 mb-4'>
@@ -133,7 +130,7 @@ export default function CategoryPage() {
               <input
                 type='text'
                 required
-                placeholder='category name'
+                placeholder='product name'
                 className='input mb-2'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -155,33 +152,60 @@ export default function CategoryPage() {
                 className='input'
                 onChange={(e) => uploadImage(e.target.files[0])}
               />
-            </div>
-            <div className='form-control flex-grow mr-4'>
-              <label className='cursor-pointer label'>
-                <span className='label-text'>Show/Hide Yasalam</span>
-                <input
-                  type='checkbox'
-                  checked={yasalam}
-                  onChange={(e) => setYasalam(!yasalam)}
-                  className='toggle'
-                />
+
+              <label className='label'>
+                <span className='label-text'>Description</span>
               </label>
-            </div>
-            <div className='form-control flex-grow mr-4'>
-              <label className='cursor-pointer label'>
-                <span className='label-text'>Show/Hide Experience</span>
-                <input
-                  type='checkbox'
-                  checked={experience}
-                  onChange={(e) => setExperience(!experience)}
-                  className='toggle'
-                />
+              <textarea
+                name='employerDetails'
+                className='textarea textarea-bordered h-24'
+                placeholder='product description'
+                value={description}
+                required
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+              <label className='label'>
+                <span className='label-text'>Points</span>
               </label>
+              <input
+                type='text'
+                required
+                placeholder='product points'
+                className='input mb-2'
+                value={points}
+                min='1'
+                onChange={(e) => {
+                  if (e.target.value < 1) {
+                    setPoints(1);
+                  } else {
+                    setPoints(e.target.value);
+                  }
+                }}
+              />
+              <label className='label'>
+                <span className='label-text'>Quantity</span>
+              </label>
+              <input
+                type='text'
+                required
+                placeholder='product quantity'
+                className='input mb-2'
+                value={quantity}
+                min='1'
+                onChange={(e) => {
+                  if (e.target.value < 1) {
+                    setQuantity(1);
+                  } else {
+                    setQuantity(e.target.value);
+                  }
+                }}
+              />
             </div>
+
             <div className='mt-4'>
               <input
                 type='submit'
-                value={isEdit ? 'UPDATE CATEGORY' : ' ADD NEW'}
+                value={isEdit ? 'UPDATE PRODUCT' : ' ADD NEW'}
                 className='btn btn-primary'
               />
             </div>
@@ -192,8 +216,8 @@ export default function CategoryPage() {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Yasalam</th>
-                <th>Experience</th>
+                <th>Points</th>
+                <th>Quantity</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -208,61 +232,46 @@ export default function CategoryPage() {
                   </tr>
                 </>
               )}
-              {categories.map((category) => (
-                <tr key={category.id}>
+              {products.map((product) => (
+                <tr key={product.id}>
                   <td>
                     <div className='flex justify-between'>
                       <div className='flex items-center'>
                         <div className='avatar mr-4'>
                           <div className='w-12 h-12 mask mask-squircle'>
                             <Image
-                              src={category.image}
-                              alt='Category Image'
+                              src={product.image}
+                              alt='Product Image'
                               width={100}
                               height={100}
                             />
                           </div>
                         </div>
                         <div className='flex items-center space-x-3'>
-                          {category.name}
+                          {product.name}
                         </div>
                       </div>
                     </div>
                   </td>
+                  <td>{product.points}</td>
+                  <td>{product.quantity}</td>
                   <td>
-                    {category.yasalam ? (
-                      <i className='fas fa-eye mr-2'></i>
-                    ) : (
-                      <i className='far fa-eye-slash mr-2'></i>
-                    )}
-                  </td>
-                  <td>
-                    {category.experience ? (
-                      <i className='fas fa-eye mr-2'></i>
-                    ) : (
-                      <i className='far fa-eye-slash mr-2'></i>
-                    )}
-                  </td>
-                  <td>
-                    {category.name.toString().toLowerCase() !==
-                      'uncategorized' && (
-                      <div className='dropdown dropdown-end ml-2'>
-                        <div tabIndex='0' className='m-1 btn btn-xs btn-accent'>
-                          <i className='fas fa-ellipsis-v'></i>{' '}
-                        </div>
-                        <ul
-                          tabIndex='0'
-                          className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
-                        >
-                          <li>
-                            <a onClick={() => editCat(category.id)}>Edit</a>
-                          </li>
-                          <li>
-                            <a onClick={() => deleteCat(category.id)}>Delete</a>
-                          </li>
-                        </ul>
+                    <div className='dropdown dropdown-end ml-2'>
+                      <div tabIndex='0' className='m-1 btn btn-xs btn-accent'>
+                        <i className='fas fa-ellipsis-v'></i>{' '}
                       </div>
-                    )}
+                      <ul
+                        tabIndex='0'
+                        className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
+                      >
+                        <li>
+                          <a onClick={() => editCat(product.id)}>Edit</a>
+                        </li>
+                        <li>
+                          <a onClick={() => deleteCat(product.id)}>Delete</a>
+                        </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
               ))}

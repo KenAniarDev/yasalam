@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { auth } from '../../utils/firebase';
 import axios from 'axios';
 
-export default function Index() {
+export default function ManagerPage() {
   const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
 

@@ -2,7 +2,7 @@ import admin from 'firebase-admin';
 import { getAuth, doc } from 'firebase-admin/auth';
 import { collection } from 'firebase/firestore';
 import serviceAccount from '../ServiceAccountKey.json';
-import { generateOTP } from '../utils/functionHelpers';
+import { generateRandomStrings } from '../utils/functionHelpers';
 import { mailHelper } from '../utils/emailHelper';
 import { async } from '@firebase/util';
 
@@ -81,7 +81,7 @@ export const addMember = async (req, res) => {
       userType,
     } = req.body;
 
-    const otp = generateOTP(6);
+    const otp = generateRandomStrings(6, 'otp');
 
     let year = date.getFullYear();
     const month = date.getMonth();
@@ -111,6 +111,7 @@ export const addMember = async (req, res) => {
       issueDate,
       expiryDate,
       children: [],
+      favorites: [],
       isSecondaryActive: false,
       points: 0,
       savings: 0,
@@ -255,9 +256,10 @@ export const memberPaid = async (email, update) => {
     return new Error('error updating user');
   }
 };
-export const checkIfReferralExist = async (referral) => {
+
+export const checkIfReferralExist = async (id) => {
   try {
-    let doc = await db.collection('referrals').doc(referral).get();
+    let doc = await db.collection('referrals').doc(id).get();
     if (doc.exists) {
       return true;
     } else {
@@ -265,6 +267,13 @@ export const checkIfReferralExist = async (referral) => {
     }
   } catch (error) {
     return false;
+  }
+};
+export const deleteReferral = async (id) => {
+  try {
+    await db.collection('referrals').doc(id).delete();
+  } catch (error) {
+    return new Error('Error Deleting Referral');
   }
 };
 

@@ -2,6 +2,7 @@ import {
   getMemberByEmail,
   memberPaid,
   checkIfReferralExist,
+  deleteReferral,
 } from '../../../utils/firebaseAdmin';
 
 export default async function handler(req, res) {
@@ -43,6 +44,9 @@ export default async function handler(req, res) {
       issueDate: issueDate,
       expiryDate: expiryDate,
     });
+
+    await deleteReferral(req.body.code);
+
     return res.redirect(303, `${req.headers.origin}/payment-success`);
   } catch (error) {
     console.log(error);
