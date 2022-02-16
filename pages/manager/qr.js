@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 const QrReader = dynamic(() => import('modern-react-qr-reader'), {
   ssr: false,
@@ -6,9 +6,11 @@ const QrReader = dynamic(() => import('modern-react-qr-reader'), {
 import Container from '../../components/manager/';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import Modal from 'react-modal';
+import { addVisit } from '../../utils/firebase';
+import { useStore } from '../../components/manager/';
 
-export default function Index() {
+export default function QrPage() {
+  const outlet = useStore((state) => state.outlet);
   const [isHandlingScan, setIsHandlingScan] = useState(false);
   const [member, setMember] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -20,14 +22,14 @@ export default function Index() {
       try {
         const result = await axios(`/api/member/info?id=${data}`);
         const member = result.data;
-        console.log(result);
         if (member) {
           setMember(member);
           setShowModal(true);
+        } else {
+          throw new Error('Error');
         }
       } catch (error) {
-        toast.error('User not found');
-      } finally {
+        toast.error('Member not found');
         setTimeout(() => {
           setIsHandlingScan(false);
         }, 3000);
@@ -42,17 +44,20 @@ export default function Index() {
     }, 3000);
   };
 
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {}
-
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const createVisit = async () => {
+    setIsHandlingScan(true);
+    try {
+      await addVisit(member, outlet);
+      toast.success('Member visit success');
+    } catch (error) {
+      toast.error('Error Please Try Again');
+    } finally {
+      setShowModal(false);
+      setTimeout(() => {
+        setIsHandlingScan(false);
+      }, 3000);
+    }
+  };
 
   return (
     <Container>
@@ -65,19 +70,6 @@ export default function Index() {
             onScan={handleScan}
             style={{ width: 500, height: 500 }}
           />
-        </div>
-        <div className='z-99'>
-          <button onClick={openModal}>Open Modal</button>
-          <Modal
-            isOpen={modalIsOpen}
-            onAfterOpen={afterOpenModal}
-            onRequestClose={closeModal}
-            contentLabel='Example Modal'
-          >
-            <button onClick={closeModal} className='btn btn-primary'>
-              close
-            </button>
-          </Modal>
         </div>
         <div>
           <input
@@ -98,9 +90,7 @@ export default function Index() {
                   htmlFor='my-modal-2'
                   className='btn btn-primary'
                   onClick={() => {
-                    // create visit
-                    setIsHandlingScan(false);
-                    setShowModal(false);
+                    createVisit();
                   }}
                 >
                   Accept

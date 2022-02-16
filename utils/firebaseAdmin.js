@@ -163,7 +163,8 @@ export const getMember = async (id) => {
     let doc = await db.collection('members').doc(id).get();
     const member = doc.data();
     delete member.otp;
-    return member;
+    console.log(doc.id);
+    return { ...member, id: doc.id };
   } catch (error) {
     return null;
   }
