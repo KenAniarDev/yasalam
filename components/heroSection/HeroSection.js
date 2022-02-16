@@ -1,57 +1,60 @@
 import Image from "next/image";
-import BannerImage from "public/banner-image-new.png";
-
+import PhoneImage from "public/banner-image-new.png";
+import {
+   Background,
+   Container,
+   ImageLeft,
+   ImageRight,
+   LeftContent,
+   Main,
+   MainContent,
+   PrimaryText,
+   RightContent,
+   SecondaryText,
+} from "./HeroSection.styled";
 
 const HeroSection = () => {
    return (
-      <div className="relative flex items-center py-40 home-banner">
-         <img
+      <Container>
+         <Image
             src="/pattern1920x1080.png"
-            alt=""
-            className="absolute top-0 bottom-0 left-0 right-0 object-cover w-full h-full"
+            alt="Background Image"
+            layout="fill"
+            objectFit="cover"
+            className="z-0"
+            quality={75}
          />
-         <div
-            className="absolute top-0 bottom-0 left-0 right-0 h-full"
-            style={{ backgroundColor: "rgba(0,0,0, 0.5)" }}
-         ></div>
-         <div className="container">
-            <div className="items-center text-center md:flex">
-               <div
-                  className="flex flex-col items-center p-10 bg-white md:ml-10 md:w-1/2 rounded-xl"
-                  style={{ backgroundColor: "rgba(255,255,255,.85)" }}
-               >
-                  <h2 className="my-4 text-2xl font-semibold md:text-3xl lg:text-4xl">
-                     Level up your life style with
-                  </h2>
-                  <img
-                     src="/yasalamlogo.png"
-                     alt=""
-                     className="w-20 my-5 md:w-32 lg:w-40"
-                  />
-                  <h1 className="my-4 text-4xl font-semibold md:text-5xl lg:text-6xl">
-                     YaSalam
-                  </h1>
-               </div>
-               <div className="flex-grow mt-16 md:mt-0">
-                  <div
-                     className="w-4/5 mx-auto md:w-full"
-                     style={{
-                        position: "relative",
-                        width: "80%",
-                        height: "600px",
-                     }}
-                  >
+         <Background></Background>
+         <Main>
+            <MainContent>
+               <LeftContent>
+                  <SecondaryText>Level up your life style with</SecondaryText>
+                  <ImageLeft>
                      <Image
-                        src={BannerImage}
-                        alt=""
-                        layout="fill"
+                        src="/yasalamlogo.png"
+                        alt="Yasalam Logo"
+                        layout="responsive"
+                        width={160}
+                        height={270}
+                     />
+                  </ImageLeft>
+                  <PrimaryText>YaSalam</PrimaryText>
+               </LeftContent>
+               <RightContent>
+                  <ImageRight>
+                     <Image
+                        src={PhoneImage}
+                        alt="Phone Image"
+                        layout="responsive"
+                        width="100%"
+                        height="100%"
                         objectFit="contain"
                      />
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+                  </ImageRight>
+               </RightContent>
+            </MainContent>
+         </Main>
+      </Container>
    );
 };
 
