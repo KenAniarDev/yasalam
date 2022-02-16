@@ -5,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../utils/firebase';
 import { useRouter } from 'next/router';
 import create from 'zustand';
+import Loading from '../Loading';
 
 export const useStore = create((set) => ({
   outlet: null,
@@ -34,7 +35,7 @@ export default function Index({ children }) {
     <>
       <div className='p-4'>
         {isLoading ? (
-          <h1>Loading</h1>
+          <Loading />
         ) : (
           <>
             <Navbar />
