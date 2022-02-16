@@ -7,6 +7,8 @@ import axios from 'axios';
 
 export default function ManagerPage() {
   const [managers, setManagers] = useState([]);
+  const [filteredManagers, setFilteredManagers] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
@@ -26,6 +28,7 @@ export default function ManagerPage() {
         return true;
       });
       setManagers(userManager);
+      setFilteredManagers(userManager);
       toast.success('Data fetching success!');
     } catch (error) {
       console.log(error);
@@ -45,6 +48,14 @@ export default function ManagerPage() {
     }
   };
 
+  const filter = (text) => {
+    const newData = managers.filter((data) => {
+      const regex = new RegExp(`${text}`, 'gi');
+      return data.email.match(regex);
+    });
+    setFilteredManagers(newData);
+  };
+
   useEffect(() => {
     fetchData();
 
@@ -58,30 +69,33 @@ export default function ManagerPage() {
     <Container>
       {/* first row */}
       <div className='flex flex-wrap justify-between items-center p-2'>
-        <div className='flex items-center mb-2'>
-          <h2 className='text-4xl font-medium mr-2'>Manager</h2>
+        <div className='flex'>
+          <h2 className='text-4xl font-medium mb-2 mr-2'>Manager</h2>
           <Link href='/admin/outlet/add'>
             <a className='btn btn-primary'> Add New</a>
           </Link>
         </div>
         <div className='flex items-center mb-2'>
           <div className='form-control w-60'>
-            <form className='relative' onSubmit={(e) => handleFilter(e)}>
+            <form
+              className='relative'
+              onSubmit={(e) => {
+                e.preventDefault();
+                filter(searchText);
+              }}
+            >
               <input
                 type='text'
                 placeholder='Search'
                 className='w-full pr-16 input input-primary input-bordered'
-                // value={search}
-                // onChange={(e) => {
-                //   setSearch(e.target.value);
-                //   filter(search);
-                // }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
               />
               <button
                 type='submit'
                 className='absolute top-0 right-0 rounded-l-none btn btn-primary'
               >
-                go
+                SEARCH
               </button>
             </form>
           </div>
@@ -89,7 +103,7 @@ export default function ManagerPage() {
             className='btn btn-square btn-primary ml-2'
             onClick={() => {
               filter('');
-              setSearch('');
+              setSearchText('');
             }}
           >
             <i className='fad fa-sync-alt'></i>
@@ -97,10 +111,10 @@ export default function ManagerPage() {
         </div>
       </div>
       {/* second row */}
-      {managers.length === 0 && (
+      {filteredManagers.length === 0 && (
         <p className='text-center text-2xl font-bold'>loading....</p>
       )}
-      {managers.length > 0 && (
+      {filteredManagers.length > 0 && (
         <table className='table w-full mt-4'>
           <thead>
             <tr>
@@ -110,7 +124,7 @@ export default function ManagerPage() {
             </tr>
           </thead>
           <tbody>
-            {managers.map((manager, i) => (
+            {filteredManagers.map((manager, i) => (
               <tr key={manager.uid}>
                 <th>{i + 1}</th>
                 <td>

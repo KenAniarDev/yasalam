@@ -13,6 +13,8 @@ import Image from 'next/image';
 
 export default function ProductPage() {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
@@ -29,6 +31,7 @@ export default function ProductPage() {
     try {
       const data = await getProducts();
       setProducts(data);
+      setFilteredProducts(data);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -106,6 +109,15 @@ export default function ProductPage() {
     }
   };
 
+  const filter = (text) => {
+    console.log(text);
+    const newData = products.filter((data) => {
+      const regex = new RegExp(`${text}`, 'gi');
+      return data.name.match(regex);
+    });
+    setFilteredProducts(newData);
+  };
+
   useEffect(() => {
     fetchData();
 
@@ -116,7 +128,43 @@ export default function ProductPage() {
   }, []);
   return (
     <Container>
-      <h2 className='text-4xl font-medium mb-2'>Products</h2>
+      <div className='flex flex-wrap justify-between items-center p-2'>
+        <h2 className='text-4xl font-medium mb-2'>Product</h2>
+        <div className='flex items-center mb-2'>
+          <div className='form-control w-60'>
+            <form
+              className='relative'
+              onSubmit={(e) => {
+                e.preventDefault();
+                filter(searchText);
+              }}
+            >
+              <input
+                type='text'
+                placeholder='Search'
+                className='w-full pr-16 input input-primary input-bordered'
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              <button
+                type='submit'
+                className='absolute top-0 right-0 rounded-l-none btn btn-primary'
+              >
+                SEARCH
+              </button>
+            </form>
+          </div>
+          <button
+            className='btn btn-square btn-primary ml-2'
+            onClick={() => {
+              filter('');
+              setSearchText('');
+            }}
+          >
+            <i className='fad fa-sync-alt'></i>
+          </button>
+        </div>
+      </div>
       <div className='md:flex'>
         <div className='mt-6 max-w-2xl pl-1'>
           <h2 className='text-2xl font-medium'>
@@ -232,7 +280,7 @@ export default function ProductPage() {
                   </tr>
                 </>
               )}
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <tr key={product.id}>
                   <td>
                     <div className='flex justify-between'>
