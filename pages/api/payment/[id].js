@@ -1,4 +1,4 @@
-const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 import { getMember } from '../../../utils/firebaseAdmin';
 
 export default async function handler(req, res) {

@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
 import Container from '../../components/admin/';
-import MemberTable from '../../components/tables/MemberTable';
+import { useEffect, useState } from 'react';
 import {
-  getAllMembers,
-  getAllMembersByMonth,
-  getAllMembersCurrentDay,
+  getAllVisits,
+  getAllVisitsByMonth,
+  getAllVisitsCurrentDay,
 } from '../../utils/firebase';
 import toast from 'react-hot-toast';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
+import VisitTable from '../../components/tables/VisitTable';
 
-export default function MemberPage() {
-  const [members, setMembers] = useState([]);
+export default function VisitPage() {
+  const [visits, setVisits] = useState([]);
   const [CSV, setCSV] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,14 +25,14 @@ export default function MemberPage() {
     try {
       let data = [];
       if (option === 'currentMonth') {
-        data = await getAllMembersByMonth(
+        data = await getAllVisitsByMonth(
           moment(new Date()).format('YYYY'),
           moment(new Date()).format('MM')
         );
       } else if (option === 'all') {
-        data = await getAllMembers();
+        data = await getAllVisits();
       } else if (option === 'month') {
-        data = await getAllMembersByMonth(
+        data = await getAllVisitsByMonth(
           moment(month).format('YYYY'),
           moment(month).format('MM')
         );
@@ -40,25 +40,32 @@ export default function MemberPage() {
         const year = moment(date).format('YYYY');
         const month = moment(date).format('MM');
         const day = moment(date).format('DD');
-        data = await getAllMembersCurrentDay(year, month, day);
+        data = await getAllVisitsCurrentDay(year, month, day);
       }
-      setMembers(data);
-      setCSV(
-        data.map((member) => {
+      setVisits(
+        data.map((transaction) => {
           return {
-            member: member.name,
-            email: member.email,
-            nationality: member.nationality,
-            gender: member.gender,
-            mobileNumber: member.mobileNumber,
-            employerDetails: member.employerDetails,
-            birthdate: member.birthdate,
-            accountType: member.userType,
-            points: member.points,
-            savings: member.savings,
-            isPaid: member.isPaid,
-            expiryDate: member.expiryDate,
-            issueDate: member.issueDate,
+            ...transaction,
+            date:
+              transaction.year +
+              '-' +
+              transaction.month +
+              '-' +
+              transaction.day,
+          };
+        })
+      );
+      setCSV(
+        data.map((transaction) => {
+          return {
+            member: transaction.name,
+            outlet: transaction.outletName,
+            date:
+              transaction.year +
+              '-' +
+              transaction.month +
+              '-' +
+              transaction.day,
           };
         })
       );
@@ -73,14 +80,15 @@ export default function MemberPage() {
   useEffect(() => {
     fetchData();
     return () => {
-      setMembers([]);
+      setVisits([]);
       setLoading(false);
     };
   }, [useEffectTrigger]);
+
   return (
     <Container>
       <div className='flex justify-between flex-wrap'>
-        <h2 className='text-4xl font-medium mb-2'>Member</h2>
+        <h2 className='text-4xl font-medium mb-2'>Visit</h2>
         <div className='flex flex-wrap'>
           <div className='flex justify-center mr-2'>
             <select
@@ -129,7 +137,7 @@ export default function MemberPage() {
           </button>
           <CSVLink
             data={CSV}
-            filename={'members.csv'}
+            filename={'visits.csv'}
             className='btn btn-primary'
             target='_blank'
           >
@@ -137,7 +145,7 @@ export default function MemberPage() {
           </CSVLink>
         </div>
       </div>
-      {!loading && <MemberTable dataDb={members} />}
+      {!loading && <VisitTable dataDb={visits} />}
     </Container>
   );
 }
