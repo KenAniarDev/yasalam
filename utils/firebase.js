@@ -47,6 +47,8 @@ export const featureColRef = collection(db, 'features');
 export const regionColRef = collection(db, 'regions');
 export const outletColRef = collection(db, 'outlets');
 export const outletgroupColRef = collection(db, 'outletgroup');
+export const visitColRef = collection(db, 'visits');
+export const transactionColRef = collection(db, 'transactions');
 
 // AUTH
 export const signOutUser = async () => {
@@ -231,6 +233,39 @@ export const updateOutletGroup = async (id, name) => {
 export const deleteOutletGroup = async (id) => {
   const docRef = doc(db, 'outletgroup', id);
   await deleteDoc(docRef);
+};
+
+export const addVisit = async (member, outlet) => {
+  addDoc(visitColRef, {
+    name: member.name,
+    email: member.email,
+    memberId: member.id,
+    outlet,
+    createdAt: new Date(),
+  });
+};
+
+export const addTransaction = async (
+  member,
+  outlet,
+  originalPrice,
+  discount,
+  totalPrice,
+  saveMoney,
+  paymentDesciption
+) => {
+  addDoc(transactionColRef, {
+    name: member.name,
+    email: member.email,
+    memberId: member.id,
+    outlet,
+    originalPrice,
+    discount,
+    totalPrice,
+    saveMoney,
+    paymentDesciption,
+    createdAt: new Date(),
+  });
 };
 
 export const fileUploader = (folder, file, setUrl) => {
