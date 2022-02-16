@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Links from "../../link/Links";
 import MobileNav from "./MobileNav";
 import {
    DropDown,
@@ -8,31 +8,31 @@ import {
    MobileNavContainer,
    NavButton,
    NavItem,
-   NavList,
+   NavList
 } from "./NavItems.styled";
 
 const NavItems = ({ open, toggle }) => {
    return (
       <NavList open={open}>
          <NavItem>
-            <Link href="/">
+            <Links href={"/"}>
                <a onClick={toggle}>Home</a>
-            </Link>
+            </Links>
          </NavItem>
          <NavItem>
-            <Link href="/outlets">
+            <Links href={"/outlets"}>
                <a onClick={toggle}>YaSalam</a>
-            </Link>
+            </Links>
          </NavItem>
          <NavItem>
-            <Link href="/experience">
+            <Links href={"/experience"}>
                <a onClick={toggle}>Experience</a>
-            </Link>
+            </Links>
          </NavItem>
          <NavItem>
-            <Link href="/loyaltyReward">
+            <Links href={"/loyaltyReward"}>
                <a onClick={toggle}>Loyalty & Reward</a>
-            </Link>
+            </Links>
          </NavItem>
          <DropDown>
             <DropDownText tabIndex="0">
@@ -48,9 +48,9 @@ const NavItems = ({ open, toggle }) => {
          </MobileNavContainer>
 
          <NavItem>
-            <Link href="/buy-membership" passHref>
+  
                <NavButton>Buy Membership</NavButton>
-            </Link>
+            
          </NavItem>
       </NavList>
    );
