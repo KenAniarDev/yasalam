@@ -16,7 +16,7 @@ import {
   getAllOutletGroup,
 } from '../../../utils/firebase';
 
-export default function Add() {
+export default function EditOutletPage() {
   const router = useRouter();
   const { id } = router.query;
 

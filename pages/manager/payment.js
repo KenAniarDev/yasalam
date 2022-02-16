@@ -24,6 +24,7 @@ export default function Payment() {
       try {
         const result = await axios(`/api/member/info?id=${data}`);
         const member = result.data;
+
         if (member) {
           setMember(member);
           toast.success('Get Member Success');
@@ -53,7 +54,7 @@ export default function Payment() {
     setIsHandlingScan(true);
 
     const originalPrice = amount;
-    const totalPrice = originalPrice - discount;
+    const totalPrice = amount - amount * (discount / 100);
     const saveMoney = originalPrice - totalPrice;
 
     try {

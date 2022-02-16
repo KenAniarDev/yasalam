@@ -10,7 +10,7 @@ import {
 } from '../../utils/firebase';
 import { async } from '@firebase/util';
 
-export default function OutletGroup() {
+export default function OutletGroupPage() {
   const [outletgroup, setOutletGroup] = useState([]);
 
   const [name, setName] = useState('');

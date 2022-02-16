@@ -9,7 +9,7 @@ import {
   deleteRegion,
 } from '../../utils/firebase';
 
-export default function Region() {
+export default function RegionPage() {
   const [regions, setRegions] = useState([]);
 
   const [name, setName] = useState('');

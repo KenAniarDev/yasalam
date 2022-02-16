@@ -43,8 +43,8 @@ const sidebarLinks = [
     link: '/admin/registertransaction',
   },
   {
-    title: 'Refferal',
-    link: '/admin/refferal',
+    title: 'Referral',
+    link: '/admin/referral',
   },
   {
     title: 'Product',

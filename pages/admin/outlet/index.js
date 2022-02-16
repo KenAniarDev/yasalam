@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 
 import { getOutlets, deleteOutlet } from '../../../utils/firebase';
 
-export default function Index() {
+export default function OutletPage() {
   const [outlets, setOutlets] = useState([]);
   const [loading, setLoading] = useState(false);
 

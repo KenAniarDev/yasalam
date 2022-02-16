@@ -8,9 +8,8 @@ import {
   updateFeature,
   deleteFeature,
 } from '../../utils/firebase';
-import { async } from '@firebase/util';
 
-export default function Feature() {
+export default function FeaturePage() {
   const [features, setFeatures] = useState([]);
 
   const [name, setName] = useState('');

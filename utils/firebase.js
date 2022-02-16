@@ -25,6 +25,8 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 
+import { generateRandomStrings } from './functionHelpers';
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
@@ -49,6 +51,9 @@ export const outletColRef = collection(db, 'outlets');
 export const outletgroupColRef = collection(db, 'outletgroup');
 export const visitColRef = collection(db, 'visits');
 export const transactionColRef = collection(db, 'transactions');
+export const memberColRef = collection(db, 'members');
+export const referralColRef = collection(db, 'referrals');
+export const productColRef = collection(db, 'products');
 
 // AUTH
 export const signOutUser = async () => {
@@ -198,17 +203,22 @@ export const addOutlet = async (outlet) => {
 };
 export const updateOutlet = async (id, outlet) => {
   const docRef = doc(db, 'outlets', id);
-  await setDoc(docRef, {
-    ...outlet,
-    categoryRef: doc(db, 'categories', outlet.categoryRef),
-    featureRef: doc(db, 'features', outlet.featureRef),
-    regionRef: doc(db, 'regions', outlet.regionRef),
-  });
+  await updateDoc(
+    docRef,
+    {
+      ...outlet,
+      categoryRef: doc(db, 'categories', outlet.categoryRef),
+      featureRef: doc(db, 'features', outlet.featureRef),
+      regionRef: doc(db, 'regions', outlet.regionRef),
+    },
+    { merge: true }
+  );
 };
 export const deleteOutlet = async (id) => {
   const docRef = doc(db, 'outlets', id);
   await deleteDoc(docRef);
 };
+// OUTLET GROUP CRUD
 export const getAllOutletGroup = async () => {
   const outletgroup = await getDocs(outletgroupColRef).then((snapshot) => {
     let data = [];
@@ -234,6 +244,87 @@ export const deleteOutletGroup = async (id) => {
   const docRef = doc(db, 'outletgroup', id);
   await deleteDoc(docRef);
 };
+// REFERRAL CRUD
+export const addReferral = async (count) => {
+  for (let i = 0; i < count; i++) {
+    await setDoc(doc(db, 'referrals', generateRandomStrings(10)), {
+      available: true,
+    });
+  }
+};
+export const getReferrals = async () => {
+  const region = await getDocs(referralColRef).then((snapshot) => {
+    let data = [];
+    snapshot.docs.forEach((doc) => {
+      data.push({ ...doc.data(), id: doc.id });
+    });
+    return data;
+  });
+  return region;
+};
+export const updateReferral = async (id, state) => {
+  const docRef = doc(db, 'referrals', id);
+  await updateDoc(docRef, {
+    available: state,
+  });
+};
+export const deleteReferral = async (id) => {
+  const docRef = doc(db, 'referrals', id);
+  await deleteDoc(docRef);
+};
+
+// PRODUCTS CRUD
+export const addProduct = async (
+  name,
+  image,
+  description,
+  points,
+  quantity
+) => {
+  addDoc(productColRef, {
+    name,
+    image,
+    description,
+    points,
+    quantity,
+    createdAt: new Date(),
+  });
+};
+
+export const getProducts = async () => {
+  const categories = await getDocs(productColRef).then((snapshot) => {
+    let data = [];
+    snapshot.docs.forEach((doc) => {
+      data.push({ ...doc.data(), id: doc.id });
+    });
+    return data;
+  });
+
+  return categories;
+};
+
+export const updateProduct = async (
+  id,
+  name,
+  image,
+  description,
+  points,
+  quantity
+) => {
+  const docRef = doc(db, 'products', id);
+  await updateDoc(docRef, {
+    name,
+    image,
+    description,
+    points,
+    quantity,
+  });
+};
+
+export const deleteProduct = async (id) => {
+  const docRef = doc(db, 'products', id);
+  await deleteDoc(docRef);
+};
 
 export const addVisit = async (member, outlet) => {
   addDoc(visitColRef, {
@@ -254,7 +345,8 @@ export const addTransaction = async (
   saveMoney,
   paymentDesciption
 ) => {
-  addDoc(transactionColRef, {
+  // add transaction
+  await addDoc(transactionColRef, {
     name: member.name,
     email: member.email,
     memberId: member.id,
@@ -265,6 +357,14 @@ export const addTransaction = async (
     saveMoney,
     paymentDesciption,
     createdAt: new Date(),
+  });
+  const points = member.points + Math.floor(totalPrice / 10);
+  console.log(saveMoney);
+  const savings = member.savings + saveMoney;
+  const docRef = doc(db, 'members', member.id);
+  await updateDoc(docRef, {
+    points,
+    savings,
   });
 };
 
