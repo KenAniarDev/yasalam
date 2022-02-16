@@ -25,7 +25,7 @@ export default function secondary() {
     birthdate: new Date(
       date.getFullYear() - 18,
       date.getMonth(),
-      date.getDay()
+      date.getDate()
     ),
     nationality: nationalities[0].name,
     gender: gender[0].value,

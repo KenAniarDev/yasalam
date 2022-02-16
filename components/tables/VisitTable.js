@@ -16,7 +16,7 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
-const TransactionTable = ({ dataDb }) => {
+const VisitTable = ({ dataDb }) => {
   const COLUMNS = [
     {
       Header: 'Name',
@@ -25,11 +25,6 @@ const TransactionTable = ({ dataDb }) => {
     {
       Header: 'Outlet',
       accessor: 'outletName',
-    },
-    {
-      Header: 'Paid',
-      accessor: 'totalPrice',
-      Cell: ({ value }) => 'AED ' + (Math.round(value * 100) / 100).toFixed(2),
     },
     {
       Header: 'Date',
@@ -183,4 +178,4 @@ const TransactionTable = ({ dataDb }) => {
   );
 };
 
-export default TransactionTable;
+export default VisitTable;

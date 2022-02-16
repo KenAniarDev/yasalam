@@ -10,6 +10,9 @@ import {
   deleteDoc,
   updateDoc,
   setDoc,
+  query,
+  orderBy,
+  where,
 } from 'firebase/firestore';
 import {
   ref,
@@ -26,6 +29,7 @@ import {
 } from 'firebase/auth';
 
 import { generateRandomStrings } from './functionHelpers';
+import moment from 'moment';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -54,6 +58,10 @@ export const transactionColRef = collection(db, 'transactions');
 export const memberColRef = collection(db, 'members');
 export const referralColRef = collection(db, 'referrals');
 export const productColRef = collection(db, 'products');
+export const registerTransactionsColRef = collection(
+  db,
+  'registerTransactions'
+);
 
 // AUTH
 export const signOutUser = async () => {
@@ -290,7 +298,6 @@ export const addProduct = async (
     createdAt: new Date(),
   });
 };
-
 export const getProducts = async () => {
   const categories = await getDocs(productColRef).then((snapshot) => {
     let data = [];
@@ -302,7 +309,6 @@ export const getProducts = async () => {
 
   return categories;
 };
-
 export const updateProduct = async (
   id,
   name,
@@ -320,19 +326,296 @@ export const updateProduct = async (
     quantity,
   });
 };
-
 export const deleteProduct = async (id) => {
   const docRef = doc(db, 'products', id);
   await deleteDoc(docRef);
 };
 
+// GET MEMBERS
+export const getAllMembers = async () => {
+  try {
+    const q = query(memberColRef, orderBy('createdAt', 'desc'));
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllMembersByMonth = async (year, month) => {
+  try {
+    const q = query(
+      memberColRef,
+      where('year', '==', year),
+      where('month', '==', month)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllMembersCurrentDay = async (year, month, day) => {
+  try {
+    const q = query(
+      memberColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('day', '==', day)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllRegisterTransactions = async () => {
+  try {
+    const q = query(registerTransactionsColRef, orderBy('createdAt', 'desc'));
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllRegisterTransactionsByMonth = async (year, month) => {
+  try {
+    const q = query(
+      registerTransactionsColRef,
+      where('year', '==', year),
+      where('month', '==', month)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllRegisterTransactionsCurrentDay = async (
+  year,
+  month,
+  day
+) => {
+  try {
+    const q = query(
+      registerTransactionsColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('day', '==', day)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllTransactions = async () => {
+  try {
+    const q = query(transactionColRef, orderBy('createdAt', 'desc'));
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllTransactionsByMonth = async (year, month) => {
+  try {
+    const q = query(
+      transactionColRef,
+      where('year', '==', year),
+      where('month', '==', month)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllTransactionsCurrentDay = async (year, month, day) => {
+  try {
+    const q = query(
+      transactionColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('day', '==', day)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllVisits = async () => {
+  try {
+    const q = query(visitColRef, orderBy('createdAt', 'desc'));
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllVisitsByMonth = async (year, month) => {
+  try {
+    const q = query(
+      visitColRef,
+      where('year', '==', year),
+      where('month', '==', month)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllVisitsCurrentDay = async (year, month, day) => {
+  try {
+    const q = query(
+      visitColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('day', '==', day)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+
 export const addVisit = async (member, outlet) => {
+  const date = new Date();
+  const year = moment(date).format('YYYY');
+  const month = moment(date).format('MM');
+  const day = moment(date).format('DD');
   addDoc(visitColRef, {
     name: member.name,
     email: member.email,
     memberId: member.id,
-    outlet,
-    createdAt: new Date(),
+    outletId: outlet.outlet,
+    outletName: outlet.outletName,
+    createdAt: date,
+    year,
+    month,
+    day,
   });
 };
 
@@ -345,18 +628,26 @@ export const addTransaction = async (
   saveMoney,
   paymentDesciption
 ) => {
+  const date = new Date();
+  const year = moment(date).format('YYYY');
+  const month = moment(date).format('MM');
+  const day = moment(date).format('DD');
   // add transaction
   await addDoc(transactionColRef, {
     name: member.name,
     email: member.email,
     memberId: member.id,
-    outlet,
+    outletId: outlet.outlet,
+    outletName: outlet.outletName,
     originalPrice,
     discount,
     totalPrice,
     saveMoney,
     paymentDesciption,
-    createdAt: new Date(),
+    createdAt: date,
+    year,
+    month,
+    day,
   });
   const points = member.points + Math.floor(totalPrice / 10);
   console.log(saveMoney);

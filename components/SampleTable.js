@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useTable, useFilters, useSortBy, usePagination } from 'react-table';
 import dataDb from '../db/users.json';
 
@@ -17,7 +17,7 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
-const MemberTable = () => {
+const TransactionTable = () => {
   const COLUMNS = [
     {
       Header: 'Name',
@@ -213,4 +213,4 @@ const MemberTable = () => {
   );
 };
 
-export default MemberTable;
+export default TransactionTable;

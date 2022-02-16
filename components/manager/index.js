@@ -24,7 +24,7 @@ export default function Index({ children }) {
         return router.push('/');
       if (!JSON.parse(user.reloadUserInfo.customAttributes).manager)
         return router.push('/');
-      changeOutlet(JSON.parse(user.reloadUserInfo.customAttributes).outlet);
+      changeOutlet(JSON.parse(user.reloadUserInfo.customAttributes));
       setIsLoading(false);
     });
 

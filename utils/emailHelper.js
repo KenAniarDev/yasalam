@@ -3,12 +3,12 @@ import nodemailer from 'nodemailer';
 export const mailHelper = async (options) => {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    host: process.env.NEXT_PUBLIC_SMTP_HOST,
-    port: process.env.NEXT_PUBLIC_SMTP_PORT,
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
     secure: false,
     auth: {
-      user: process.env.NEXT_PUBLIC_SMTP_USER,
-      pass: process.env.NEXT_PUBLIC_SMTP_PASSWORD,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
     },
   });
 

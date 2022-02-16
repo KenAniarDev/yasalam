@@ -1,14 +1,27 @@
 import admin from 'firebase-admin';
 import { getAuth, doc } from 'firebase-admin/auth';
 import { collection } from 'firebase/firestore';
-import serviceAccount from '../ServiceAccountKey.json';
 import { generateRandomStrings } from '../utils/functionHelpers';
 import { mailHelper } from '../utils/emailHelper';
-import { async } from '@firebase/util';
+import moment from 'moment';
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+      type: 'service_account',
+      project_id: 'yasalam-55cc7',
+      private_key_id: '96390aff13039b927293d34d67aff21bd8a806b1',
+      private_key:
+        '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCoJPfZlAf3SnSm\nemBQoCt5Ix1S1qKEGQY8Nudm+h4eN/VN5nN2koQA5kmD9abTiIkzC0hyiAHyOUzp\nMW7aJsVyatUyGkJ55z75uyDnlO97HuzzwsjUhM77JTwreThWsqoJBDc+yQqH4f1y\nS8hwW8twFY4Ag/mYPKooyJlIB1Ptasz0ueYYySXdOsX8U0zYs58FLRED2V9w9WSn\nK3rguU0qheK88MwTAHxUE/BHxb6mUROR1a7N8KgWetCSUtG9vMG7woExdhcGAa9C\nI/pdw1NPVuGs4HtrDh2YeSzjMWbXjeZACRPWS09zCiJkDJem2hN8Vt9cwSVRTTJ+\nkz7YIGuRAgMBAAECggEAAI+DsWIlb82QJKSzgBTqj8ocpxiKPlS26VhO96Awe48Z\n/qtZg/XNYyRUnZNairEqwhqMCgjzQpxjxZf7iVZjQ25iB22W3EIyQTfBxfDSk4g1\nAn9dViAWpcsJu+gFo1Xtlb58ZEjLGjL8fIJbP7yvnNV3oWPeMCX0h+5jL60pz7vf\nQqOhvMB6aYv27u6BvOfMp1a682jdZb405HVKbRGnXaj7T2UklzhbLg+n7dzd03Fz\nHAWy5DbTAbfk9SUj57Ax5dEsD1YyDxG3QN0M7cj1N87XR+lzBt5adrjdhxKjAIoZ\n8oI33Fpg0EtxqPvcRLwnjifynACw5CTqiG5X64FpgQKBgQDXGYr4vDI4eK9R9FCD\nTE2oVcAUl3XLu3RVo8hOC5+rTsEht5fp2GtaGPW4yz2PElt8Vin4w1BkSJvZRnoC\nKXs3jiLKasBpjO4Ec4CH5iAIOSJbdPNKE14cNDhk98JwIZjfNTNTawc3wfFlWrAP\nFy+Co8/sh21ImdrH5h358tcZEQKBgQDIHcTU+3IRlypgC5OKTT1GHnpv/Uh/9BUe\nEg6b2tSYBnJzG3UlTqof9c4Taw+HZxOV6K1tko60luCrKgx39+uegFDWoOtLHANN\nQmrjI4cI32SbcM58TJratCgKd0bToTD5sZ+qELlOc7haluGyrklWzhEsuEL7zkob\nGwqUNaAqgQKBgQDDsVFmCpIGHoYioYu+aGUeiSU/lqxsthaY83EA0EJrsDK1Yjqr\nXWINjje/7+gJikIBVMLKt6ckFYr0mdHWtbaMTJwKXCTB4p2JHywId60czh4b5sKQ\n2h38uuWztlUHfwl9yQDxG6Zta90awO78S7PFvxMjtfIO4yrQQuNyyyQ2gQKBgQCO\ncrpZDX/+S4erhLIKob67OhjXvQkto9agaCQkB1qLuRMhIut5mgx54aRGqFAOh24m\nqNFDDS8uF7Rnwu/LOhxr4FUq4rN67L7g8SVa+EA4LaTVDTC+xFz6z4EtKgitvrE5\nHJpWGb9+u9sACSUx5uRnuRn6plNwIUEZGF+obp/LgQKBgDaVNbSYLqzVM3YU/f//\nWY49DHj8xy5zqLA2GAMqAfPktOcaq7ECdJCOsz10DMqSyc2iErDuUKke/zsLilj4\n9wPqPAREQZlPinggvyVnyjQ5H2RPI5qyAgDmKUsUaFyaAZ0V1qDYEnmHH9xP0vj4\nf4vpD7O2bd1hs8q6l0uFIWRt\n-----END PRIVATE KEY-----\n',
+      client_email:
+        'firebase-adminsdk-ft3w2@yasalam-55cc7.iam.gserviceaccount.com',
+      client_id: '113563829203742302974',
+      auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+      token_uri: 'https://oauth2.googleapis.com/token',
+      auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
+      client_x509_cert_url:
+        'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ft3w2%40yasalam-55cc7.iam.gserviceaccount.com',
+    }),
   });
 }
 
@@ -83,12 +96,12 @@ export const addMember = async (req, res) => {
 
     const otp = generateRandomStrings(6, 'otp');
 
-    let year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDay();
+    const year = moment(date).format('YYYY');
+    const month = moment(date).format('MM');
+    const day = moment(date).format('DD');
 
-    const issueDate = year + '-' + month + '-' + day;
-    const expiryDate = year + '-' + month + '-' + day;
+    const issueDate = moment(date).format('YYYY-MM-DD');
+    const expiryDate = moment(date).format('YYYY-MM-DD');
 
     //   const expiryDate = new Date(2022, 0, 3)
     // const currentDate = new Date()
@@ -100,7 +113,7 @@ export const addMember = async (req, res) => {
       name,
       email,
       mobileNumber,
-      birthdate,
+      birthdate: moment(birthdate).format('YYYY-MM-DD'),
       nationality,
       gender,
       employerDetails,
@@ -119,6 +132,9 @@ export const addMember = async (req, res) => {
       isPaid: false,
       notificationToken: '',
       createdAt: date,
+      year,
+      month,
+      day,
     });
 
     const link = `${req.headers.origin}/api/payment/${docRef.id}?name=${name}&type=${userType}`;
@@ -280,12 +296,17 @@ export const deleteReferral = async (id) => {
 // transactions
 
 export const addRegisterTransaction = async (member) => {
+  const date = new Date();
+  const year = moment(date).format('YYYY');
+  const month = moment(date).format('MM');
+  const day = moment(date).format('DD');
   await db.collection('registerTransactions').add({
     name: member.name,
     userType: member.userType,
     amountPaid: member.amountPaid,
-    createdAt: new Date(),
+    createdAt: date,
+    year,
+    month,
+    day,
   });
 };
-
-// visits

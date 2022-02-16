@@ -12,7 +12,6 @@ export default function Index({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log(user);
       if (!user) return router.push('/admin/login');
       if (typeof user.reloadUserInfo.customAttributes === 'undefined')
         return router.push('/');

@@ -35,6 +35,10 @@ const sidebarLinks = [
     link: '/admin/member',
   },
   {
+    title: 'Visit',
+    link: '/admin/visit',
+  },
+  {
     title: 'Transaction',
     link: '/admin/transaction',
   },
