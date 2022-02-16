@@ -11,6 +11,8 @@ import {
 
 export default function RegionPage() {
   const [regions, setRegions] = useState([]);
+  const [filteredRegions, setFilteredRegions] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   const [name, setName] = useState('');
   const [order, setOrder] = useState(0);
@@ -25,6 +27,7 @@ export default function RegionPage() {
       const data = await getRegions();
       setOrder(data.length + 1);
       setRegions(data);
+      setFilteredRegions(data);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -73,6 +76,14 @@ export default function RegionPage() {
     }
   };
 
+  const filter = (text) => {
+    const newData = regions.filter((data) => {
+      const regex = new RegExp(`${text}`, 'gi');
+      return data.name.match(regex);
+    });
+    setFilteredRegions(newData);
+  };
+
   useEffect(() => {
     fetchData();
 
@@ -85,7 +96,43 @@ export default function RegionPage() {
 
   return (
     <Container>
-      <h2 className='text-4xl font-medium mb-2'>Region</h2>
+      <div className='flex flex-wrap justify-between items-center p-2'>
+        <h2 className='text-4xl font-medium mb-2'>Region</h2>
+        <div className='flex items-center mb-2'>
+          <div className='form-control w-60'>
+            <form
+              className='relative'
+              onSubmit={(e) => {
+                e.preventDefault();
+                filter(searchText);
+              }}
+            >
+              <input
+                type='text'
+                placeholder='Search'
+                className='w-full pr-16 input input-primary input-bordered'
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              <button
+                type='submit'
+                className='absolute top-0 right-0 rounded-l-none btn btn-primary'
+              >
+                SEARCH
+              </button>
+            </form>
+          </div>
+          <button
+            className='btn btn-square btn-primary ml-2'
+            onClick={() => {
+              filter('');
+              setSearchText('');
+            }}
+          >
+            <i className='fad fa-sync-alt'></i>
+          </button>
+        </div>
+      </div>
       <div className='md:flex'>
         <div className='mt-6 flex-grow pl-1' style={{ maxWidth: '400px' }}>
           <h2 className='text-2xl font-medium'>
@@ -132,7 +179,7 @@ export default function RegionPage() {
                   </tr>
                 </>
               )}
-              {regions.map((region) => (
+              {filteredRegions.map((region) => (
                 <tr key={region.id}>
                   <td>{region.name}</td>
                   <td>
