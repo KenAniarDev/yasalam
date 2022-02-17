@@ -1,5 +1,6 @@
 import Links from "../../link/Links";
 import MobileNav from "./MobileNav";
+import { Link } from 'react-scroll'
 import {
    DropDown,
    DropDownIcon,
@@ -48,8 +49,9 @@ const NavItems = ({ open, toggle }) => {
          </MobileNavContainer>
 
          <NavItem>
-  
+            <Link to="buyMembership" smooth={true}>
                <NavButton>Buy Membership</NavButton>
+            </Link>
             
          </NavItem>
       </NavList>

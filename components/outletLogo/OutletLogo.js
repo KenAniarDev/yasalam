@@ -8,42 +8,17 @@ import {
    SectionTitle,
    SubContainer,
 } from "./OutletLogo.styled";
+import useSlider from "hooks/useSlider";
 
 const OutletLogo = ({ data }) => {
-   const settings = {
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 6,
-      slidesToScroll: 6,
-      initialSlide: 0,
-      arrows: false,
-      responsive: [
-         {
-            breakpoint: 1200,
-            settings: {
-               slidesToShow: 4,
-               slidesToScroll: 4,
-               initialSlide: 4,
-            },
-         },
-         {
-            breakpoint: 768,
-            settings: {
-               slidesToShow: 3,
-               slidesToScroll: 3,
-               initialSlide: 3,
-            },
-         },
-      ],
-   };
+   const {settingsLogo} = useSlider();
 
    return (
       <Container>
          <SubContainer>
             <SectionTitle>Outlets</SectionTitle>
             <div>
-               <Slider {...settings}>
+               <Slider {...settingsLogo}>
                   {data?.map((item, i) => {
                      return (
                         <DataContainer key={i}>

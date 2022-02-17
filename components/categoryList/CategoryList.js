@@ -1,37 +1,13 @@
 import useCategory from "hooks/useCategory";
+import useSlider from "hooks/useSlider";
 import React from "react";
 import Slider from "react-slick";
-import Category from "./category/Category";
+import Category from "./Category";
+
 
 const CategoryList = ({ data, heading }) => {
    const categories = useCategory(data);
-
-   const settings = {
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 3,
-      initialSlide: 0,
-      arrows: false,
-      responsive: [
-         {
-            breakpoint: 1200,
-            settings: {
-               slidesToShow: 2,
-               slidesToScroll: 2,
-               initialSlide: 2,
-            },
-         },
-         {
-            breakpoint: 768,
-            settings: {
-               slidesToShow: 1,
-               slidesToScroll: 1,
-            },
-         },
-      ],
-   };
+   const {settings} = useSlider();
 
    return (
       <div className="category-list">
