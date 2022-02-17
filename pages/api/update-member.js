@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { buffer } from 'micro';
 import { memberPaid, addRegisterTransaction } from '../../utils/firebaseAdmin';
+import moment from 'moment';
 
 export const config = {
   api: {
@@ -10,14 +11,14 @@ export const config = {
 
 export default async function handler(req, res) {
   const date = new Date();
-  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
+  const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
   if (req.method === 'POST') {
     const buf = await buffer(req);
     const sig = req.headers['stripe-signature'];
     const webhookSecret =
       process.env.NODE_ENV == 'development'
-        ? process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SIGNING_SECRET_LOCAL
-        : process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SIGNING_SECRET_PROD;
+        ? process.env.STRIPE_WEBHOOK_SIGNING_SECRET_LOCAL
+        : process.env.STRIPE_WEBHOOK_SIGNING_SECRET_PROD;
 
     let event;
 
@@ -30,14 +31,10 @@ export default async function handler(req, res) {
         const customer = await stripe.customers.retrieve(
           event.data.object.customer
         );
-        let year = date.getFullYear();
-        const month = date.getMonth();
-        const day = date.getDay();
 
-        const issueDate = year + '-' + month + '-' + day;
-        year++;
-        const expiryDate = year + '-' + month + '-' + day;
-        year--;
+        const issueDate = moment(date).format('YYYY-MM-DD');
+        const expiryDate = moment(date).add(1, 'years').format('YYYY-MM-DD');
+
         const member = await memberPaid(customer.email, {
           isPaid: true,
           issueDate: issueDate,
@@ -46,9 +43,6 @@ export default async function handler(req, res) {
         await addRegisterTransaction({
           ...member,
           amountPaid: event.data.object.amount_received / 100,
-          day,
-          month,
-          year,
         });
       }
       return res.status(200).send();

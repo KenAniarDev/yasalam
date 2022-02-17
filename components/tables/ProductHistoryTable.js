@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTable, useFilters, useSortBy, usePagination } from 'react-table';
-import dataDb from '../db/users.json';
+import dataDb from '../../db/users.json';
 
 const ColumnFilter = ({ column }) => {
   const { filterValue, setFilter } = column;
@@ -17,7 +17,7 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
-const TransactionTable = () => {
+const ProductHistoryTable = () => {
   const COLUMNS = [
     {
       Header: 'Name',
@@ -213,4 +213,4 @@ const TransactionTable = () => {
   );
 };
 
-export default TransactionTable;
+export default ProductHistoryTable;

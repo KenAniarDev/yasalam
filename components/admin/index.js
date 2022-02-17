@@ -4,6 +4,7 @@ import Sidebar from '../../components/admin/Sidebar';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../utils/firebase';
 import { useRouter } from 'next/router';
+import Loading from '../Loading';
 
 export default function Index({ children }) {
   const router = useRouter();
@@ -11,7 +12,6 @@ export default function Index({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log(user);
       if (!user) return router.push('/admin/login');
       if (typeof user.reloadUserInfo.customAttributes === 'undefined')
         return router.push('/');
@@ -26,7 +26,7 @@ export default function Index({ children }) {
   return (
     <div className='p-4'>
       {isLoading ? (
-        <h1>Loading</h1>
+        <Loading />
       ) : (
         <>
           <Navbar />

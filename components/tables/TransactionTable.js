@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { useTable, useFilters, useSortBy, usePagination } from 'react-table';
-import dataDb from '../db/users.json';
 
 const ColumnFilter = ({ column }) => {
   const { filterValue, setFilter } = column;
@@ -17,56 +16,25 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
-const TransactionTable = () => {
+const TransactionTable = ({ dataDb }) => {
   const COLUMNS = [
     {
       Header: 'Name',
       accessor: 'name',
     },
     {
-      Header: 'Email',
-      accessor: 'email',
+      Header: 'Outlet',
+      accessor: 'outletName',
     },
     {
-      Header: 'Phone',
-      accessor: 'phone',
+      Header: 'Paid',
+      accessor: 'totalPrice',
+      Cell: ({ value }) => 'AED ' + (Math.round(value * 100) / 100).toFixed(2),
     },
     {
-      Header: 'Address',
-      accessor: 'address',
+      Header: 'Date',
+      accessor: 'date',
     },
-    // {
-    //   Header: 'Expiry',
-    //   accessor: 'expiryDate',
-    // },
-    // {
-    //   accessor: 'id',
-    //   disableFilters: true,
-    //   Cell: ({ value, row }) => (
-    //     <>
-    //       <div className='dropdown dropdown-end'>
-    //         <div tabIndex='0' className='m-1 btn btn-sm'>
-    //           <i className='fas fa-ellipsis-v'></i>
-    //         </div>
-    //         <ul
-    //           tabIndex='0'
-    //           className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
-    //         >
-    //           <li>
-    //             <a className='' onClick={() => {}}>
-    //               Reset OTP
-    //             </a>
-    //           </li>
-    //           <li>
-    //             <a className='' onClick={() => {}}>
-    //               Give Points
-    //             </a>
-    //           </li>
-    //         </ul>
-    //       </div>
-    //     </>
-    //   ),
-    // },
   ];
 
   const columns = useMemo(() => COLUMNS, []);
@@ -99,7 +67,9 @@ const TransactionTable = () => {
       columns,
       data,
       defaultColumn,
-      initialState: { pageIndex: 0 },
+      initialState: {
+        pageIndex: 0,
+      },
     },
     useFilters,
     useSortBy,
@@ -111,8 +81,8 @@ const TransactionTable = () => {
   return (
     <>
       <div>
-        <div className='flex flex-wrap justify-center'>
-          {allColumns.map((column) => (
+        <div className='flex flex-wrap'>
+          {allColumns.map((column, i) => (
             <div className='form-control' key={column.id}>
               <label className='cursor-pointer label'>
                 <input

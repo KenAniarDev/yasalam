@@ -2,7 +2,9 @@ import {
   getMemberByEmail,
   memberPaid,
   checkIfReferralExist,
+  deleteReferral,
 } from '../../../utils/firebaseAdmin';
+import moment from 'moment';
 
 export default async function handler(req, res) {
   const date = new Date();
@@ -30,19 +32,17 @@ export default async function handler(req, res) {
       );
     }
 
-    let year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDay();
-
-    const issueDate = year + '-' + month + '-' + day;
-    year++;
-    const expiryDate = year + '-' + month + '-' + day;
+    const issueDate = moment(date).format('YYYY-MM-DD');
+    const expiryDate = moment(date).add(1, 'years').format('YYYY-MM-DD');
 
     await memberPaid(member.email, {
       isPaid: true,
       issueDate: issueDate,
       expiryDate: expiryDate,
     });
+
+    await deleteReferral(req.body.code);
+
     return res.redirect(303, `${req.headers.origin}/payment-success`);
   } catch (error) {
     console.log(error);

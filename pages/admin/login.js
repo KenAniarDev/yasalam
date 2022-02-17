@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, signInUser } from '../../utils/firebase';
 
-export default function login() {
+export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');

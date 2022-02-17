@@ -26,4 +26,5 @@ export default function Home({ outlet, category }) {
          <CategoryList data={category} heading="All Categories" />
       </NavFooter>
    );
+
 }

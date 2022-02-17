@@ -6,8 +6,10 @@ import toast from 'react-hot-toast';
 
 import { getOutlets, deleteOutlet } from '../../../utils/firebase';
 
-export default function Index() {
+export default function OutletPage() {
   const [outlets, setOutlets] = useState([]);
+  const [filteredOutlets, setFilteredOutlets] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
@@ -15,6 +17,7 @@ export default function Index() {
     try {
       const data = await getOutlets();
       setOutlets(data);
+      setFilteredOutlets(data);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -33,11 +36,20 @@ export default function Index() {
     }
   };
 
+  const filter = (text) => {
+    const newData = outlets.filter((data) => {
+      const regex = new RegExp(`${text}`, 'gi');
+      return data.name.match(regex);
+    });
+    setFilteredOutlets(newData);
+  };
+
   useEffect(() => {
     fetchData();
 
     return () => {
       setOutlets([]);
+      setFilteredOutlets([]);
       setLoading(false);
     };
   }, []);
@@ -54,22 +66,25 @@ export default function Index() {
         </div>
         <div className='flex items-center mb-2'>
           <div className='form-control w-60'>
-            <form className='relative' onSubmit={(e) => handleFilter(e)}>
+            <form
+              className='relative'
+              onSubmit={(e) => {
+                e.preventDefault();
+                filter(searchText);
+              }}
+            >
               <input
                 type='text'
                 placeholder='Search'
                 className='w-full pr-16 input input-primary input-bordered'
-                // value={search}
-                // onChange={(e) => {
-                //   setSearch(e.target.value);
-                //   filter(search);
-                // }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
               />
               <button
                 type='submit'
                 className='absolute top-0 right-0 rounded-l-none btn btn-primary'
               >
-                go
+                SEARCH
               </button>
             </form>
           </div>
@@ -77,7 +92,7 @@ export default function Index() {
             className='btn btn-square btn-primary ml-2'
             onClick={() => {
               filter('');
-              setSearch('');
+              setSearchText('');
             }}
           >
             <i className='fad fa-sync-alt'></i>
@@ -85,10 +100,10 @@ export default function Index() {
         </div>
       </div>
       {/* second row */}
-      {outlets.length === 0 && (
+      {filteredOutlets.length === 0 && (
         <p className='text-center text-2xl font-bold'>loading....</p>
       )}
-      {outlets.length > 0 && (
+      {filteredOutlets.length > 0 && (
         <table className='table w-full mt-4'>
           <thead>
             <tr>
@@ -99,7 +114,7 @@ export default function Index() {
             </tr>
           </thead>
           <tbody>
-            {outlets.map((outlet, i) => (
+            {filteredOutlets.map((outlet, i) => (
               <tr key={outlet.id}>
                 <th>{i + 1}</th>
                 <td>
