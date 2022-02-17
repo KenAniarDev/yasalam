@@ -60,7 +60,6 @@ function PageContent({ outlet }) {
     }
   };
   const decreaseIncrease = async (type) => {
-    console.log(props);
     try {
       await decreaseIncreaseVisit(outlet, type);
       toast.success('success');

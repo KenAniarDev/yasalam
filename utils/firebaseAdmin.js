@@ -4,6 +4,7 @@ import { collection } from 'firebase/firestore';
 import { generateRandomStrings } from '../utils/functionHelpers';
 import { mailHelper } from '../utils/emailHelper';
 import moment from 'moment';
+import { async } from '@firebase/util';
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -28,6 +29,52 @@ if (admin.apps.length === 0) {
 export const db = admin.firestore();
 export const auth = admin.auth();
 
+// admins
+
+export const createUserAdmin = async (req, res) => {
+  try {
+    const decodedToken = await getAuth().verifyIdToken(req.body.idToken);
+    const user = await getAuth().getUser(decodedToken.uid);
+
+    if (!user.customClaims.admin) {
+      throw new Error('Unauthorize');
+    }
+
+    const userRecord = await getAuth().createUser({
+      email: req.body.email,
+      password: req.body.password,
+      emailVerified: true,
+      disabled: false,
+    });
+
+    await auth.setCustomUserClaims(userRecord.uid, {
+      admin: true,
+    });
+
+    res.status(200).send(true);
+  } catch (error) {
+    res.status(400).send('ERROR');
+  }
+};
+export const changePasswordAdmin = async (req, res) => {
+  try {
+    const decodedToken = await getAuth().verifyIdToken(req.body.idToken);
+    const user = await getAuth().getUser(decodedToken.uid);
+
+    if (!user.customClaims.admin) {
+      throw new Error('Unauthorize');
+    }
+
+    await getAuth().updateUser(user.uid, {
+      password: req.body.password,
+    });
+
+    res.status(200).send(true);
+  } catch (error) {
+    res.status(400).send('ERROR');
+  }
+};
+
 // managers
 
 export const getAllUsers = async (req, res) => {
@@ -47,7 +94,49 @@ export const getAllUsers = async (req, res) => {
     res.status(400).send('ERROR');
   }
 };
+export const createUser = async (req, res) => {
+  try {
+    const decodedToken = await getAuth().verifyIdToken(req.body.idToken);
+    const user = await getAuth().getUser(decodedToken.uid);
 
+    if (!user.customClaims.admin) {
+      throw new Error('Unauthorize');
+    }
+
+    const userRecord = await getAuth().createUser({
+      email: req.body.email,
+      password: req.body.password,
+      emailVerified: true,
+      disabled: false,
+    });
+
+    await auth.setCustomUserClaims(userRecord.uid, {
+      manager: true,
+      outlet: req.body.outlet,
+      outletName: req.body.outletName,
+    });
+
+    res.status(200).send(true);
+  } catch (error) {
+    res.status(400).send('ERROR');
+  }
+};
+export const deleteUser = async (req, res) => {
+  try {
+    const decodedToken = await getAuth().verifyIdToken(req.body.idToken);
+    const user = await getAuth().getUser(decodedToken.uid);
+
+    if (!user.customClaims.admin) {
+      throw new Error('Unauthorize');
+    }
+
+    await getAuth().deleteUser(req.body.uid);
+
+    res.status(200).send(true);
+  } catch (error) {
+    res.status(400).send('ERROR');
+  }
+};
 export const assignManager = async () => {
   const user = await auth.getUserByEmail('goldgyms@gmail.com');
 
@@ -56,6 +145,25 @@ export const assignManager = async () => {
     outlet: 'e2f7d5c0-87eb-11ec-b6f8-dbc87dcb7fcf',
     outletName: 'Gold Gyms',
   });
+};
+export const changePasswordAUser = async (req, res) => {
+  try {
+    const decodedToken = await getAuth().verifyIdToken(req.body.idToken);
+    const user = await getAuth().getUser(decodedToken.uid);
+
+    if (!user.customClaims.admin) {
+      throw new Error('Unauthorize');
+    }
+
+    await getAuth().updateUser(req.body.uid, {
+      password: req.body.password,
+    });
+
+    res.status(200).send(true);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('ERROR');
+  }
 };
 
 // members

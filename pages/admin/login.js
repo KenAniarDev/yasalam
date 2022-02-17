@@ -16,7 +16,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const user = await signInUser(email, password);
-      console.log(user);
+      if (typeof user === 'string') throw new Error('Error logging in');
       toast.success('Login success!');
     } catch (error) {
       toast.error('Error logging in');

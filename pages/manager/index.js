@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 function PageContent({ outlet }) {
   const [visits, setVisits] = useState(0);
   const [transactions, setTransactions] = useState(0);
+  const [recentTransactions, setRecentTranscations] = useState([]);
   const [sales, setSales] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -20,6 +21,12 @@ function PageContent({ outlet }) {
       const transaction = await getAllTransactionsByOutlet(outlet.outlet);
       setVisits(visit.length);
       setTransactions(transaction.length);
+      let recent = [];
+      for (let index = 0; index < transaction.length; index++) {
+        if (index < 10) recent.push(transaction[index]);
+      }
+      console.log(recent);
+      setRecentTranscations(recent);
       const sale = transaction.map((e) => {
         return e.totalPrice;
       });
@@ -44,7 +51,6 @@ function PageContent({ outlet }) {
       setLoading(false);
     };
   }, []);
-
   return (
     <>
       <h2 className='text-4xl font-medium mb-2'>Dashboard</h2>
@@ -130,17 +136,25 @@ function PageContent({ outlet }) {
                 <th>Member</th>
                 <th>Description</th>
                 <th>Paid</th>
-                <th>Date & Time</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>1</th>
-                <td>Nestor Kenneth</td>
-                <td>for pool</td>
-                <td>100usd</td>
-                <td>{Date.now().toString()}</td>
-              </tr>
+              {recentTransactions.map((transaction, i) => (
+                <tr key={i}>
+                  <th>1</th>
+                  <td>{transaction.name}</td>
+                  <td>{transaction.paymentDesciption}</td>
+                  <td>{transaction.totalPrice}</td>
+                  <td>
+                    {transaction.year +
+                      '-' +
+                      transaction.month +
+                      '-' +
+                      transaction.day}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
