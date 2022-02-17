@@ -9,8 +9,7 @@ import toast from 'react-hot-toast';
 import { addTransaction } from '../../utils/firebase';
 import { useStore } from '../../components/manager/';
 
-export default function Payment() {
-  const outlet = useStore((state) => state.outlet);
+function PageContent({ outlet }) {
   const [paymentDesciption, setPaymentDesciption] = useState('----');
   const [amount, setAmount] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -84,7 +83,7 @@ export default function Payment() {
   };
 
   return (
-    <Container>
+    <>
       <h2 className='text-4xl font-medium mb-2'>Payment Page</h2>
       <div className='pb-10 pr-5'>
         <div className='md:flex'>
@@ -204,6 +203,15 @@ export default function Payment() {
           </div>
         </div>
       </div>
+    </>
+  );
+}
+
+export default function PaymentPage() {
+  const outlet = useStore((state) => state.outlet);
+  return (
+    <Container>
+      <PageContent outlet={outlet} />
     </Container>
   );
 }

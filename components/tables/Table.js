@@ -16,27 +16,7 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
-const TransactionTable = ({ dataDb }) => {
-  const COLUMNS = [
-    {
-      Header: 'Name',
-      accessor: 'name',
-    },
-    {
-      Header: 'Outlet',
-      accessor: 'outletName',
-    },
-    {
-      Header: 'Paid',
-      accessor: 'totalPrice',
-      Cell: ({ value }) => 'AED ' + (Math.round(value * 100) / 100).toFixed(2),
-    },
-    {
-      Header: 'Date',
-      accessor: 'date',
-    },
-  ];
-
+const VisitTable = ({ dataDb, COLUMNS, hiddenColumns = [] }) => {
   const columns = useMemo(() => COLUMNS, []);
   // const data = useMemo(() => MOCK_DATA, [])
   const data = useMemo(() => dataDb, []);
@@ -69,6 +49,7 @@ const TransactionTable = ({ dataDb }) => {
       defaultColumn,
       initialState: {
         pageIndex: 0,
+        hiddenColumns: hiddenColumns,
       },
     },
     useFilters,
@@ -183,4 +164,4 @@ const TransactionTable = ({ dataDb }) => {
   );
 };
 
-export default TransactionTable;
+export default VisitTable;
