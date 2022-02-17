@@ -1,5 +1,4 @@
 import Image from "next/image";
-import PhoneImage from "public/banner-image-new.png";
 import {
    Background,
    Container,
@@ -23,6 +22,7 @@ const HeroSection = () => {
             objectFit="cover"
             className="z-0"
             quality={75}
+            priority
          />
          <Background></Background>
          <Main>
@@ -43,7 +43,7 @@ const HeroSection = () => {
                <RightContent>
                   <ImageRight>
                      <Image
-                        src={PhoneImage}
+                        src="/banner-image-new.png"
                         alt="Phone Image"
                         layout="responsive"
                         width="100%"

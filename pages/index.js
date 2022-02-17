@@ -1,42 +1,30 @@
-import HeroSection from 'components/heroSection/HeroSection';
-import Navbar from 'components/navbar/Navbar';
-import TextBlock from 'components/textBlock/TextBlock';
-import { useState, useEffect } from 'react';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { getCategories } from '../utils/firebase';
-import toast from 'react-hot-toast';
+import CategoryList from "components/categoryList/CategoryList";
+import HeroSection from "components/heroSection/HeroSection";
+import NavFooter from "components/NavFooter";
+import OutletLogo from "components/outletLogo/OutletLogo";
+import TextBlock from "components/textBlock/TextBlock";
+import { getCategories, getOutlets } from "utils/firebase";
 
-export default function Home() {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const data = await getCategories();
-      setCategories(data);
-      console.log(data);
-      toast.success('Data fetching success!');
-    } catch (error) {
-      toast.error('Error fetching data');
-    } finally {
-      setLoading(false);
-    }
-  };
+export async function getStaticProps() {
+   const fetchOutlet = await getOutlets();
+   const fetchCategory = await getCategories();
 
-  useEffect(() => {
-    fetchData();
+   return {
+      props: {
+         outlet: JSON.parse(JSON.stringify(fetchOutlet)),
+         category: fetchCategory,
+      },
+      revalidate: 5,
+   };
+}
+export default function Home({ outlet, category }) {
+   return (
+      <NavFooter>
+         <HeroSection />
+         <TextBlock />
+         <OutletLogo data={outlet} />
+         <CategoryList data={category} heading="All Categories" />
+      </NavFooter>
+   );
 
-    return () => {
-      setCategories([]);
-      setLoading(false);
-    };
-  }, []);
-
-  return (
-    <>
-      <Navbar />
-      <HeroSection />
-      <TextBlock />
-    </>
-  );
 }

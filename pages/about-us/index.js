@@ -1,11 +1,10 @@
 import AboutUs from "components/aboutUs/AboutUs";
-import Navbar from "components/navbar/Navbar";
+import NavFooter from "components/NavFooter";
 
 export default function index() {
    return (
-      <>
-         <Navbar />
+      <NavFooter>
          <AboutUs />
-      </>
+      </NavFooter>
    );
 }

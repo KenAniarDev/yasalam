@@ -1,11 +1,10 @@
 import ContactUs from "components/contactUs/ContactUs";
-import Navbar from "components/navbar/Navbar";
+import NavFooter from "components/NavFooter";
 
 export default function ContactUsPage() {
    return (
-      <>
-         <Navbar />
+      <NavFooter>
          <ContactUs />
-      </>
-   )
+      </NavFooter>
+   );
 }

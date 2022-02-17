@@ -1,11 +1,10 @@
 import LoyaltyReward from "components/loyalty-reward/LoyaltyReward";
-import Navbar from "components/navbar/Navbar";
+import NavFooter from "components/NavFooter";
 
 export default function LoyaltyRewardPage() {
    return (
-      <>
-         <Navbar />
+      <NavFooter>
          <LoyaltyReward />
-      </>
+      </NavFooter>
    );
 }
