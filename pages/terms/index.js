@@ -1,11 +1,10 @@
-import Navbar from "components/navbar/Navbar";
+import NavFooter from "components/NavFooter";
 import TermsCondition from "components/termsCondition/TermsCondition";
 
 export default function TermsAndConditionPage() {
    return (
-      <>
-         <Navbar />
+      <NavFooter>
          <TermsCondition />;
-      </>
+      </NavFooter>
    );
 }
