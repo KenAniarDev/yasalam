@@ -11,6 +11,8 @@ import {
 import toast from 'react-hot-toast';
 import DashboardCard from 'components/card/DashboardCard';
 import DashboardCardColored from 'components/card/DashboardCardColored';
+import DashboardNationality from 'components/tables/DashboardNationality';
+import DashboardOutlets from 'components/tables/DashboardOutlets';
 
 function PageContent(user) {
   const [outlets, setOutlets] = useState([]);
@@ -25,6 +27,10 @@ function PageContent(user) {
   const [familyMembersCount, setFamilyMembersCount] = useState(0);
   const [maleMembersCount, setMaleMembersCount] = useState(0);
   const [femaleMembersCount, setFemaleMembersCount] = useState(0);
+  const [membershipRegistrationEarnings, setMembershipRegistrationEarnings] =
+    useState(0);
+  const [membershipsSpent, setmembershipsSpent] = useState(0);
+  const [membershipSavings, setMembershipSavings] = useState(0);
 
   const fetchData = async () => {
     setLoading(true);
@@ -41,12 +47,11 @@ function PageContent(user) {
       setTransactions(transactionData);
       setVisits(visitData);
 
-      console.log('memberData', memberData.length);
-      console.log('OutletData', OutletData.length);
-      console.log('registerTransactionData', registerTransactionData.length);
-      console.log('transactionData', transactionData.length);
-      console.log('visitData', visitData.length);
-
+      // console.log('memberData', memberData.length);
+      // console.log('OutletData', OutletData.length);
+      // console.log('registerTransactionData', registerTransactionData.length);
+      // console.log('transactionData', transactionData.length);
+      // console.log('visitData', visitData.length);
       memberData.forEach((member) => {
         if (member.userType === 'guest')
           setGuestMembersCount(guestMembersCount++);
@@ -57,6 +62,19 @@ function PageContent(user) {
         if (member.gender === 'male') setMaleMembersCount(maleMembersCount++);
         if (member.gender === 'female')
           setFemaleMembersCount(femaleMembersCount++);
+
+        setMembershipSavings(membershipSavings + member.savings);
+      });
+
+      registerTransactionData.forEach((transaction) => {
+        setMembershipRegistrationEarnings(
+          membershipRegistrationEarnings + transaction.amountPaid
+        );
+      });
+
+      setmembershipsSpent(membershipRegistrationEarnings);
+      transactions.forEach((transaction) => {
+        setmembershipsSpent(membershipsSpent + transaction.totalPrice);
       });
 
       toast.success('Data fetching success!');
@@ -134,68 +152,38 @@ function PageContent(user) {
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-4 gap-4'>
             <DashboardCardColored
               title='Total Membership Registration Earnings'
-              value={100}
+              value={(
+                Math.round(membershipRegistrationEarnings * 100) / 100
+              ).toFixed(2)}
               icon='fad fa-money-bill-alt'
             />
 
             <DashboardCardColored
               title='Total Memberships Spent'
-              value={100}
+              value={(Math.round(membershipsSpent * 100) / 100).toFixed(2)}
               icon='fad fa-money-bill-alt'
             />
             <DashboardCardColored
               title='Total Membership Savings'
-              value={100}
+              value={(Math.round(membershipSavings * 100) / 100).toFixed(2)}
               icon='fad fa-money-bill-alt'
             />
           </div>
 
           <div className='overflow-x-auto'>
-            <table className='table w-full table-zebra'>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Nationality</th>
-                  <th>Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* {nationality.map((item, i) => (
-                            <tr>
-                                <td></td>
-                                <td>{item[0]}</td>
-                                <td>{item[1]}</td>
-                            </tr>
-                        ))} */}
-              </tbody>
-            </table>
+            {members.length > 0 && (
+              <DashboardNationality memberData={members} />
+            )}
           </div>
 
           <div className='mt-4'>
             <h2 className='text-2xl'>Outlets Info</h2>
             <div className='overflow-x-auto'>
-              <table className='table w-full table-zebra'>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Outlet Name</th>
-                    <th>Transactions</th>
-                    <th>Visitors</th>
-                    <th>Total Earnings</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* {outlets.map((outlet, i) => (
-                  <tr key={i}>
-                    <th>{i + 1}</th>
-                    <td>{outlet.name}</td>
-                    <td>{outlet.transaction_count}</td>
-                    <td>{outlet.transaction_count}</td>
-                    <td>{outlet.transaction_earning}</td>
-                  </tr>
-                ))} */}
-                </tbody>
-              </table>
+              <DashboardOutlets
+                outlets={outlets}
+                transactions={transactions}
+                visits={visits}
+              />
             </div>
           </div>
         </>
