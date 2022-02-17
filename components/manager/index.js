@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, cloneElement } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import { onAuthStateChanged } from 'firebase/auth';

@@ -5,7 +5,7 @@ const Category = ({ categoryInfo }) => {
   return (
     <div className='category-item'>
       <Link href='/'>
-        <>
+        <a>
           <img src={categoryInfo.image} alt='' />
           <div className='bg-overlay'></div>
           <div className='category-info'>
@@ -14,7 +14,7 @@ const Category = ({ categoryInfo }) => {
             <br />
             <button>View</button>
           </div>
-        </>
+        </a>
       </Link>
     </div>
   );

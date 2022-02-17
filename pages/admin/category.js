@@ -1,32 +1,30 @@
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import Container from "../../components/admin/";
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import Container from '../../components/admin/';
 import {
-   addCategory,
-   deleteCategory,
-   getCategories,
-   storage,
-   updateCategory,
-} from "../../utils/firebase";
-
+  addCategory,
+  deleteCategory,
+  getCategories,
+  storage,
+  updateCategory,
+} from '../../utils/firebase';
 
 export default function CategoryPage() {
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-   const [name, setName] = useState("");
-   const [image, setImage] = useState(null);
-   const [yasalam, setYasalam] = useState(true);
-   const [experience, setExperience] = useState(true);
-   const [order, setOrder] = useState(0);
+  const [name, setName] = useState('');
+  const [image, setImage] = useState(null);
+  const [yasalam, setYasalam] = useState(true);
+  const [experience, setExperience] = useState(true);
+  const [order, setOrder] = useState(0);
 
-   const [isEdit, setIsEdit] = useState(false);
-   const [loading, setLoading] = useState(false);
-   const [id, setId] = useState(null);
-
+  const [isEdit, setIsEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [id, setId] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -43,75 +41,75 @@ export default function CategoryPage() {
     }
   };
 
-   const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-         if (!isEdit) {
-            if (!image) return toast.error("Image Required");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!isEdit) {
+        if (!image) return toast.error('Image Required');
 
-            if (order === 0) return toast.error("Please Wait");
+        if (order === 0) return toast.error('Please Wait');
 
-            await addCategory(name, image, yasalam, experience, order);
+        await addCategory(name, image, yasalam, experience, order);
 
-            toast.success("Added new category");
-         } else {
-            if (id === null) return toast.error("Error select a category");
-            await updateCategory(id, name, image, yasalam, experience);
+        toast.success('Added new category');
+      } else {
+        if (id === null) return toast.error('Error select a category');
+        await updateCategory(id, name, image, yasalam, experience);
 
-            toast.success("Updated category");
-         }
-
-         setId(null);
-         setName("");
-         setImage(null);
-
-         fetchData();
-      } catch (error) {
-         toast.error("Error adding category");
+        toast.success('Updated category');
       }
-   };
 
-   const uploadImage = (file) => {
-      if (!file) return;
+      setId(null);
+      setName('');
+      setImage(null);
 
-      const storageRef = ref(storage, `categories/${Date.now() + file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      fetchData();
+    } catch (error) {
+      toast.error('Error adding category');
+    }
+  };
 
-      uploadTask.on(
-         "state_changed",
-         (snapshot) => {},
-         (err) => {
-            return err;
-         },
-         () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-               setImage(url);
-            });
-         }
-      );
-   };
+  const uploadImage = (file) => {
+    if (!file) return;
 
-   const editCat = (id) => {
-      setId(id);
-      setIsEdit(true);
+    const storageRef = ref(storage, `categories/${Date.now() + file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
-      const category = categories.find((category) => category.id === id);
-
-      setName(category.name);
-      setImage(category.image);
-      setYasalam(category.yasalam);
-      setExperience(category.experience);
-   };
-
-   const deleteCat = async (id) => {
-      try {
-         await deleteCategory(id);
-         toast.success("Category Deleted");
-         fetchData();
-      } catch (error) {
-         toast.error("Category Delete Error");
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {},
+      (err) => {
+        return err;
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          setImage(url);
+        });
       }
-   };
+    );
+  };
+
+  const editCat = (id) => {
+    setId(id);
+    setIsEdit(true);
+
+    const category = categories.find((category) => category.id === id);
+
+    setName(category.name);
+    setImage(category.image);
+    setYasalam(category.yasalam);
+    setExperience(category.experience);
+  };
+
+  const deleteCat = async (id) => {
+    try {
+      await deleteCategory(id);
+      toast.success('Category Deleted');
+      fetchData();
+    } catch (error) {
+      toast.error('Category Delete Error');
+    }
+  };
 
   const filter = (text) => {
     const newData = categories.filter((data) => {
@@ -227,103 +225,6 @@ export default function CategoryPage() {
                   className='toggle'
                 />
               </label>
-            </div>
-            <div className="flex-grow mt-6">
-               <table className="table w-full mt-4">
-                  <thead>
-                     <tr>
-                        <th>Name</th>
-                        <th>Yasalam</th>
-                        <th>Experience</th>
-                        <th>Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {loading && (
-                        <>
-                           <tr>
-                              <td>loading....</td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                           </tr>
-                        </>
-                     )}
-                     {categories.map((category) => (
-                        <tr key={category.id}>
-                           <td>
-                              <div className="flex justify-between">
-                                 <div className="flex items-center">
-                                    <div className="mr-4 avatar">
-                                       <div className="w-12 h-12 mask mask-squircle">
-                                          <Image
-                                             src={category.image}
-                                             alt="Category Image"
-                                             width={100}
-                                             height={100}
-                                          />
-                                       </div>
-                                    </div>
-                                    <div className="flex items-center space-x-3">
-                                       {category.name}
-                                    </div>
-                                 </div>
-                              </div>
-                           </td>
-                           <td>
-                              {category.yasalam ? (
-                                 <i className="mr-2 fas fa-eye"></i>
-                              ) : (
-                                 <i className="mr-2 far fa-eye-slash"></i>
-                              )}
-                           </td>
-                           <td>
-                              {category.experience ? (
-                                 <i className="mr-2 fas fa-eye"></i>
-                              ) : (
-                                 <i className="mr-2 far fa-eye-slash"></i>
-                              )}
-                           </td>
-                           <td>
-                              {category.name.toString().toLowerCase() !==
-                                 "uncategorized" && (
-                                 <div className="ml-2 dropdown dropdown-end">
-                                    <div
-                                       tabIndex="0"
-                                       className="m-1 btn btn-xs btn-accent"
-                                    >
-                                       <i className="fas fa-ellipsis-v"></i>{" "}
-                                    </div>
-                                    <ul
-                                       tabIndex="0"
-                                       className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
-                                    >
-                                       <li>
-                                          <a
-                                             onClick={() =>
-                                                editCat(category.id)
-                                             }
-                                          >
-                                             Edit
-                                          </a>
-                                       </li>
-                                       <li>
-                                          <a
-                                             onClick={() =>
-                                                deleteCat(category.id)
-                                             }
-                                          >
-                                             Delete
-                                          </a>
-                                       </li>
-                                    </ul>
-                                 </div>
-                              )}
-                           </td>
-                        </tr>
-                     ))}
-                  </tbody>
-               </table>
             </div>
           </form>
         </div>

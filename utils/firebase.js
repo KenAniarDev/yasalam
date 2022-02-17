@@ -13,6 +13,7 @@ import {
   query,
   orderBy,
   where,
+  onSnapshot,
 } from 'firebase/firestore';
 import {
   ref,
@@ -196,7 +197,7 @@ export const getOutlets = async () => {
 export const getOutlet = async (id) => {
   const docRef = doc(db, 'outlets', id);
   const docSnap = await getDoc(docRef);
-  const data = await docSnap.data();
+  const data = docSnap.data();
 
   return data;
 };
@@ -534,6 +535,86 @@ export const getAllTransactionsCurrentDay = async (year, month, day) => {
     return new Error('error');
   }
 };
+export const getAllTransactionsByOutlet = async (outletId) => {
+  try {
+    const q = query(transactionColRef, where('outletId', '==', outletId));
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllTransactionsByMonthByOutlet = async (
+  year,
+  month,
+  outletId
+) => {
+  try {
+    const q = query(
+      transactionColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('outletId', '==', outletId)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllTransactionsCurrentDayByOutlet = async (
+  year,
+  month,
+  day,
+  outletId
+) => {
+  try {
+    const q = query(
+      transactionColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('day', '==', day),
+      where('outletId', '==', outletId)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
 export const getAllVisits = async () => {
   try {
     const q = query(visitColRef, orderBy('createdAt', 'desc'));
@@ -600,6 +681,82 @@ export const getAllVisitsCurrentDay = async (year, month, day) => {
     return new Error('error');
   }
 };
+export const getAllVisitsByOutlet = async (outletId) => {
+  try {
+    const q = query(visitColRef, where('outletId', '==', outletId));
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllVisitsByMonthByOutlet = async (year, month, outletId) => {
+  try {
+    const q = query(
+      visitColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('outletId', '==', outletId)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllVisitsCurrentDayByOutlet = async (
+  year,
+  month,
+  day,
+  outletId
+) => {
+  try {
+    const q = query(
+      visitColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('day', '==', day),
+      where('outletId', '==', outletId)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
 
 export const addVisit = async (member, outlet) => {
   const date = new Date();
@@ -617,6 +774,72 @@ export const addVisit = async (member, outlet) => {
     month,
     day,
   });
+
+  const currentOutlet = await getOutlet(outlet.outlet);
+  const docRef = doc(db, 'outlets', outlet.outlet);
+
+  if (currentOutlet.visits >= 10) {
+    throw new Error('Error Visits Greater than 10');
+  }
+
+  if (
+    currentOutlet.currentVisitDate === undefined ||
+    currentOutlet.currentVisitDate !== moment(date).format('YYYY-MM-DD')
+  ) {
+    await updateDoc(
+      docRef,
+      {
+        currentVisitDate: moment(date).format('YYYY-MM-DD'),
+        visits: 1,
+      },
+      { merge: true }
+    );
+  } else {
+    await updateDoc(
+      docRef,
+      {
+        currentVisitDate: moment(date).format('YYYY-MM-DD'),
+        visits: currentOutlet.visits + 1,
+      },
+      { merge: true }
+    );
+  }
+};
+export const decreaseIncreaseVisit = async (outlet, type) => {
+  const date = new Date();
+  const currentOutlet = await getOutlet(outlet.outlet);
+  const docRef = doc(db, 'outlets', outlet.outlet);
+
+  if (type === 'add' && currentOutlet.visits >= 10) {
+    throw new Error('Error Visits Greater than 10');
+  }
+  if (type === 'sub' && currentOutlet.visits <= 0) {
+    throw new Error('Error Visits Less than 0');
+  }
+
+  if (
+    currentOutlet.currentVisitDate === undefined ||
+    currentOutlet.currentVisitDate !== moment(date).format('YYYY-MM-DD')
+  ) {
+    await updateDoc(
+      docRef,
+      {
+        currentVisitDate: moment(date).format('YYYY-MM-DD'),
+        visits: 0,
+      },
+      { merge: true }
+    );
+  } else {
+    await updateDoc(
+      docRef,
+      {
+        currentVisitDate: moment(date).format('YYYY-MM-DD'),
+        visits:
+          type === 'add' ? currentOutlet.visits + 1 : currentOutlet.visits - 1,
+      },
+      { merge: true }
+    );
+  }
 };
 
 export const addTransaction = async (

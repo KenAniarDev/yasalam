@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 const QrReader = dynamic(() => import('modern-react-qr-reader'), {
   ssr: false,
@@ -6,11 +6,12 @@ const QrReader = dynamic(() => import('modern-react-qr-reader'), {
 import Container from '../../components/manager/';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { addVisit } from '../../utils/firebase';
+import { addVisit, db, decreaseIncreaseVisit } from '../../utils/firebase';
+import { onSnapshot, doc } from 'firebase/firestore';
 import { useStore } from '../../components/manager/';
 
-export default function QrPage() {
-  const outlet = useStore((state) => state.outlet);
+function PageContent({ outlet }) {
+  const [latestOutlet, setLatestOutlet] = useState(null);
   const [isHandlingScan, setIsHandlingScan] = useState(false);
   const [member, setMember] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -58,10 +59,58 @@ export default function QrPage() {
       }, 3000);
     }
   };
+  const decreaseIncrease = async (type) => {
+    console.log(props);
+    try {
+      await decreaseIncreaseVisit(outlet, type);
+      toast.success('success');
+    } catch (error) {
+      console.log(error);
+      toast.error('Error Please Try Again');
+    }
+  };
+
+  useEffect(() => {
+    let unsub;
+    const docRef = doc(db, 'outlets', outlet.outlet);
+
+    unsub = onSnapshot(docRef, (doc) => {
+      setLatestOutlet(doc.data());
+    });
+
+    return () => unsub();
+  }, [outlet]);
 
   return (
-    <Container>
-      <h2 className='text-4xl font-medium mb-2'>Visitor QR Scanner</h2>
+    <>
+      <div className='flex flex-wrap justify-between mb-10'>
+        <h2 className='text-4xl font-medium mb-2'>Visitor QR Scanner</h2>
+        {latestOutlet !== null && (
+          <div className='flex items-center'>
+            {latestOutlet.visits !== undefined && (
+              <>
+                <button
+                  disabled={latestOutlet.visits <= 0 ? true : false}
+                  className='btn btn-primary'
+                  onClick={() => decreaseIncrease('sub')}
+                >
+                  DECREASE
+                </button>
+                <h3 className='mx-2 text-2xl font-bold bg-primary text-white py-2 px-5 rounded-lg'>
+                  {latestOutlet.visits}
+                </h3>
+                <button
+                  disabled={latestOutlet.visits >= 10 ? true : false}
+                  className='btn btn-primary'
+                  onClick={() => decreaseIncrease('add')}
+                >
+                  INCREASE
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
       <div className='pb-10 pr-5'>
         <div className='h-full w-full flex items-center justify-center'>
           <QrReader
@@ -110,6 +159,14 @@ export default function QrPage() {
           </div>
         </div>
       </div>
+    </>
+  );
+}
+export default function QrPage() {
+  const outlet = useStore((state) => state.outlet);
+  return (
+    <Container>
+      <PageContent outlet={outlet} />
     </Container>
   );
 }

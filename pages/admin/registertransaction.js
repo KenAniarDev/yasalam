@@ -8,7 +8,26 @@ import {
 import toast from 'react-hot-toast';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
-import RegisterTransactionTable from '../../components/tables/RegisterTransactionTable';
+import Table from '../../components/tables/Table';
+
+const COLUMNS = [
+  {
+    Header: 'Name',
+    accessor: 'name',
+  },
+  {
+    Header: 'Account Type',
+    accessor: 'userType',
+  },
+  {
+    Header: 'Amount Paid',
+    accessor: 'amountPaid',
+  },
+  {
+    Header: 'Date',
+    accessor: 'date',
+  },
+];
 
 export default function RegisterTransactionPage() {
   const [regTransactions, setRegTransactions] = useState([]);
@@ -142,11 +161,11 @@ export default function RegisterTransactionPage() {
             className='btn btn-primary'
             target='_blank'
           >
-            DOWNLOAD MEMBERS
+            DOWNLOAD REGISTERS
           </CSVLink>
         </div>
       </div>
-      {!loading && <RegisterTransactionTable dataDb={regTransactions} />}
+      {!loading && <Table dataDb={regTransactions} COLUMNS={COLUMNS} />}
     </Container>
   );
 }

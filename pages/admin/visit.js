@@ -8,7 +8,22 @@ import {
 import toast from 'react-hot-toast';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
-import VisitTable from '../../components/tables/VisitTable';
+import Table from '../../components/tables/Table';
+
+const COLUMNS = [
+  {
+    Header: 'Name',
+    accessor: 'name',
+  },
+  {
+    Header: 'Outlet',
+    accessor: 'outletName',
+  },
+  {
+    Header: 'Date',
+    accessor: 'date',
+  },
+];
 
 export default function VisitPage() {
   const [visits, setVisits] = useState([]);
@@ -141,11 +156,11 @@ export default function VisitPage() {
             className='btn btn-primary'
             target='_blank'
           >
-            DOWNLOAD MEMBERS
+            DOWNLOAD VISITS
           </CSVLink>
         </div>
       </div>
-      {!loading && <VisitTable dataDb={visits} />}
+      {!loading && <Table dataDb={visits} COLUMNS={COLUMNS} />}
     </Container>
   );
 }

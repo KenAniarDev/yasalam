@@ -1,11 +1,52 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Container from '../../components/manager/';
+import { useStore } from '../../components/manager/';
+import {
+  getAllVisitsByOutlet,
+  getAllTransactionsByOutlet,
+} from '../../utils/firebase';
+import toast from 'react-hot-toast';
 
-export default function Index() {
-  useEffect(() => {}, []);
+function PageContent({ outlet }) {
+  const [visits, setVisits] = useState(0);
+  const [transactions, setTransactions] = useState(0);
+  const [sales, setSales] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const visit = await getAllVisitsByOutlet(outlet.outlet);
+      const transaction = await getAllTransactionsByOutlet(outlet.outlet);
+      setVisits(visit.length);
+      setTransactions(transaction.length);
+      const sale = transaction.map((e) => {
+        return e.totalPrice;
+      });
+      const sumWithInitial = sale.reduce(
+        (previousValue, currentValue) => previousValue + currentValue,
+        0
+      );
+
+      setSales(sumWithInitial);
+      toast.success('Data fetching success!');
+    } catch (error) {
+      toast.error('Error fetching data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    return () => {
+      setVisits([]);
+      setLoading(false);
+    };
+  }, []);
 
   return (
-    <Container>
+    <>
       <h2 className='text-4xl font-medium mb-2'>Dashboard</h2>
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-4 gap-4'>
         <div className='bg-primary dark:bg-gray-800 shadow-sm rounded-md flex items-center justify-between p-3 border-b-4 border-primary-focus dark:border-gray-600 text-white font-medium group'>
@@ -27,7 +68,7 @@ export default function Index() {
             </svg>
           </div>
           <div className='text-right'>
-            <p className='text-2xl'>100</p>
+            <p className='text-2xl'>{visits}</p>
             <p>Visitors</p>
           </div>
         </div>
@@ -50,7 +91,7 @@ export default function Index() {
             </svg>
           </div>
           <div className='text-right'>
-            <p className='text-2xl'>200</p>
+            <p className='text-2xl'>{transactions}</p>
             <p>Transactions</p>
           </div>
         </div>
@@ -73,7 +114,7 @@ export default function Index() {
             </svg>
           </div>
           <div className='text-right'>
-            <p className='text-2xl'>5000AED</p>
+            <p className='text-2xl'>{sales} AED</p>
             <p>Total Sales</p>
           </div>
         </div>
@@ -104,6 +145,15 @@ export default function Index() {
           </table>
         </div>
       </div>
+    </>
+  );
+}
+export default function DashboardPage() {
+  const outlet = useStore((state) => state.outlet);
+
+  return (
+    <Container>
+      <PageContent outlet={outlet} />
     </Container>
   );
 }

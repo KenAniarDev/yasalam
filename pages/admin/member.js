@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Container from '../../components/admin/';
-import MemberTable from '../../components/tables/MemberTable';
+import Table from '../../components/tables/Table';
 import {
   getAllMembers,
   getAllMembersByMonth,
@@ -9,6 +9,33 @@ import {
 import toast from 'react-hot-toast';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
+
+const COLUMNS = [
+  {
+    Header: 'Name',
+    accessor: 'name',
+  },
+  {
+    Header: 'Email',
+    accessor: 'email',
+  },
+  {
+    Header: 'Account Type',
+    accessor: 'userType',
+  },
+  {
+    Header: 'Paid',
+    accessor: 'paid',
+  },
+  {
+    Header: 'Issued Date',
+    accessor: 'issueDate',
+  },
+  {
+    Header: 'Expiry Date',
+    accessor: 'expiryDate',
+  },
+];
 
 export default function MemberPage() {
   const [members, setMembers] = useState([]);
@@ -42,7 +69,14 @@ export default function MemberPage() {
         const day = moment(date).format('DD');
         data = await getAllMembersCurrentDay(year, month, day);
       }
-      setMembers(data);
+      setMembers(
+        data.map((member) => {
+          return {
+            ...member,
+            paid: member.isPaid.toString(),
+          };
+        })
+      );
       setCSV(
         data.map((member) => {
           return {
@@ -64,6 +98,7 @@ export default function MemberPage() {
       );
       toast.success('Data fetching success!');
     } catch (error) {
+      console.log(error);
       toast.error('Error fetching data');
     } finally {
       setLoading(false);
@@ -137,7 +172,13 @@ export default function MemberPage() {
           </CSVLink>
         </div>
       </div>
-      {!loading && <MemberTable dataDb={members} />}
+      {!loading && (
+        <Table
+          dataDb={members}
+          COLUMNS={COLUMNS}
+          hiddenColumns={['expiryDate', 'issueDate']}
+        />
+      )}
     </Container>
   );
 }

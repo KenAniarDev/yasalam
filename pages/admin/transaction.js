@@ -8,7 +8,27 @@ import {
 import toast from 'react-hot-toast';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
-import TransactionTable from '../../components/tables/TransactionTable';
+import Table from '../../components/tables/Table';
+
+const COLUMNS = [
+  {
+    Header: 'Name',
+    accessor: 'name',
+  },
+  {
+    Header: 'Outlet',
+    accessor: 'outletName',
+  },
+  {
+    Header: 'Paid',
+    accessor: 'totalPrice',
+    Cell: ({ value }) => 'AED ' + (Math.round(value * 100) / 100).toFixed(2),
+  },
+  {
+    Header: 'Date',
+    accessor: 'date',
+  },
+];
 
 export default function TransactionPage() {
   const [transactions, setTransactions] = useState([]);
@@ -142,11 +162,11 @@ export default function TransactionPage() {
             className='btn btn-primary'
             target='_blank'
           >
-            DOWNLOAD MEMBERS
+            DOWNLOAD TRANSACTIONS
           </CSVLink>
         </div>
       </div>
-      {!loading && <TransactionTable dataDb={transactions} />}
+      {!loading && <Table dataDb={transactions} COLUMNS={COLUMNS} />}
     </Container>
   );
 }
