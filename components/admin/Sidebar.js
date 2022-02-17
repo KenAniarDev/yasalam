@@ -7,6 +7,10 @@ const sidebarLinks = [
     link: '/admin',
   },
   {
+    title: 'Admin',
+    link: '/admin/admin',
+  },
+  {
     title: 'Manager',
     link: '/admin/manager',
   },

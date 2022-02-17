@@ -5,10 +5,17 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../utils/firebase';
 import { useRouter } from 'next/router';
 import Loading from '../Loading';
+import create from 'zustand';
+
+export const useStore = create((set) => ({
+  user: null,
+  setUser: (user) => set({ user }),
+}));
 
 export default function Index({ children }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const setUser = useStore((state) => state.setUser);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -17,6 +24,7 @@ export default function Index({ children }) {
         return router.push('/');
       if (!JSON.parse(user.reloadUserInfo.customAttributes).admin)
         return router.push('/');
+      setUser(user);
       setIsLoading(false);
     });
 

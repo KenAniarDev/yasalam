@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Container from '../../components/admin/';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -12,14 +11,10 @@ function PageContent({ user }) {
   const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [passwordShowModal, setPasswordShowModal] = useState(false);
   const [outlets, setOutlets] = useState([]);
 
-  const [selectedOutlet, setSelectedOutlet] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const [updateMember, setUpdateMember] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -27,21 +22,13 @@ function PageContent({ user }) {
       const idToken = await user.getIdToken(true);
       const users = await axios.post('../api/manager', { idToken });
       const userManager = users.data.users.filter((element) => {
-        if (
-          typeof element.customClaims !== 'undefined' &&
-          typeof element.customClaims.admin !== 'undefined'
-        ) {
-          return false;
-        }
-
-        return true;
+        return element.customClaims.admin;
       });
       setManagers(userManager);
       setFilteredManagers(userManager);
 
       const data = await getOutlets();
       setOutlets(data);
-      setSelectedOutlet(data[0].id);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -53,46 +40,21 @@ function PageContent({ user }) {
   const handleSubmit = async (e) => {
     setShowModal(false);
     e.preventDefault();
-    const outlet = outlets.find((e) => (e.id = selectedOutlet));
     try {
       const idToken = await user.getIdToken(true);
-      await axios.post('../api/manager/create', {
+      await axios.post('../api/admin/create', {
         idToken,
         email,
         password,
-        outlet: outlet.id,
-        outletName: outlet.name,
       });
 
       setEmail('');
       setPassword('');
-      setSelectedOutlet(outlets[0].id);
       toast.success('Added new user!');
       fetchData();
     } catch (error) {
       console.log(error);
       toast.error('Error adding new user');
-    }
-  };
-  const handleUpdate = async (e) => {
-    setPasswordShowModal(false);
-    e.preventDefault();
-    try {
-      const idToken = await user.getIdToken(true);
-      await axios.post('../api/manager/changepassword', {
-        idToken,
-        password,
-        uid: updateMember,
-      });
-
-      setUpdateMember(null);
-      setPassword('');
-      toast.success('User password updated!');
-      fetchData();
-    } catch (error) {
-      console.log('error');
-      console.log(error);
-      toast.error('Error updating user password');
     }
   };
 
@@ -133,7 +95,7 @@ function PageContent({ user }) {
       {/* first row */}
       <div className='flex flex-wrap justify-between items-center p-2'>
         <div className='flex'>
-          <h2 className='text-4xl font-medium mb-2 mr-2'>Manager</h2>
+          <h2 className='text-4xl font-medium mb-2 mr-2'>Admin</h2>
           <button
             className='btn btn-primary'
             onClick={() => setShowModal(true)}
@@ -218,16 +180,6 @@ function PageContent({ user }) {
                         className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
                       >
                         <li>
-                          <a
-                            onClick={() => {
-                              setUpdateMember(manager.uid);
-                              setPasswordShowModal(true);
-                            }}
-                          >
-                            Change Password
-                          </a>
-                        </li>
-                        <li>
                           <a onClick={() => deleteManager(manager.uid)}>
                             Delete
                           </a>
@@ -283,27 +235,6 @@ function PageContent({ user }) {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div name='feature' className='form-control mr-1'>
-                <label className='label'>
-                  <span className='label-text'>Outlets</span>
-                </label>
-                <select
-                  className='select select-bordered w-full'
-                  onChange={(e) => {
-                    setSelectedOutlet(e.target.value);
-                  }}
-                >
-                  {outlets.map((e, i) => (
-                    <option
-                      key={i}
-                      value={e.id}
-                      selected={selectedOutlet === e.id}
-                    >
-                      {e.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
               <div className='modal-action flex justify-center'>
                 <button
                   htmlFor='my-modal-2'
@@ -319,59 +250,6 @@ function PageContent({ user }) {
                     setShowModal(false);
                     setEmail('');
                     setPassword('');
-                    setSelectedOutlet(outlets[0].id);
-                  }}
-                >
-                  Cancel
-                </label>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div>
-        <input
-          type='checkbox'
-          id='my-modal-2'
-          className='modal-toggle'
-          checked={passwordShowModal}
-          readOnly
-        />
-        <div className='modal center-modal'>
-          <div className='modal-box'>
-            <h3 className='text-xl text-center font-bold uppercase'>
-              UPDATE PASSWORD
-            </h3>
-            <form onSubmit={(e) => handleUpdate(e)}>
-              <div className='form-control'>
-                <label className='label'>
-                  <span className='label-text'>Password</span>
-                </label>
-                <input
-                  type='password'
-                  name='password'
-                  placeholder='password'
-                  className='input input-bordered'
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-
-              <div className='modal-action flex justify-center'>
-                <button
-                  htmlFor='my-modal-2'
-                  className='btn btn-primary'
-                  type='submit'
-                >
-                  UPDATE
-                </button>
-                <label
-                  htmlFor='my-modal-2'
-                  className='btn'
-                  onClick={() => {
-                    setPasswordShowModal(false);
-                    setPassword('');
                   }}
                 >
                   Cancel
@@ -385,7 +263,7 @@ function PageContent({ user }) {
   );
 }
 
-export default function ManagerPage() {
+export default function AdminPage() {
   const user = useStore((state) => state.user);
 
   return (

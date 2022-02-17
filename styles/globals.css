@@ -1,57 +1,63 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
-   box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .container {
-   position: relative;
-   max-width: 992px;
-   margin: 0 auto;
-   padding: 0 20px;
+  position: relative;
+  max-width: 992px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 @media (min-width: 992px) {
-   .container {
-      width: 100%;
-   }
+  .container {
+    width: 100%;
+  }
 }
 @media (min-width: 120px) {
-   .container {
-      max-width: 1150px;
-   }
+  .container {
+    max-width: 1150px;
+  }
 }
 @media (min-width: 1300px) {
-   .container {
-      max-width: 1250px;
-   }
+  .container {
+    max-width: 1250px;
+  }
 }
 @media (min-width: 1440px) {
-   .container {
-      max-width: 1350px;
-   }
+  .container {
+    max-width: 1350px;
+  }
 }
 @media (min-width: 1600px) {
-   .container {
-      max-width: 1550px;
-   }
+  .container {
+    max-width: 1550px;
+  }
 }
 
 body {
-   font-family: "Raleway", sans-serif;
+  font-family: 'Raleway', sans-serif;
 }
 .login-logo {
-   max-width: 100px;
+  max-width: 100px;
 }
 
 .home-banner {
-   min-height: calc(100vh - 22px);
+  min-height: calc(100vh - 22px);
 }
 
 img.left-img {
-   max-height: 500px;
+  max-height: 500px;
+}
+@media (min-width: 1025px) {
+  .center-modal {
+    padding-left: 334px;
+    padding-bottom: 100px;
+  }
 }
