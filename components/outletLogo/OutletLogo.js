@@ -1,3 +1,4 @@
+import useSlider from "hooks/useSlider";
 import Image from "next/image";
 import React from "react";
 import Slider from "react-slick";
@@ -8,10 +9,9 @@ import {
    SectionTitle,
    SubContainer,
 } from "./OutletLogo.styled";
-import useSlider from "hooks/useSlider";
 
 const OutletLogo = ({ data }) => {
-   const {settingsLogo} = useSlider();
+   const { settingsLogo } = useSlider();
 
    return (
       <Container>

@@ -83,7 +83,7 @@ const Footer = () => {
                <Link href="/contact-us" passHref>
                   <FooterLink>Contact Us</FooterLink>
                </Link>
-               <Link href="/faqs" passHref>
+               <Link href="/FAQ" passHref>
                   <FooterLink>FAQs</FooterLink>
                </Link>
                <Link href="/terms" passHref>
@@ -199,4 +199,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
