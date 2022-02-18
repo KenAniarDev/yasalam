@@ -245,7 +245,7 @@ export const addMember = async (req, res) => {
       day,
     });
 
-    const link = `${req.headers.origin}/api/payment/${docRef.id}?name=${name}&type=${userType}`;
+    const link = `${req.headers.origin}/api/payment/${docRef.id}`;
 
     const message = `Hi ${name}! Thank you for availing Yasalam Membership.  You may continue to the payment of your membership in this link: ${link}`;
     const htmlMessage = `Dear  ${name}!
@@ -280,6 +280,51 @@ export const addMember = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.send('Error');
+  }
+};
+export const resendPaymentEmail = async (req, res) => {
+  try {
+    let query = db.collection('members').where('email', '==', req.body.email);
+    const querySnapshot = await query.get();
+    const member = {
+      id: querySnapshot.docs[0].id,
+      ...querySnapshot.docs[0].data(),
+    };
+
+    const link = `${req.headers.origin}/api/payment/${member.id}`;
+
+    const message = `Hi ${member.name}! Thank you for availing Yasalam Membership.  You may continue to the payment of your membership in this link: ${link}`;
+    const htmlMessage = `Dear  ${member.name}!
+     <br /> <br />
+     Your one click away!!!
+     Your Yasalam Membership registration is complete.<br>
+     Please click on the link below to proceed and make your membership payment.<br><br>
+
+     <a href="${link}"> ${link}</a>
+
+     <br><br>
+
+     Feel free to contact our team if you need any help or support. <br/>
+     support@yasalamae.ae.
+
+     <br><br>
+
+     Sincerely,
+     <br>
+     Yasalam Team`;
+
+    const mailOptions = {
+      from: 'confirmation@yasalamae.ae',
+      to: req.body.email,
+      subject: `Welcome to Yasalam ${member.userType} Membership - Account Activation`,
+      text: message,
+      html: htmlMessage,
+    };
+    mailHelper(mailOptions);
+
+    return res.status(201).send(true);
+  } catch (error) {
+    return res.status(404).send(false);
   }
 };
 
