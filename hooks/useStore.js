@@ -1,18 +1,12 @@
-import create from "zustand";
+import create from 'zustand';
 
 const useStore = create((set) => ({
-   outlets: [],
-   categories: [],
-   setOutlets: (outlets) =>
-      set((state) => ({
-         ...state,
-         outlets,
-      })),
-   setCategories: (categories) =>
-      set((state) => ({
-         ...state,
-         categories,
-      })),
+  outlets: [],
+  categories: [],
+  regions: [],
+  features: [],
+  setData: (outlets, categories, regions, features) =>
+    set({ outlets, categories, regions, features }),
 }));
 
 export default useStore;
