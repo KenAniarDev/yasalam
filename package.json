@@ -17,6 +17,7 @@
     "firebase-react-hooks": "^0.8.0",
     "formik": "^2.2.9",
     "hamburger-react": "^2.4.1",
+    "html-react-parser": "^1.4.8",
     "micro": "^9.3.4",
     "modern-react-qr-reader": "^1.0.12",
     "moment": "^2.29.1",
@@ -39,6 +40,7 @@
     "react-table": "^7.7.0",
     "stripe": "^8.202.0",
     "styled-components": "^5.3.3",
+    "use-onclickoutside": "^0.4.0",
     "yup": "^0.32.11",
     "zustand": "^3.7.0"
   },

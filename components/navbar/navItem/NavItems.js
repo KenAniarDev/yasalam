@@ -1,6 +1,7 @@
+import { useRouter } from "next/router";
+import { Link } from "react-scroll";
 import Links from "../../link/Links";
 import MobileNav from "./MobileNav";
-import { Link } from 'react-scroll'
 import {
    DropDown,
    DropDownIcon,
@@ -9,10 +10,11 @@ import {
    MobileNavContainer,
    NavButton,
    NavItem,
-   NavList
+   NavList,
 } from "./NavItems.styled";
 
 const NavItems = ({ open, toggle }) => {
+   const router = useRouter();
    return (
       <NavList open={open}>
          <NavItem>
@@ -49,10 +51,15 @@ const NavItems = ({ open, toggle }) => {
          </MobileNavContainer>
 
          <NavItem>
-            <Link to="buyMembership" smooth={true}>
-               <NavButton>Buy Membership</NavButton>
-            </Link>
-            
+            {router.asPath === "/" ? (
+               <Link to="buyMembership" smooth={true}>
+                  <NavButton>Buy Membership</NavButton>
+               </Link>
+            ) : (
+               <Links href="/">
+                  <NavButton>Buy Membership</NavButton>
+               </Links>
+            )}
          </NavItem>
       </NavList>
    );
