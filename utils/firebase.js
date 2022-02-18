@@ -96,13 +96,6 @@ export const getCategories = async () => {
 
    return categories;
 };
-export const getCategory = async (id) => {
-   const docRef = doc(db, "categories", id);
-   const docSnap = await getDoc(docRef);
-   const data = await docSnap.data();
-
-   return data;
-};
 
 export const updateCategory = async (id, name, image, yasalam, experience) => {
    const docRef = doc(db, "categories", id);
