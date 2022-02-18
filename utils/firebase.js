@@ -1,5 +1,5 @@
-import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import {
   getFirestore,
   collection,
@@ -16,21 +16,13 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import {
-  ref,
-  getStorage,
-  uploadBytesResumable,
   getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
 } from 'firebase/storage';
-
-import {
-  getAuth,
-  signOut,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from 'firebase/auth';
-
-import { generateRandomStrings } from './functionHelpers';
 import moment from 'moment';
+import { generateRandomStrings } from './functionHelpers';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -104,6 +96,13 @@ export const getCategories = async () => {
   });
 
   return categories;
+};
+export const getCategory = async (id) => {
+  const docRef = doc(db, 'categories', id);
+  const docSnap = await getDoc(docRef);
+  const data = await docSnap.data();
+
+  return data;
 };
 
 export const updateCategory = async (id, name, image, yasalam, experience) => {

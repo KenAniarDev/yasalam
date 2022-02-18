@@ -8,7 +8,7 @@ import NavItems from "./navItem/NavItems";
 
 const Navbar = () => {
    const [state, toggle] = useToggle();
-
+   
    return (
       <Nav>
          <NavContainer>
@@ -23,7 +23,7 @@ const Navbar = () => {
                   />
                </NavLogo>
             </Link>
-            <NavItems open={state} toggle={toggle} />
+            <NavItems open={state} toggle={toggle}/>
             <HamburgerMenu toggle={toggle} open={state} />
          </NavContainer>
       </Nav>
