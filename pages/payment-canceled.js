@@ -1,9 +1,10 @@
-import styles from '../styles/Home.module.css';
+import NavFooter from "components/NavFooter";
+import PaymentSuccessful from "components/paymentCancel/PaymentCancel";
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <h1>Payment canceled</h1>
-    </div>
-  );
+   return (
+      <NavFooter>
+         <PaymentSuccessful />
+      </NavFooter>
+   );
 }

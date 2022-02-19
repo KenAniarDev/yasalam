@@ -1,9 +1,10 @@
-import styles from '../styles/Home.module.css';
+import ErrorUser from "components/errorUser/ErrorUser";
+import NavFooter from "components/NavFooter";
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <h1>user not found</h1>
-    </div>
-  );
+   return (
+      <NavFooter>
+         <ErrorUser />
+      </NavFooter>
+   );
 }
