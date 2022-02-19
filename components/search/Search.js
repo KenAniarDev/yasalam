@@ -1,26 +1,59 @@
 import React, { useState } from "react";
 
-const Search = ({ category, url, isYasalam }) => {
+const Search = ({
+   category,
+   url,
+   isYasalam,
+   features,
+   regions,
+   setFilterItem,
+   outlets,
+}) => {
    const [search, setSearch] = useState("");
    const [currCategory, setCurrCategory] = useState({
       id: "all",
       name: "All Categories",
+      value: "",
    });
    const [currFeature, setCurrFeature] = useState({
       id: "all",
       name: "All Features",
+      value: "",
    });
    const [currRegion, setCurrRegion] = useState({
       id: "all",
       name: "All Regions",
+      value: "",
    });
-   const [regions, setRegion] = useState([]);
-   const [features, setFeature] = useState([]);
+   const [region, setRegion] = useState([]);
+   const [feature, setFeature] = useState([]);
    const [categories, setCategories] = useState([]);
+
+   const searchFilterHandler = (e) => {
+      e.preventDefault();
+      const filtered = outlets.filter((val) => {
+         if (
+            search === "" &&
+            currCategory === "" &&
+            currFeature === "" &&
+            currRegion === ""
+         ) {
+            return val;
+         } else if (
+            val.name.toLowerCase().includes(search.toLowerCase()) &&
+            val.categoryName.includes(currCategory.value) &&
+            val.regionName.includes(currRegion.value) &&
+            val.featureName.includes(currFeature.value)
+         ) {
+            return val;
+         }
+      });
+      setFilterItem(filtered);
+   };
 
    return (
       <div className="mt-10 search-form-container">
-         <form>
+         <form onSubmit={searchFilterHandler}>
             <div className="main-search-input">
                <div className="search-container">
                   <input
@@ -30,7 +63,10 @@ const Search = ({ category, url, isYasalam }) => {
                      className="keyword_search"
                      type="text"
                      placeholder="What are you looking for?"
-                     value=""
+                     value={search}
+                     onChange={(e) => {
+                        setSearch(e.target.value);
+                     }}
                   />
                </div>
                <div className="filter-container">
@@ -48,6 +84,7 @@ const Search = ({ category, url, isYasalam }) => {
                                     setCurrCategory({
                                        id: "all",
                                        name: "All Categories",
+                                       value: "",
                                     });
                                  }}
                               >
@@ -60,6 +97,7 @@ const Search = ({ category, url, isYasalam }) => {
                                        setCurrCategory({
                                           id: categoryList.id,
                                           name: categoryList.name,
+                                          value: categoryList.name,
                                        });
                                     }}
                                  >
@@ -84,6 +122,7 @@ const Search = ({ category, url, isYasalam }) => {
                                     setCurrRegion({
                                        id: "all",
                                        name: "All Regions",
+                                       value: "",
                                     });
                                  }}
                               >
@@ -96,23 +135,13 @@ const Search = ({ category, url, isYasalam }) => {
                                        setCurrRegion({
                                           id: region._id,
                                           name: region.name,
+                                          value: region.name,
                                        });
                                     }}
                                  >
                                     {region.name}
                                  </li>
                               ))}
-                              <li
-                                 key={regions.length + 5}
-                                 onClick={() => {
-                                    setCurrRegion({
-                                       id: "no region",
-                                       name: "no region",
-                                    });
-                                 }}
-                              >
-                                 No Region
-                              </li>
                            </ul>
                         </div>
                      </span>
@@ -131,6 +160,7 @@ const Search = ({ category, url, isYasalam }) => {
                                     setCurrFeature({
                                        id: "all",
                                        name: "All Features ",
+                                       value: "",
                                     });
                                  }}
                               >
@@ -143,6 +173,7 @@ const Search = ({ category, url, isYasalam }) => {
                                        setCurrFeature({
                                           id: feature._id,
                                           name: feature.name,
+                                          value: feature.name,
                                        });
                                     }}
                                  >
@@ -161,4 +192,4 @@ const Search = ({ category, url, isYasalam }) => {
    );
 };
 
-export default Search;
+export default React.memo(Search);

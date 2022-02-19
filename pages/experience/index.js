@@ -1,55 +1,47 @@
-import CategoryBanner from "components/categoryGroup/CategoryBanner";
 import CategoryOutletsGroup from "components/categoryGroup/CategoryOutletsGroup";
 import Loading from "components/Loading";
 import NavFooter from "components/NavFooter";
+import Search from "components/search/Search";
 import useStore from "hooks/useStore";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import {
-   getCategories,
-   getFeatures,
-   getOutlets,
-   getRegions,
+    getCategories,
+    getFeatures,
+    getOutlets,
+    getRegions
 } from "utils/firebase";
 
-function PageContent({ outlets, categories, id }) {
-   const [currentCategory, setCurrentCategory] = useState({
-      name: "",
-      image: "/pattern1920x1080.png",
-   });
-   const [catOutlets, setCatOutlets] = useState([]);
-
-   useEffect(() => {
-      const currCat = categories.find((e) => e.id === id);
-      setCurrentCategory(currCat);
-
-      const catOutlet = outlets.filter((e) => e.categoryId === id);
-      setCatOutlets(catOutlet);
-   }, []);
+function Yasalam({ outlets, categories, regions, features }) {
+   const [filterItem, setFilterItem] = useState(outlets);
 
    return (
       <NavFooter>
-         <CategoryBanner
-            title={currentCategory.name}
-            image={currentCategory.image}
-         />
+         <div className="container">
+            <Search
+               category={categories}
+               isYasalam={true}
+               regions={regions}
+               features={features}
+               setFilterItem={setFilterItem}
+               outlets={outlets}
+            />
+         </div>
          <div className="outlet-page">
-            <CategoryOutletsGroup data={catOutlets} />
+            <CategoryOutletsGroup data={filterItem} />
          </div>
       </NavFooter>
    );
 }
 
-export default function SingleCategory() {
-   const router = useRouter();
+export default function ExperiencePage() {
    const setData = useStore((state) => state.setData);
    const outlets = useStore((state) => state.outlets);
    const categories = useStore((state) => state.categories);
    const regions = useStore((state) => state.regions);
    const features = useStore((state) => state.features);
-   const newMember = outlets.slice(Math.max(outlets.length - 5, 0)).reverse();
    const [loading, setLoading] = useState(true);
-   const [id, setId] = useState(null);
+
+   const isYasalam = outlets.filter((items) => items.experience === true);
 
    const fetchData = async () => {
       const outletDb = await getOutlets();
@@ -60,23 +52,24 @@ export default function SingleCategory() {
       setLoading(false);
    };
    useEffect(() => {
-      if (router.asPath !== router.route) {
-         const id = router.query.id;
-         setId(id);
-      }
       if (outlets.length === 0) {
          fetchData();
       } else {
          setLoading(false);
       }
-   }, [router]);
+   }, []);
 
    return (
       <>
          {loading ? (
             <Loading />
          ) : (
-            <PageContent outlets={outlets} categories={categories} id={id} />
+            <Yasalam
+               outlets={isYasalam}
+               categories={categories}
+               regions={regions}
+               features={features}
+            />
          )}
       </>
    );
