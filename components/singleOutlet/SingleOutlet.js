@@ -18,7 +18,6 @@ const SingleOutlet = ({ data }) => {
          });
       }
    }, []);
-
    return (
       <div className="outlet-page">
          <BannerSlider data={data.gallery} />
@@ -152,9 +151,7 @@ const SingleOutlet = ({ data }) => {
                   </div>
                </div>
 
-               <div className="youtube-embed-container">
-                  {parse(data.video)}
-               </div>
+               <div className="youtube-embed-container">{parse("")}</div>
             </div>
          </div>
       </div>
