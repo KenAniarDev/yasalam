@@ -31,10 +31,8 @@ export default function individual() {
     nationality: nationalities[0].name,
     gender: gender[0].value,
     employerDetails: '',
-    frontimageID:
-      'https://firebasestorage.googleapis.com/v0/b/yasalam-55cc7.appspot.com/o/members%2F1645023923172273810125_347997600664861_3362340213730421405_n.jpg?alt=media&token=5ad14e97-6c00-4059-b16b-b55c2a7bcd39',
-    backimageID:
-      'https://firebasestorage.googleapis.com/v0/b/yasalam-55cc7.appspot.com/o/members%2F1645023923172273810125_347997600664861_3362340213730421405_n.jpg?alt=media&token=5ad14e97-6c00-4059-b16b-b55c2a7bcd39',
+    frontimageID: '',
+    backimageID: '',
     userType: 'individual', // individual || family || secondary
   });
 
