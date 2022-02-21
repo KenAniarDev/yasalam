@@ -463,3 +463,63 @@ export const addRegisterTransaction = async (member) => {
     day,
   });
 };
+
+export const checkEmailLogin = async (req, res) => {
+  try {
+    let query = db.collection('members').where('email', '==', req.body.email);
+    const querySnapshot = await query.get();
+    // check if email is existing
+    if (!querySnapshot.docs[0]) {
+      return res.status(404).send('Email not found');
+    }
+    const member = querySnapshot.docs[0].data();
+    // check if member is paid
+    if (!member.isPaid) {
+      return res.status(400).send('Please pay your membership first');
+    }
+    // check if member is activated
+    if (member.isActivate) {
+      return res
+        .status(400)
+        .send(
+          'Your account is currently login to different device. Please Contact the YaSalam'
+        );
+    }
+
+    const expiryDate = moment(member.expiryDate);
+    const now = moment();
+
+    if (now > expiryDate) {
+      return res.status(400).send('Your membership expired');
+    } else {
+      return res.status(200).send('success');
+    }
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send('Server error. please try again');
+  }
+};
+
+export const otpLogin = async (req, res) => {
+  try {
+    let query = db.collection('members').where('email', '==', req.body.email);
+    const querySnapshot = await query.get();
+    // check if email is existing
+    if (!querySnapshot.docs[0]) {
+      return res.status(404).send('Email not found');
+    }
+    const member = querySnapshot.docs[0].data();
+
+    if (!req.body.otp) {
+      return res.status(400).send('OTP is required');
+    }
+    if (member.otp !== req.body.otp) {
+      return res.status(400).send('OTP do not match');
+    } else {
+      return res.status(200).send('success');
+    }
+  } catch (error) {
+    console.log('error', error);
+    return res.status(404).send('Server error. please try again');
+  }
+};
