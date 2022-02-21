@@ -150,7 +150,7 @@ const SingleOutlet = ({ data }) => {
             )}
           </div>
 
-          <div className='youtube-embed-container'>{parse('')}</div>
+          <div className='youtube-embed-container'>{parse(data.video)}</div>
         </div>
       </div>
     </div>
