@@ -3,11 +3,17 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Geocode from 'react-geocode';
 import BannerSlider from './BannerSlider';
+import Outlet from '../outletListSlider/Outlet';
+import useStore from 'hooks/useStore';
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLEMAP_API_KEY);
 Geocode.enableDebug();
 
 const SingleOutlet = ({ data }) => {
+  const outlets = useStore((state) => state.outlets);
+  const branches = outlets.filter(
+    (e) => e.id !== data.id && e.outletgroupId === data.outletgroupId
+  );
   const [locUrl, setLocUrl] = useState('');
   useEffect(() => {
     if (navigator.geolocation) {
@@ -151,6 +157,18 @@ const SingleOutlet = ({ data }) => {
           </div>
 
           <div className='youtube-embed-container'>{parse(data.video)}</div>
+        </div>
+      </div>
+
+      <div className='outlet-list'>
+        <div className='container'>
+          {branches.length > 0 && (
+            <div className='outlets'>
+              {branches.map((outlet, i) => {
+                return <Outlet key={i} outlet={outlet} logo={outlet.logo} />;
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>
