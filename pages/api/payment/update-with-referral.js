@@ -8,6 +8,7 @@ import moment from 'moment';
 
 export default async function handler(req, res) {
   const date = new Date();
+  console.log(req.body.code);
   try {
     const isReferral = await checkIfReferralExist(req.body.code);
 
