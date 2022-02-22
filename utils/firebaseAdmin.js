@@ -232,7 +232,6 @@ export const addMember = async (req, res) => {
       issueDate,
       expiryDate,
       children: [],
-      favorites: [],
       isSecondaryActive: false,
       points: 0,
       savings: 0,
@@ -355,6 +354,23 @@ export const getMemberByEmail = async (email) => {
     return null;
   }
 };
+export const getMemberByEmailOTP = async (req, res) => {
+  try {
+    let query = db
+      .collection('members')
+      .where('email', '==', req.body.email)
+      .where('otp', '==', req.body.otp);
+    const querySnapshot = await query.get();
+    const member = {
+      ...querySnapshot.docs[0].data(),
+      id: querySnapshot.docs[0].id,
+    };
+
+    res.send(member);
+  } catch (error) {
+    res.status(404).send('Error');
+  }
+};
 
 export const memberPaid = async (email, update) => {
   try {
@@ -462,4 +478,141 @@ export const addRegisterTransaction = async (member) => {
     month,
     day,
   });
+};
+
+export const checkEmailLogin = async (req, res) => {
+  try {
+    let query = db.collection('members').where('email', '==', req.body.email);
+    const querySnapshot = await query.get();
+    // check if email is existing
+    if (!querySnapshot.docs[0]) {
+      return res.status(404).send('Email not found');
+    }
+    const member = querySnapshot.docs[0].data();
+    // check if member is paid
+    if (!member.isPaid) {
+      return res.status(400).send('Please pay your membership first');
+    }
+    // check if member is activated
+    if (member.isActivate) {
+      return res
+        .status(400)
+        .send(
+          'Your account is currently login to different device. Please Contact the YaSalam'
+        );
+    }
+
+    const expiryDate = moment(member.expiryDate);
+    const now = moment();
+
+    if (now > expiryDate) {
+      return res.status(400).send('Your membership expired');
+    } else {
+      return res.status(200).send('success');
+    }
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send('Server error. please try again');
+  }
+};
+
+export const otpLogin = async (req, res) => {
+  try {
+    let query = db.collection('members').where('email', '==', req.body.email);
+    const querySnapshot = await query.get();
+    // check if email is existing
+    if (!querySnapshot.docs[0]) {
+      return res.status(404).send('Email not found');
+    }
+    const member = {
+      ...querySnapshot.docs[0].data(),
+      id: querySnapshot.docs[0].id,
+    };
+
+    if (!req.body.otp) {
+      return res.status(400).send('OTP is required');
+    }
+    if (member.otp !== req.body.otp) {
+      console.log('member', member.otp);
+      console.log('otp', req.body.otp);
+      return res.status(400).send('OTP do not match');
+    } else {
+      const member = await updateActivate(req.body.email);
+      return res.status(200).send(member);
+    }
+  } catch (error) {
+    console.log('error', error);
+    return res.status(404).send('Server error. please try again');
+  }
+};
+
+export const updateActivate = async (email) => {
+  try {
+    let query = db.collection('members').where('email', '==', email);
+    const querySnapshot = await query.get();
+    const member = {
+      ...querySnapshot.docs[0].data(),
+      id: querySnapshot.docs[0].id,
+    };
+    if (!member) {
+      return new Error('Server error');
+    }
+    const update = { isActivate: true };
+
+    await db.collection('members').doc(querySnapshot.docs[0].id).update(update);
+
+    return member;
+  } catch (error) {
+    return new Error('Server error');
+  }
+};
+
+export const buyWithPoints = async (req, res) => {
+  try {
+    let query = db
+      .collection('members')
+      .where('email', '==', req.body.email)
+      .where('otp', '==', req.body.otp);
+    let querySnapshot = await query.get();
+    const member = {
+      ...querySnapshot.docs[0].data(),
+      id: querySnapshot.docs[0].id,
+    };
+    const product = await db.collection('products').doc(req.body.product).get();
+
+    if (member.points < product.data().points) {
+      return res.status(400).send('Points is insufficient');
+    } else if (product.data().quantity < 1) {
+      return res.status(400).send('Product is sold out');
+    } else {
+      await db
+        .collection('products')
+        .doc(req.body.product)
+        .update({ quantity: product.data().quantity - 1 });
+
+      await db
+        .collection('members')
+        .doc(member.id)
+        .update({ points: member.points - product.data().points });
+
+      await db.collection('vouchers').add({
+        memberId: member.id,
+        memberName: member.name,
+        name: product.data().name,
+        image: product.data().image,
+        description: product.data().description,
+        claimed: false,
+        boughtAt: moment(new Date()).format('YYYY-MM-DD'),
+        createdAt: new Date(),
+        year: moment(new Date()).format('YYYY'),
+        month: moment(new Date()).format('MM'),
+        day: moment(new Date()).format('DD'),
+      });
+    }
+
+    res.send('nice');
+  } catch (error) {
+    console.log(error);
+    res.send('not nice');
+  }
 };

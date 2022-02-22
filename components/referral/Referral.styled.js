@@ -1,4 +1,4 @@
-import tw from "tailwind-styled-components";
+import tw from 'tailwind-styled-components';
 
 export const Container = tw.div`
     relative 
@@ -49,7 +49,7 @@ export const Title = tw.div`
     uppercase
 `;
 
-export const Form = tw.div`
+export const Form = tw.form`
     flex
     flex-col
     gap-4
