@@ -514,12 +514,33 @@ export const otpLogin = async (req, res) => {
       return res.status(400).send('OTP is required');
     }
     if (member.otp !== req.body.otp) {
+      console.log('member', member.otp);
+      console.log('otp', req.body.otp);
       return res.status(400).send('OTP do not match');
     } else {
-      return res.status(200).send('success');
+      const member = await updateActivate(req.body.email);
+      return res.status(200).send(member);
     }
   } catch (error) {
     console.log('error', error);
     return res.status(404).send('Server error. please try again');
+  }
+};
+
+export const updateActivate = async (email) => {
+  try {
+    let query = db.collection('members').where('email', '==', email);
+    const querySnapshot = await query.get();
+    const member = querySnapshot.docs[0].data();
+    if (!member) {
+      return new Error('Server error');
+    }
+    const update = { isActivate: true };
+
+    await db.collection('members').doc(querySnapshot.docs[0].id).update(update);
+
+    return member;
+  } catch (error) {
+    return new Error('Server error');
   }
 };
