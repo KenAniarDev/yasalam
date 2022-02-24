@@ -85,9 +85,12 @@ export default function individual() {
         if (existing.data) {
           return toast.error('Email already exist');
         } else {
-          await axios.post('../api/createMember', formValues);
+          await axios.post('../api/create-secondary', {
+            ...formValues,
+            ...router.query,
+          });
           return router.push(
-            `/create-account-success?email=${formValues.email}`
+            `/create-secondary-account-success?email=${formValues.email}`
           );
         }
       } catch (error) {
@@ -97,6 +100,7 @@ export default function individual() {
   };
 
   useEffect(() => {
+    console.log();
     if (router.asPath !== router.route) {
       console.log(router.query.id);
       console.log(router.query.otp);

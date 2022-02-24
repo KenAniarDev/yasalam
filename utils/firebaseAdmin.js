@@ -233,6 +233,7 @@ export const addMember = async (req, res) => {
       expiryDate,
       children: [],
       isSecondaryActive: false,
+      secondaryId: '',
       points: 0,
       savings: 0,
       isActivate: false,
@@ -282,9 +283,16 @@ export const addMember = async (req, res) => {
   }
 };
 export const addSecondary = async (req, res) => {
-  try {
-    const date = new Date();
+  const date = new Date();
 
+  try {
+    const mainAccount = await db.collection('members').doc(req.body.id).get();
+    if (!(mainAccount.data().otp === req.body.otp)) {
+      return res.status(400).send('Error Wrong OTP');
+    }
+    if (!mainAccount.data().isPaid) {
+      return res.status(400).send('Error Main Account not Paid');
+    }
     const {
       firstname,
       middlename,
@@ -298,6 +306,7 @@ export const addSecondary = async (req, res) => {
       frontimageID,
       backimageID,
       userType,
+      id,
     } = req.body;
 
     const otp = generateRandomStrings(6, 'otp');
@@ -305,9 +314,6 @@ export const addSecondary = async (req, res) => {
     const year = moment(date).format('YYYY');
     const month = moment(date).format('MM');
     const day = moment(date).format('DD');
-
-    const issueDate = moment(date).format('YYYY-MM-DD');
-    const expiryDate = moment(date).format('YYYY-MM-DD');
 
     //   const expiryDate = new Date(2022, 0, 3)
     // const currentDate = new Date()
@@ -327,51 +333,83 @@ export const addSecondary = async (req, res) => {
       backimageID,
       userType,
       otp,
-      issueDate,
-      expiryDate,
+      issueDate: mainAccount.data().issueDate,
+      expiryDate: mainAccount.data().expiryDate,
       children: [],
       isSecondaryActive: false,
       points: 0,
       savings: 0,
       isActivate: false,
-      isPaid: false,
+      isPaid: true,
       notificationToken: '',
       createdAt: date,
       year,
       month,
       day,
+      mainAccountId: id,
+      mainAccountEmail: mainAccount.data().email,
+      mainAccountOTP: mainAccount.data().otp,
     });
 
-    const link = `${req.headers.origin}/api/payment/${docRef.id}`;
+    const message = `Hi ${name}! <br />
+      Welcome to YaSalam  <br /> <br />
 
-    const message = `Hi ${name}! Thank you for availing Yasalam Membership.  You may continue to the payment of your membership in this link: ${link}`;
-    const htmlMessage = `Dear  ${name}!
-   <br /> <br />
-   Your one click away!!!
-   Your Yasalam Membership registration is complete.<br>
-   Please click on the link below to proceed and make your membership payment.<br><br>
+      UAE’s leading lifestyle membership platform. <br/> <br/>
 
-   <a href="${link}"> ${link}</a>
- 
-   <br><br>
+      Your YaSalam account OTP is ${otp}<br/>
+      Please don’t share your one time password (OTP) with anyone.<br/> <br/>
 
-   Feel free to contact our team if you need any help or support. <br/>
-   support@yasalamae.ae.
+      Get started and be “YaSalam” in 3 easy steps <br/><br/>
+      1-	Download YaSalam App
+      2-	Login by using your email and your OTP
+      3-	Start Exploring and enjoy.
 
-   <br><br>
+      <br/><br/>
+      Please feel free to contact our support team if you need any help <br/>
+       support@yasalamae.ae .
 
-   Sincerely, 
-   <br>
-   Yasalam Team`;
+       <br/><br/><br/>
+       Stay healthy and YaSalam
 
+       <br/><br/>
+      Sincerely,  <br/>
+      YaSalam Team`;
+    const htmlMessage = `Hi ${name}! <br />
+      Welcome to YaSalam  <br /> <br />
+
+      UAE’s leading lifestyle membership platform. <br/> <br/>
+
+      Your YaSalam account OTP is ${otp}<br/>
+      Please don’t share your one time password (OTP) with anyone.<br/> <br/>
+
+      Get started and be “YaSalam” in 3 easy steps <br/><br/>
+      1-	Download YaSalam App
+      2-	Login by using your email and your OTP
+      3-	Start Exploring and enjoy.
+
+      <br/><br/>
+      Please feel free to contact our support team if you need any help <br/>
+       support@yasalamae.ae .
+
+       <br/><br/><br/>
+       Stay healthy and YaSalam
+
+       <br/><br/>
+      Sincerely,  <br/>
+      YaSalam Team`;
     const mailOptions = {
       from: 'confirmation@yasalamae.ae',
-      to: req.body.email,
-      subject: `Welcome to Yasalam ${userType} Membership - Account Activation`,
+      to: email,
+      subject: `Welcome to Yasalam Family Membership - Account Activation`,
       text: message,
       html: htmlMessage,
     };
     mailHelper(mailOptions);
+
+    await db
+      .collection('members')
+      .doc(id)
+      .update({ isSecondaryActive: true, secondaryId: docRef.id });
 
     return res.status(201).send(true);
   } catch (error) {
