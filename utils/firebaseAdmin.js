@@ -281,6 +281,104 @@ export const addMember = async (req, res) => {
     return res.send('Error');
   }
 };
+export const addSecondary = async (req, res) => {
+  try {
+    const date = new Date();
+
+    const {
+      firstname,
+      middlename,
+      lastname,
+      email,
+      mobileNumber,
+      birthdate,
+      nationality,
+      gender,
+      employerDetails,
+      frontimageID,
+      backimageID,
+      userType,
+    } = req.body;
+
+    const otp = generateRandomStrings(6, 'otp');
+
+    const year = moment(date).format('YYYY');
+    const month = moment(date).format('MM');
+    const day = moment(date).format('DD');
+
+    const issueDate = moment(date).format('YYYY-MM-DD');
+    const expiryDate = moment(date).format('YYYY-MM-DD');
+
+    //   const expiryDate = new Date(2022, 0, 3)
+    // const currentDate = new Date()
+    // console.log(currentDate > expiryDate)
+
+    const name = firstname + ' ' + middlename + ' ' + lastname;
+
+    const docRef = await db.collection('members').add({
+      name,
+      email,
+      mobileNumber,
+      birthdate: moment(birthdate).format('YYYY-MM-DD'),
+      nationality,
+      gender,
+      employerDetails,
+      frontimageID,
+      backimageID,
+      userType,
+      otp,
+      issueDate,
+      expiryDate,
+      children: [],
+      isSecondaryActive: false,
+      points: 0,
+      savings: 0,
+      isActivate: false,
+      isPaid: false,
+      notificationToken: '',
+      createdAt: date,
+      year,
+      month,
+      day,
+    });
+
+    const link = `${req.headers.origin}/api/payment/${docRef.id}`;
+
+    const message = `Hi ${name}! Thank you for availing Yasalam Membership.  You may continue to the payment of your membership in this link: ${link}`;
+    const htmlMessage = `Dear  ${name}!
+   <br /> <br />
+   Your one click away!!!
+   Your Yasalam Membership registration is complete.<br>
+   Please click on the link below to proceed and make your membership payment.<br><br>
+
+   <a href="${link}"> ${link}</a>
+ 
+   <br><br>
+
+   Feel free to contact our team if you need any help or support. <br/>
+   support@yasalamae.ae.
+
+   <br><br>
+
+   Sincerely, 
+   <br>
+   Yasalam Team`;
+
+    const mailOptions = {
+      from: 'confirmation@yasalamae.ae',
+      to: req.body.email,
+      subject: `Welcome to Yasalam ${userType} Membership - Account Activation`,
+      text: message,
+      html: htmlMessage,
+    };
+    mailHelper(mailOptions);
+
+    return res.status(201).send(true);
+  } catch (error) {
+    console.log(error);
+    return res.send('Error');
+  }
+};
 export const resendPaymentEmail = async (req, res) => {
   try {
     let query = db.collection('members').where('email', '==', req.body.email);
@@ -613,6 +711,101 @@ export const buyWithPoints = async (req, res) => {
     res.send('nice');
   } catch (error) {
     console.log(error);
-    res.send('not nice');
+    res.status(400).send('Error please Try again');
+  }
+};
+
+export const addChild = async (req, res) => {
+  try {
+    let query = db
+      .collection('members')
+      .where('email', '==', req.body.email)
+      .where('otp', '==', req.body.otp);
+    let querySnapshot = await query.get();
+    const member = {
+      ...querySnapshot.docs[0].data(),
+      id: querySnapshot.docs[0].id,
+    };
+    if (member.children.length === 3) {
+      return res.status(400).send('You can only add 3 children');
+    }
+    if (member.userType !== 'family') {
+      return res
+        .status(400)
+        .send('Error only family account can have children');
+    }
+    const update = {
+      children: [
+        ...member.children,
+        {
+          name: req.body.name,
+          gender: req.body.gender,
+          age: req.body.age,
+          birthdate: req.body.birthdate,
+        },
+      ],
+    };
+
+    await db.collection('members').doc(member.id).update(update);
+
+    res.send('nice');
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('Server Error. Please try again');
+  }
+};
+
+export const addFavorite = async (req, res) => {
+  try {
+    let query = db
+      .collection('members')
+      .where('email', '==', req.body.email)
+      .where('otp', '==', req.body.otp);
+    let querySnapshot = await query.get();
+    const member = {
+      ...querySnapshot.docs[0].data(),
+      id: querySnapshot.docs[0].id,
+    };
+    if (member.favorites.includes(req.body.outletId)) {
+      return res.status(400).send('Outlet is already in favorites');
+    }
+
+    const update = {
+      favorites: [...member.favorites, req.body.outletId],
+    };
+
+    await db.collection('members').doc(member.id).update(update);
+
+    res.send('nice');
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('Server Error. Please try again');
+  }
+};
+
+export const deleteFavorite = async (req, res) => {
+  try {
+    let query = db
+      .collection('members')
+      .where('email', '==', req.body.email)
+      .where('otp', '==', req.body.otp);
+    let querySnapshot = await query.get();
+    const member = {
+      ...querySnapshot.docs[0].data(),
+      id: querySnapshot.docs[0].id,
+    };
+
+    const newFav = member.favorites.filter((e) => e !== req.body.outletId);
+
+    const update = {
+      favorites: [...newFav],
+    };
+
+    await db.collection('members').doc(member.id).update(update);
+
+    res.send('nice');
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('Server Error. Please try again');
   }
 };
