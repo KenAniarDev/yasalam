@@ -854,6 +854,7 @@ export const updateWithReferral = async (req, res) => {
     const isReferral = await checkIfReferralExist(req.body.code);
 
     if (!isReferral) {
+      console.log(isReferral);
       return res.status(400).send('Invalid referral');
     }
     const member = await getMemberByEmail(req.body.email);
@@ -880,5 +881,15 @@ export const updateWithReferral = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).send('Error Please Try Again');
+  }
+};
+
+export const getMemberInfo = async (req, res) => {
+  try {
+    const member = await getMember(req.query.id);
+    if (!member) return res.status(404).send('User not found');
+    return res.send(member);
+  } catch (error) {
+    return res.status(404).send('User not found');
   }
 };

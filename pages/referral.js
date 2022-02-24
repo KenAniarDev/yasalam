@@ -29,6 +29,7 @@ export default function PaymentForm() {
       console.log(result);
       return toast.success('Account Activated!!!');
     } catch (error) {
+      console.log(error);
       return toast.error(error.response.data);
     }
   };
