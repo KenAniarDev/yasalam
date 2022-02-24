@@ -196,7 +196,7 @@ export default function individual() {
                     onChange={(e) =>
                       setFormValues({
                         ...formValues,
-                        email: e.target.value.toLocaleLowerCase(),
+                        email: e.target.value.trim().toLocaleLowerCase(),
                       })
                     }
                   />

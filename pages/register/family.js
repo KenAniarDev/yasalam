@@ -193,12 +193,12 @@ export default function individual() {
                     placeholder='email'
                     className='input input-bordered'
                     value={formValues.email}
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setFormValues({
                         ...formValues,
-                        email: e.target.value.toLocaleLowerCase(),
-                      })
-                    }
+                        email: e.target.value.trim().toLocaleLowerCase(),
+                      });
+                    }}
                   />
                 </div>
                 <div className='form-control flex-grow ml-1'>
