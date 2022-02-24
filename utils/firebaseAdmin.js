@@ -336,6 +336,7 @@ export const addSecondary = async (req, res) => {
       otp,
       issueDate: mainAccount.data().issueDate,
       expiryDate: mainAccount.data().expiryDate,
+      favorites: [],
       children: [],
       isSecondaryActive: false,
       points: 0,
