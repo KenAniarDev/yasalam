@@ -21,8 +21,8 @@ export default function PaymentForm() {
     e.preventDefault();
     try {
       const result = await axios.post(`../api/payment/update-with-referral`, {
-        code: code.trim(),
-        email: email.trim(),
+        code,
+        email,
       });
       setEmail('');
       setCode('');
@@ -57,7 +57,7 @@ export default function PaymentForm() {
                 placeholder='Enter email address'
                 className='w-full max-w-xs input'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.trim())}
               />
               <input
                 type='text'
@@ -66,7 +66,7 @@ export default function PaymentForm() {
                 placeholder='Enter code'
                 className='w-full max-w-xs input'
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={(e) => setCode(e.target.value.trim())}
               />
               <button className='btn btn-primary' type='submit'>
                 Activate
