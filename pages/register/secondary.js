@@ -133,7 +133,7 @@ export default function individual() {
               />
             </figure>
             <h2 className='text-2xl text-center mt-4 font-semibold uppercase'>
-              Register as Secondary Member
+              Add Secondary Member
             </h2>
             <form onSubmit={(e) => handleSubmit(e)}>
               <div className='md:flex'>
@@ -305,6 +305,7 @@ export default function individual() {
                   <label className='btn btn-primary mt-2'>
                     Upload Image ID Front (Required)
                     <input
+                      accept='image/*'
                       type='file'
                       className='invisible w-0'
                       onChange={(e) => {
@@ -327,6 +328,7 @@ export default function individual() {
                   <label className='btn btn-primary mt-2'>
                     Upload Image ID Back (Required)
                     <input
+                      accept='image/*'
                       type='file'
                       className='invisible w-0'
                       onChange={(e) => {
