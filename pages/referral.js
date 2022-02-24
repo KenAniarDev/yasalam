@@ -21,8 +21,8 @@ export default function PaymentForm() {
     e.preventDefault();
     try {
       const result = await axios.post(`../api/payment/update-with-referral`, {
-        code,
-        email,
+        code: code.trim(),
+        email: email.trim(),
       });
       setEmail('');
       setCode('');
