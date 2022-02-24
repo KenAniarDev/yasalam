@@ -13,24 +13,15 @@ export default async function handler(req, res) {
     const isReferral = await checkIfReferralExist(req.body.code);
 
     if (!isReferral) {
-      return res.redirect(
-        303,
-        `${req.headers.origin}/error-page?error=referral not exist`
-      );
+      return res.status(400).send('Invalid referral');
     }
     const member = await getMemberByEmail(req.body.email);
     if (!member) {
-      return res.redirect(
-        303,
-        `${req.headers.origin}/error-page?error=user not found`
-      );
+      return res.status(400).send('User not found');
     }
 
     if (member.isPaid) {
-      return res.redirect(
-        303,
-        `${req.headers.origin}/error-page?error=user already paid`
-      );
+      return res.status(400).send('User already paid');
     }
 
     const issueDate = moment(date).format('YYYY-MM-DD');
@@ -44,12 +35,9 @@ export default async function handler(req, res) {
 
     await deleteReferral(req.body.code);
 
-    return res.redirect(303, `${req.headers.origin}/payment-success`);
+    return res.status(200).send('Activated');
   } catch (error) {
     console.log(error);
-    return res.redirect(
-      303,
-      `${req.headers.origin}/error-page?error=user not found`
-    );
+    return res.status(400).send('Error Please Try Again');
   }
 }
