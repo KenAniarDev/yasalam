@@ -231,6 +231,7 @@ export const addMember = async (req, res) => {
       otp,
       issueDate,
       expiryDate,
+      favorites: [],
       children: [],
       isSecondaryActive: false,
       secondaryId: '',
