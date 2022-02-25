@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import baseUrl from 'utils/baseUrl';
 import toast from 'react-hot-toast';
 
 export default function CreateAccountPage() {
@@ -8,8 +9,9 @@ export default function CreateAccountPage() {
   const [email, setEmail] = useState(null);
 
   const resend = async () => {
+    console.log('resend');
     try {
-      await axios.post(`../api/member/resend`, {
+      await axios.post(`${baseUrl}/member/resend-payment-link`, {
         email,
       });
       toast.success('Success');

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Container from '../../components/admin/';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import baseUrl from 'utils/baseUrl';
 import { useStore } from '../../components/admin/';
 import { getOutlets } from '../../utils/firebase';
 
@@ -25,7 +26,7 @@ function PageContent({ user }) {
     setLoading(true);
     try {
       const idToken = await user.getIdToken(true);
-      const users = await axios.post('../api/manager', { idToken });
+      const users = await axios.post(`${baseUrl}/manager`, { idToken });
       const userManager = users.data.users.filter((element) => {
         if (
           typeof element.customClaims !== 'undefined' &&

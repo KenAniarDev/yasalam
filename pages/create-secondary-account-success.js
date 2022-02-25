@@ -1,29 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-
 export default function CreateAccountPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState(null);
-
-  const resend = async () => {
-    try {
-      await axios.post(`../api/member/resend`, {
-        email,
-      });
-      toast.success('Success');
-    } catch (error) {
-      console.log(error);
-      toast.error('Error resending email');
-    }
-  };
-
-  useEffect(() => {
-    if (router.asPath !== router.route) {
-      setEmail(router.query.email);
-    }
-  }, [router]);
   return (
     <>
       <div className='container'>

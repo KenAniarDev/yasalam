@@ -5,6 +5,7 @@ const QrReader = dynamic(() => import('modern-react-qr-reader'), {
 });
 import Container from '../../components/manager/';
 import axios from 'axios';
+import baseUrl from 'utils/baseUrl';
 import toast from 'react-hot-toast';
 import { addVisit, db, decreaseIncreaseVisit } from '../../utils/firebase';
 import { onSnapshot, doc } from 'firebase/firestore';
@@ -21,7 +22,7 @@ function PageContent({ outlet }) {
       setIsHandlingScan(true);
 
       try {
-        const result = await axios(`/api/member/info?id=${data}`);
+        const result = await axios.get(`${baseUrl}/member/get-info/${data}`);
         const member = result.data;
         if (member) {
           setMember(member);

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Container from '../../components/admin/';
 import { useStore } from '../../components/admin/';
 import axios from 'axios';
+import baseUrl from 'utils/baseUrl';
 import toast from 'react-hot-toast';
 
 function PageContent({ user }) {
@@ -12,7 +13,7 @@ function PageContent({ user }) {
     e.preventDefault();
     try {
       const idToken = await user.getIdToken(true);
-      await axios.post('../api/admin/changepassword', {
+      await axios.post(`${baseUrl}/admin/change-password`, {
         idToken,
         password,
       });

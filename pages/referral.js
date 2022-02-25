@@ -11,6 +11,7 @@ import {
   Wrapper,
 } from '../components/referral/Referral.styled';
 import axios from 'axios';
+import baseUrl from 'utils/baseUrl';
 import toast from 'react-hot-toast';
 
 export default function PaymentForm() {
@@ -20,10 +21,13 @@ export default function PaymentForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await axios.post(`../api/payment/update-with-referral`, {
-        code,
-        email,
-      });
+      const result = await axios.post(
+        `${baseUrl}/member/activate-with-referral`,
+        {
+          code,
+          email,
+        }
+      );
       setEmail('');
       setCode('');
       console.log(result);
