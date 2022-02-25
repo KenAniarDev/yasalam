@@ -62,10 +62,10 @@ const sidebarLinks = [
     title: 'Product History',
     link: '/admin/producthistory',
   },
-  {
-    title: 'Notification',
-    link: '/admin/notification',
-  },
+  // {
+  //   title: 'Notification',
+  //   link: '/admin/notification',
+  // },
   {
     title: 'Account Setting',
     link: '/admin/account',
