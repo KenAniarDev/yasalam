@@ -7,6 +7,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <h1>Testing Tables</h1>
       <SampleTable />
     </div>
   );
