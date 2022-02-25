@@ -60,7 +60,7 @@ export default function PaymentForm() {
                 placeholder='Enter email address'
                 className='w-full max-w-xs input'
                 value={email}
-                onChange={(e) => setEmail(e.target.value.trim())}
+                onChange={(e) => setEmail(e.target.value.toLowerCase())}
               />
               <input
                 type='text'
