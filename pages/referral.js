@@ -1,5 +1,4 @@
 import NavFooter from 'components/NavFooter';
-import Referral from 'components/referral/Referral';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import {
