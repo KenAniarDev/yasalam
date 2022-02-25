@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import PhoneInput from 'react-phone-number-input';
+import baseUrl from '../../utils/baseUrl';
 
 export default function individual() {
   const router = useRouter();
@@ -82,11 +83,13 @@ export default function individual() {
         return toast.error('Please Upload Back Image ID');
 
       try {
-        const existing = await axios.get(`../api/member/${formValues.email}`);
+        const existing = await axios.get(
+          `${baseUrl}/member/${formValues.email}`
+        );
         if (existing.data) {
           return toast.error('Email already exist');
         } else {
-          await axios.post('../api/createMember', formValues);
+          await axios.post(`${baseUrl}/member/create`, formValues);
           return router.push(
             `/create-account-success?email=${formValues.email}`
           );
