@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }) {
           type='text/css'
           href='https://pro.fontawesome.com/releases/v5.10.0/css/all.css'
         />
+        <title>YaSalamAE</title>
       </Head>
       <Toaster />
       <Component {...pageProps} />
