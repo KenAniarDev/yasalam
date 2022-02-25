@@ -43,7 +43,7 @@ function PageContent({ user }) {
     e.preventDefault();
     try {
       const idToken = await user.getIdToken(true);
-      await axios.post('../api/admin/create', {
+      await axios.post(`${baseUrl}/admin/create`, {
         idToken,
         email,
         password,
@@ -62,7 +62,7 @@ function PageContent({ user }) {
   const deleteManager = async (uid) => {
     try {
       const idToken = await user.getIdToken(true);
-      await axios.post('../api/manager/delete', {
+      await axios.post(`${baseUrl}/manager/delete`, {
         idToken,
         uid,
       });

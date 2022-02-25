@@ -6,6 +6,7 @@ import axios from 'axios';
 import baseUrl from 'utils/baseUrl';
 import { useStore } from '../../components/admin/';
 import { getOutlets } from '../../utils/firebase';
+import base from 'daisyui/dist/base';
 
 function PageContent({ user }) {
   const [managers, setManagers] = useState([]);
@@ -57,7 +58,7 @@ function PageContent({ user }) {
     const outlet = outlets.find((e) => (e.id = selectedOutlet));
     try {
       const idToken = await user.getIdToken(true);
-      await axios.post('../api/manager/create', {
+      await axios.post(`${baseUrl}/manager/create`, {
         idToken,
         email,
         password,
@@ -80,7 +81,7 @@ function PageContent({ user }) {
     e.preventDefault();
     try {
       const idToken = await user.getIdToken(true);
-      await axios.post('../api/manager/changepassword', {
+      await axios.post(`${baseUrl}/manager/change-password`, {
         idToken,
         password,
         uid: updateMember,
@@ -100,7 +101,7 @@ function PageContent({ user }) {
   const deleteManager = async (uid) => {
     try {
       const idToken = await user.getIdToken(true);
-      await axios.post('../api/manager/delete', {
+      await axios.post(`${baseUrl}/manager/delete`, {
         idToken,
         uid,
       });
