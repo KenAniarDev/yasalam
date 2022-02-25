@@ -362,7 +362,7 @@ export const getAllMembersByMonth = async (year, month) => {
         data.push({ ...doc.data(), id: doc.id });
       });
       data = data.sort(function (a, b) {
-        return b.createdAt.toMillis() - a.createdAt.toMillis();
+        return b.createdAt - a.createdAt;
       });
       return data;
     });
@@ -387,7 +387,7 @@ export const getAllMembersCurrentDay = async (year, month, day) => {
         data.push({ ...doc.data(), id: doc.id });
       });
       data = data.sort(function (a, b) {
-        return b.createdAt.toMillis() - a.createdAt.toMillis();
+        return b.createdAt - a.createdAt;
       });
       return data;
     });
