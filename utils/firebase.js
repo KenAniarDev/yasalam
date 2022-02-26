@@ -25,12 +25,12 @@ import moment from 'moment';
 import { generateRandomStrings } from './functionHelpers';
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_APP_ID,
+  apiKey: 'AIzaSyAlrDpegDFfYgU-8GYApeiKQ5z5Wk8TNVc',
+  authDomain: 'yasalam-55cc7.firebaseapp.com',
+  projectId: 'yasalam-55cc7',
+  storageBucket: 'yasalam-55cc7.appspot.com',
+  messagingSenderId: '233663621621',
+  appId: '1:233663621621:web:187c881f8ab738351bd8bc',
 };
 
 export const app = initializeApp(firebaseConfig);

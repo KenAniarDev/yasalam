@@ -7,7 +7,7 @@ import {
 } from 'react-google-maps';
 import Geocode from 'react-geocode';
 
-Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY);
+Geocode.setApiKey('AIzaSyDEBUtSVIrFKh7VsWsJ3mKFk8-a-YlgfAg');
 Geocode.enableDebug();
 
 const GmapDragMarkers = React.memo(function mark(props) {
