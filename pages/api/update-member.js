@@ -12,12 +12,12 @@ export const config = {
 export default async function handler(req, res) {
   const date = new Date();
   const stripe = new Stripe(
-    'sk_test_51K0JgtIiGYm0gLPF62OL2gSgrX0UyACDRdaJ8CUDKLBBNwhRhQJdxoC0RbEA3ajgukiF9eERY0YAw67gboPrNsMh00O8Ekyttn'
+    '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'
   );
   if (req.method === 'POST') {
     const buf = await buffer(req);
     const sig = req.headers['stripe-signature'];
-    const webhookSecret = 'whsec_O50eVOfEy2rzqRT1qa3b1U91XNLEv317';
+    const webhookSecret = 'whsec_FzptixdP3CMwCM14LTiaqMExzV63O290';
 
     let event;
 

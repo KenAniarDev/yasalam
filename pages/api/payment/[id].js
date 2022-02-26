@@ -1,5 +1,5 @@
 const stripe = require('stripe')(
-  'sk_test_51K0JgtIiGYm0gLPF62OL2gSgrX0UyACDRdaJ8CUDKLBBNwhRhQJdxoC0RbEA3ajgukiF9eERY0YAw67gboPrNsMh00O8Ekyttn'
+  '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'
 );
 import { getMember } from '../../../utils/firebaseAdmin';
 
@@ -33,8 +33,8 @@ export default async function handler(req, res) {
         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
         price:
           member.userType === 'individual'
-            ? 'price_1KXECIIiGYm0gLPFL6UxbaCc'
-            : 'price_1KXEBjIiGYm0gLPFZQLuv305',
+            ? 'price_1KXESmIiGYm0gLPFfd0DpQSn'
+            : 'price_1KXERzIiGYm0gLPFIZXTjuji',
         quantity: 1,
       },
     ],
