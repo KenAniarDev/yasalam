@@ -11,14 +11,13 @@ export const config = {
 
 export default async function handler(req, res) {
   const date = new Date();
-  const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
+  const stripe = new Stripe(
+    'sk_test_51K0JgtIiGYm0gLPF62OL2gSgrX0UyACDRdaJ8CUDKLBBNwhRhQJdxoC0RbEA3ajgukiF9eERY0YAw67gboPrNsMh00O8Ekyttn'
+  );
   if (req.method === 'POST') {
     const buf = await buffer(req);
     const sig = req.headers['stripe-signature'];
-    const webhookSecret =
-      process.env.NODE_ENV == 'development'
-        ? process.env.STRIPE_WEBHOOK_SIGNING_SECRET_LOCAL
-        : process.env.STRIPE_WEBHOOK_SIGNING_SECRET_PROD;
+    const webhookSecret = 'we_1KXE9TIiGYm0gLPFbmXbGRAG';
 
     let event;
 
