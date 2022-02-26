@@ -38,7 +38,7 @@ export default function CreateAccountPage() {
                 type='email'
                 placeholder='Enter Your Email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.toLowerCase())}
                 className='input input-bordered'
                 required
               />
