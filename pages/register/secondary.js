@@ -17,6 +17,10 @@ import baseUrl from '../../utils/baseUrl';
 export default function individual() {
   const router = useRouter();
   const date = new Date();
+  const [frontimageID, setFrontimageID] = useState('');
+  const [backimageID, setBackimageID] = useState('');
+  const [isFrontUploading, setIsFrontUploading] = useState(false);
+  const [isBackUploading, setIsBackUploading] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
   const [formValues, setFormValues] = useState({
     firstname: '',
@@ -31,17 +35,15 @@ export default function individual() {
     ),
     nationality: nationalities[0].name,
     employerDetails: '',
-    frontimageID: '',
-    backimageID: '',
     userType: 'secondary', // individual || family || secondary
   });
 
-  const uploadImage = (file, type) => {
+  const uploadImageFront = (file, type) => {
     if (!file) return;
 
     const storageRef = ref(storage, `members/${Date.now() + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+    setIsFrontUploading(true);
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -54,12 +56,32 @@ export default function individual() {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
-          if (type === 'front') {
-            setFormValues({ ...formValues, frontimageID: url });
-          } else {
-            setFormValues({ ...formValues, backimageID: url });
-          }
+          setFrontimageID(url);
+          setIsFrontUploading(false);
+        });
+      }
+    );
+  };
+  const uploadImageBack = (file, type) => {
+    if (!file) return;
+
+    const storageRef = ref(storage, `members/${Date.now() + file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    setIsBackUploading(true);
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      },
+      (err) => {
+        return err;
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          setBackimageID(url);
+          setIsBackUploading(false);
         });
       }
     );
@@ -76,9 +98,9 @@ export default function individual() {
           'Please check your age. you must be atleast 18 years old'
         );
 
-      if (formValues.frontimageID.length === 0)
+      if (frontimageID.length === 0)
         return toast.error('Please Upload Front Image ID');
-      if (formValues.backimageID.length === 0)
+      if (backimageID.length === 0)
         return toast.error('Please Upload Back Image ID');
 
       try {
@@ -90,6 +112,8 @@ export default function individual() {
         } else {
           await axios.post(`${baseUrl}/member/create-secondary`, {
             ...formValues,
+            frontimageID,
+            backimageID,
             ...router.query,
           });
           return router.push(
@@ -295,9 +319,9 @@ export default function individual() {
               </div>
               <div className='flex flex-wrap justify-center mt-6'>
                 <div className='flex flex-col justify-center items-center mt-4 mx-2'>
-                  {formValues.frontimageID.length > 1 && (
+                  {frontimageID.length > 1 && (
                     <Image
-                      src={formValues.frontimageID}
+                      src={frontimageID}
                       alt='Logo'
                       width={150}
                       height={150}
@@ -305,22 +329,28 @@ export default function individual() {
                     />
                   )}
 
-                  <label className='btn btn-primary mt-2'>
+                  <label
+                    className={
+                      !isFrontUploading
+                        ? 'btn btn-primary mt-2'
+                        : 'btn btn-primary mt-2 loading'
+                    }
+                  >
                     Upload Image ID Front (Required)
                     <input
                       accept='image/*'
                       type='file'
                       className='invisible w-0'
                       onChange={(e) => {
-                        uploadImage(e.target.files[0], 'front');
+                        uploadImageFront(e.target.files[0], 'front');
                       }}
                     />
                   </label>
                 </div>
                 <div className='flex flex-col justify-center items-center mt-4 mx-2'>
-                  {formValues.backimageID.length > 1 && (
+                  {backimageID.length > 1 && (
                     <Image
-                      src={formValues.backimageID}
+                      src={backimageID}
                       alt='Logo'
                       width={150}
                       height={150}
@@ -328,14 +358,20 @@ export default function individual() {
                     />
                   )}
 
-                  <label className='btn btn-primary mt-2'>
+                  <label
+                    className={
+                      !isBackUploading
+                        ? 'btn btn-primary mt-2'
+                        : 'btn btn-primary mt-2 loading'
+                    }
+                  >
                     Upload Image ID Back (Required)
                     <input
                       accept='image/*'
                       type='file'
                       className='invisible w-0'
                       onChange={(e) => {
-                        uploadImage(e.target.files[0], 'back');
+                        uploadImageBack(e.target.files[0], 'back');
                       }}
                     />
                   </label>

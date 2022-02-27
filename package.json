@@ -40,6 +40,7 @@
     "react-slick": "^0.28.1",
     "react-spinners": "^0.11.0",
     "react-table": "^7.7.0",
+    "sharp": "^0.30.1",
     "stripe": "^8.202.0",
     "styled-components": "^5.3.3",
     "use-onclickoutside": "^0.4.0",
