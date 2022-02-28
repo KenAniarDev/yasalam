@@ -61,3 +61,6 @@ img.left-img {
     padding-bottom: 100px;
   }
 }
+#goog-gt-tt {
+  display: none !important;
+}
