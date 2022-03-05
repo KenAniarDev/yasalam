@@ -16,7 +16,7 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
-const VisitTable = ({ dataDb, COLUMNS, hiddenColumns = [] }) => {
+const Table = ({ dataDb, COLUMNS, hiddenColumns = [] }) => {
   const columns = useMemo(() => COLUMNS, []);
   // const data = useMemo(() => MOCK_DATA, [])
   const data = useMemo(() => dataDb, []);
@@ -164,4 +164,4 @@ const VisitTable = ({ dataDb, COLUMNS, hiddenColumns = [] }) => {
   );
 };
 
-export default VisitTable;
+export default Table;

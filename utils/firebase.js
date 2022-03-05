@@ -51,6 +51,7 @@ export const transactionColRef = collection(db, 'transactions');
 export const memberColRef = collection(db, 'members');
 export const referralColRef = collection(db, 'referrals');
 export const productColRef = collection(db, 'products');
+export const voucherColRef = collection(db, 'vouchers');
 export const registerTransactionsColRef = collection(
   db,
   'registerTransactions'
@@ -746,6 +747,74 @@ export const getAllVisitsCurrentDayByOutlet = async (
       });
       data = data.sort(function (a, b) {
         return b.createdAt.toMillis() - a.createdAt.toMillis();
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+
+// GET PRODUCT HISTORY
+export const getAllProductHistory = async () => {
+  try {
+    const q = query(voucherColRef, orderBy('createdAt', 'desc'));
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllProductHistoryByMonth = async (year, month) => {
+  try {
+    const q = query(
+      voucherColRef,
+      where('year', '==', year),
+      where('month', '==', month)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt - a.createdAt;
+      });
+      return data;
+    });
+
+    return members;
+  } catch (error) {
+    console.log(error);
+    return new Error('error');
+  }
+};
+export const getAllProductHistoryCurrentDay = async (year, month, day) => {
+  try {
+    const q = query(
+      voucherColRef,
+      where('year', '==', year),
+      where('month', '==', month),
+      where('day', '==', day)
+    );
+    const members = await getDocs(q).then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      data = data.sort(function (a, b) {
+        return b.createdAt - a.createdAt;
       });
       return data;
     });

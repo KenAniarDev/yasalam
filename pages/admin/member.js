@@ -9,41 +9,167 @@ import {
 import toast from 'react-hot-toast';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
+import axios from 'axios';
+import baseUrl from 'utils/baseUrl';
+import { useStore } from '../../components/admin/';
 
-const COLUMNS = [
-  {
-    Header: 'Name',
-    accessor: 'name',
-  },
-  {
-    Header: 'Email',
-    accessor: 'email',
-  },
-  {
-    Header: 'Account Type',
-    accessor: 'userType',
-  },
-  {
-    Header: 'Paid',
-    accessor: 'paid',
-  },
-  {
-    Header: 'Issued Date',
-    accessor: 'issueDate',
-  },
-  {
-    Header: 'Expiry Date',
-    accessor: 'expiryDate',
-  },
-];
+// const COLUMNS = [
+//   {
+//     Header: 'Name',
+//     accessor: 'name',
+//   },
+//   {
+//     Header: 'Email',
+//     accessor: 'email',
+//   },
+//   {
+//     Header: 'Account Type',
+//     accessor: 'userType',
+//   },
+//   {
+//     Header: 'Paid',
+//     accessor: 'paid',
+//   },
+//   {
+//     Header: 'Issued Date',
+//     accessor: 'issueDate',
+//   },
+//   {
+//     Header: 'Expiry Date',
+//     accessor: 'expiryDate',
+//   },
+//   {
+//     Header: 'OTP',
+//     accessor: 'otp',
+//   },
+//   {
+//     accessor: 'id',
+//     disableFilters: true,
+//     Cell: ({ value, row }) => (
+//       <>
+//         <div className='dropdown dropdown-end'>
+//           <div tabIndex='0' className='m-1 btn btn-sm'>
+//             <i className='fas fa-ellipsis-v'></i>
+//           </div>
+//           <ul
+//             tabIndex='0'
+//             className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-72'
+//           >
+//             <li>
+//               <a className='' onClick={() => {}}>
+//                 Delete Member
+//               </a>
+//             </li>
+//             <li>
+//               <a className='' onClick={() => {}}>
+//                 Paid Member
+//               </a>
+//             </li>
+//             <li>
+//               <a className='' onClick={() => {}}>
+//                 Reset OTP
+//               </a>
+//             </li>
+//             <li>
+//               <a className='' onClick={() => {}}>
+//                 Resend OTP Email
+//               </a>
+//             </li>
+//             <li>
+//               <a className='' onClick={() => {}}>
+//                 Resend Confirmation Email
+//               </a>
+//             </li>
+//           </ul>
+//         </div>
+//       </>
+//     ),
+//   },
+// ];
 
-export default function MemberPage() {
+function getColumns(deleteUser, resendPaymentEmail) {
+  return [
+    {
+      Header: 'Name',
+      accessor: 'name',
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+    },
+    {
+      Header: 'Account Type',
+      accessor: 'userType',
+    },
+    {
+      Header: 'Paid',
+      accessor: 'paid',
+    },
+    {
+      Header: 'Issued Date',
+      accessor: 'issueDate',
+    },
+    {
+      Header: 'Expiry Date',
+      accessor: 'expiryDate',
+    },
+    {
+      Header: 'OTP',
+      accessor: 'otp',
+    },
+    {
+      accessor: 'id',
+      disableFilters: true,
+      Cell: ({ value, row }) => (
+        <>
+          <div className='dropdown dropdown-end'>
+            <div tabIndex='0' className='m-1 btn btn-sm'>
+              <i className='fas fa-ellipsis-v'></i>
+            </div>
+            <ul
+              tabIndex='0'
+              className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-72'
+            >
+              <li>
+                <a className='' onClick={() => deleteUser(value)}>
+                  Delete Member
+                </a>
+              </li>
+              {/* <li>
+                <a className='' onClick={() => {}}>
+                  Paid Member
+                </a>
+              </li>
+              <li>
+                <a className='' onClick={() => {}}>
+                  Reset OTP
+                </a>
+              </li>
+              <li>
+                <a className='' onClick={() => {}}>
+                  Resend OTP Email
+                </a>
+              </li> */}
+              <li>
+                <a className='' onClick={() => resendPaymentEmail(value)}>
+                  Resend Confirmation Email
+                </a>
+              </li>
+            </ul>
+          </div>
+        </>
+      ),
+    },
+  ];
+}
+
+function PageContent({ user }) {
   const [members, setMembers] = useState([]);
   const [CSV, setCSV] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [useEffectTrigger, setuseEffectTrigger] = useState(new Date());
-  const [option, setOption] = useState('all');
+  const [option, setOption] = useState('date');
   const [month, setMonth] = useState(moment(new Date()).format('YYYY-MM'));
   const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
 
@@ -104,16 +230,54 @@ export default function MemberPage() {
       setLoading(false);
     }
   };
+  const deleteUser = async (id) => {
+    const confirm = window.confirm(
+      'Are you sure you want to delete this member? this action is irreversible.'
+    );
+    if (!confirm) {
+      return;
+    }
+    try {
+      const idToken = await user.getIdToken(true);
+      await axios.post(`${baseUrl}/member/delete`, {
+        id,
+        idToken,
+      });
+      toast.success('Member deleted!');
+      fetchData();
+    } catch (error) {
+      console.log(error);
+      toast.error('Error deleting new member');
+    }
+  };
+  const resendPaymentEmail = async (id) => {
+    const confirm = window.confirm('Confirm?');
+    if (!confirm) {
+      return;
+    }
+    try {
+      await axios.post(`${baseUrl}/member/resend-payment-link-id`, {
+        id,
+      });
+      toast.success('Email sent');
+    } catch (error) {
+      console.log('error');
+      console.log(error);
+      toast.error('Error resending email');
+    }
+  };
 
   useEffect(() => {
+    setOption('date');
     fetchData();
+
     return () => {
       setMembers([]);
       setLoading(false);
     };
   }, [useEffectTrigger]);
   return (
-    <Container>
+    <>
       <div className='flex justify-between flex-wrap'>
         <h2 className='text-4xl font-medium mb-2'>Member</h2>
         <div className='flex flex-wrap'>
@@ -175,10 +339,20 @@ export default function MemberPage() {
       {!loading && (
         <Table
           dataDb={members}
-          COLUMNS={COLUMNS}
-          hiddenColumns={['expiryDate', 'issueDate']}
+          COLUMNS={getColumns(deleteUser, resendPaymentEmail)}
+          hiddenColumns={['expiryDate', 'issueDate', 'otp']}
         />
       )}
+    </>
+  );
+}
+
+export default function MembersPage() {
+  const user = useStore((state) => state.user);
+
+  return (
+    <Container>
+      <PageContent user={user} />
     </Container>
   );
 }

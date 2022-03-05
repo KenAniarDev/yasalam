@@ -36,7 +36,7 @@ export default function TransactionPage() {
   const [loading, setLoading] = useState(false);
 
   const [useEffectTrigger, setuseEffectTrigger] = useState(new Date());
-  const [option, setOption] = useState('all');
+  const [option, setOption] = useState('date');
   const [month, setMonth] = useState(moment(new Date()).format('YYYY-MM'));
   const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
 
@@ -99,6 +99,7 @@ export default function TransactionPage() {
   };
 
   useEffect(() => {
+    setOption('date');
     fetchData();
     return () => {
       setTransactions([]);
