@@ -33,7 +33,7 @@ function PageContent({ outlet }) {
   const [loading, setLoading] = useState(false);
 
   const [useEffectTrigger, setuseEffectTrigger] = useState(new Date());
-  const [option, setOption] = useState('currentMonth');
+  const [option, setOption] = useState('date');
   const [month, setMonth] = useState(moment(new Date()).format('YYYY-MM'));
   const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
 
