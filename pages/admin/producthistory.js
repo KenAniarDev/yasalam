@@ -214,7 +214,6 @@ function PageContent({ user }) {
   };
 
   useEffect(() => {
-    setOption('date');
     fetchData();
     return () => {
       setVouchers([]);

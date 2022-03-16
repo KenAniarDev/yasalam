@@ -99,7 +99,6 @@ export default function TransactionPage() {
   };
 
   useEffect(() => {
-    setOption('date');
     fetchData();
     return () => {
       setTransactions([]);

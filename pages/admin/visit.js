@@ -93,7 +93,6 @@ export default function VisitPage() {
   };
 
   useEffect(() => {
-    setOption('date');
     fetchData();
     return () => {
       setVisits([]);

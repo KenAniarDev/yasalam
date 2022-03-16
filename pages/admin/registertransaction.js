@@ -98,7 +98,6 @@ export default function RegisterTransactionPage() {
   };
 
   useEffect(() => {
-    setOption('date');
     fetchData();
     return () => {
       setRegTransactions([]);
