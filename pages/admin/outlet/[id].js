@@ -367,6 +367,7 @@ export default function EditOutletPage() {
                 width={150}
                 height={150}
                 className='object-cover'
+                unoptimized
               />
               <label className='btn btn-primary mt-2'>
                 Upload Logo
@@ -398,6 +399,7 @@ export default function EditOutletPage() {
                   width={150}
                   height={150}
                   className='object-cover'
+                  unoptimized
                 />
                 <button
                   className='btn btn-primary mt-2'

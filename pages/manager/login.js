@@ -43,6 +43,7 @@ export default function login() {
               alt='Logo'
               width={100}
               height={100}
+              unoptimized
             />
           </figure>
           <div className='card-body'>

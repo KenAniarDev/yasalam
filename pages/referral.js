@@ -47,6 +47,7 @@ export default function PaymentForm() {
           objectFit='cover'
           className='z-0'
           quality={100}
+          unoptimized
         />
         <Background></Background>
         <Wrapper>

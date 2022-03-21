@@ -194,6 +194,7 @@ export default function CategoryPage() {
                   width={100}
                   height={100}
                   layout='responsive'
+                  unoptimized
                 />
               )}
               <input
@@ -261,6 +262,7 @@ export default function CategoryPage() {
                               alt='Category Image'
                               width={100}
                               height={100}
+                              unoptimized
                             />
                           </div>
                         </div>

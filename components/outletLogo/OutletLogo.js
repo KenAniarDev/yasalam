@@ -1,44 +1,45 @@
-import useSlider from "hooks/useSlider";
-import Image from "next/image";
-import React from "react";
-import Slider from "react-slick";
+import useSlider from 'hooks/useSlider';
+import Image from 'next/image';
+import React from 'react';
+import Slider from 'react-slick';
 import {
-   Container,
-   DataContainer,
-   ImageContainer,
-   SectionTitle,
-   SubContainer,
-} from "./OutletLogo.styled";
+  Container,
+  DataContainer,
+  ImageContainer,
+  SectionTitle,
+  SubContainer,
+} from './OutletLogo.styled';
 
 const OutletLogo = ({ data }) => {
-   const { settingsLogo } = useSlider();
+  const { settingsLogo } = useSlider();
 
-   return (
-      <Container>
-         <SubContainer>
-            <SectionTitle>Outlets</SectionTitle>
-            <div>
-               <Slider {...settingsLogo}>
-                  {data?.map((item, i) => {
-                     return (
-                        <DataContainer key={i}>
-                           <ImageContainer>
-                              <Image
-                                 src={item.logo}
-                                 alt="Outlets Logo"
-                                 layout="responsive"
-                                 width="100%"
-                                 height="100%"
-                              />
-                           </ImageContainer>
-                        </DataContainer>
-                     );
-                  })}
-               </Slider>
-            </div>
-         </SubContainer>
-      </Container>
-   );
+  return (
+    <Container>
+      <SubContainer>
+        <SectionTitle>Outlets</SectionTitle>
+        <div>
+          <Slider {...settingsLogo}>
+            {data?.map((item, i) => {
+              return (
+                <DataContainer key={i}>
+                  <ImageContainer>
+                    <Image
+                      src={item.logo}
+                      alt='Outlets Logo'
+                      layout='responsive'
+                      width='100%'
+                      height='100%'
+                      unoptimized
+                    />
+                  </ImageContainer>
+                </DataContainer>
+              );
+            })}
+          </Slider>
+        </div>
+      </SubContainer>
+    </Container>
+  );
 };
 
 export default OutletLogo;

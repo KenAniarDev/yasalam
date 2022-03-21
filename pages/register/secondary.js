@@ -326,6 +326,7 @@ export default function individual() {
                       width={150}
                       height={150}
                       className='object-cover'
+                      unoptimized
                     />
                   )}
 
@@ -355,6 +356,7 @@ export default function individual() {
                       width={150}
                       height={150}
                       className='object-cover'
+                      unoptimized
                     />
                   )}
 

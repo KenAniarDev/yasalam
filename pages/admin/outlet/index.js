@@ -126,6 +126,7 @@ export default function OutletPage() {
                           alt='outlet logo'
                           width={100}
                           height={100}
+                          unoptimized
                         />
                       </div>
                     </div>
