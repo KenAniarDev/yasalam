@@ -134,17 +134,14 @@ export default function individual() {
           alt=''
           className='fixed top-0 left-0 right-0 bottom-0 h-full w-full object-cover'
         />
-        <div
-          className='fixed top-0 left-0 right-0 bottom-0 h-full overflow-x-scroll'
-          style={{ backgroundColor: 'rgba(0,0,0, .4)' }}
-        >
+        <div className='fixed top-0 left-0 right-0 bottom-0 h-full overflow-x-scroll bg-gradient-to-r from-[#D25235] via-[#491D14] to-[#D25235]'>
           <div
             className='w-full lg:w-2/3 max-w-3xl h-auto items-center md:my-10 mx-auto p-5 md:rounded-xl'
             style={{ backgroundColor: 'rgba(255, 255, 255, 0.85)' }}
           >
             <figure className='px-10 pt-10 flex justify-center'>
               <img
-                src='/logo192.png'
+                src='/royal.png'
                 className='rounded-xl login-logo'
                 alt=''
                 style={{ width: '100px' }}

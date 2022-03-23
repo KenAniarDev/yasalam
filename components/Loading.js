@@ -12,7 +12,7 @@ const override = css`
 function App() {
   return (
     <div className='sweet-loading h-screen flex items-center'>
-      <GridLoader size={40} margin={10} css={override} color={'#EC3C54'} />
+      <GridLoader size={40} margin={10} css={override} color={'#D25235'} />
     </div>
   );
 }
