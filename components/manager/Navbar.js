@@ -26,7 +26,7 @@ export default function Navbar() {
           </label>
         </div>
         <div className='flex-1 px-2 mx-2'>
-          <span className='text-lg font-bold'>YASALAM</span>
+          <span className='text-lg font-bold'>ROYAL</span>
         </div>
         <div className='flex-none'>
           <button className='btn btn-primary mr-2' onClick={signOutUser}>

@@ -15,10 +15,11 @@ const Navbar = () => {
         <Link href='/' passHref>
           <NavLogo>
             <Image
+              className='object-contain'
               src='/yasalamlogo.png'
               alt='YaSalam Logo'
               layout='fixed'
-              width={24}
+              width={42}
               height={42}
               unoptimized
             />

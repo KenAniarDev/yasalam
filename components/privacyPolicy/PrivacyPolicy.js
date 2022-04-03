@@ -26,17 +26,17 @@ const PrivacyPolicy = () => {
           <Wrapper>
             <SecondaryTitle>Introduction</SecondaryTitle>
             <Content>
-              This Privacy Policy set outs details on how Yasalam (later
-              referred to as “us” or “we”), as provider of the website
+              This Privacy Policy set outs details on how Royal (later referred
+              to as “us” or “we”), as provider of the website
               <Link href='www.yasalamae.ae'>
                 <a rel='noopener noreferrer' target='_blank'>
                   www.yasalamae.ae
                 </a>
               </Link>
               , and other operational sites including but not limited to sub
-              domains ofYasalam (the “Websites”), theYasalam App (the “App”),
-              and the Yasalam Membership(collectively the “Services”), collect
-              data and use this data.
+              domains of Royal (the “Websites”), the Royal App (the “App”), and
+              the Royal Membership(collectively the “Services”), collect data
+              and use this data.
             </Content>
             <Content>
               This Privacy Policy applies to the information we obtain when you
@@ -66,7 +66,7 @@ const PrivacyPolicy = () => {
 
           <Wrapper>
             <TertiaryTitle>
-              Information upon registration as Yasalam Member (“Member”)
+              Information upon registration as Royal Member (“Member”)
             </TertiaryTitle>
             <Content>
               Upon registration, as a Member you are required to provide certain
@@ -100,7 +100,7 @@ const PrivacyPolicy = () => {
               </li>
               <li>
                 Your device&apos;s location information when you are actively
-                using our Services and/or when you have checked in to a Yasalam
+                using our Services and/or when you have checked in to a Royal
                 venue.
               </li>
             </List>
@@ -122,11 +122,10 @@ const PrivacyPolicy = () => {
           <Wrapper>
             <TertiaryTitle>Third parties</TertiaryTitle>
             <Content>
-              Yasalam may offer services in connection with third parties.
+              Royal may offer services in connection with third parties.
               Personal information that you provide to third parties may be sent
-              to Yasalam in order to deliver these services. Yasalam collects
-              and processes such information in accordance with this Privacy
-              Policy.
+              to Royal in order to deliver these services. Royal collects and
+              processes such information in accordance with this Privacy Policy.
             </Content>
           </Wrapper>
 
@@ -156,8 +155,7 @@ const PrivacyPolicy = () => {
                 Conditions and investigate violations thereof, to prevent,
                 detect and address fraud, abuse, security risks or technical
                 issues, or to protect against harm to the rights and property of
-                Yasalam, other Members or the public required or permitted by
-                law.
+                Royal, other Members or the public required or permitted by law.
               </li>
             </List>
           </Wrapper>
@@ -165,7 +163,7 @@ const PrivacyPolicy = () => {
           <Wrapper>
             <TertiaryTitle>Using your information</TertiaryTitle>
             <Content>
-              Yasalam collects and uses your information to operate and improve
+              Royal collects and uses your information to operate and improve
               our Services. We may use the information we collect in the
               following ways
             </Content>
@@ -194,14 +192,14 @@ const PrivacyPolicy = () => {
               <li>
                 To help improve the safety and reliability of our Services
                 including detecting, preventing, responding to fraud, abuse,
-                security risks or technical issues that could harm Yasalam,
-                Yasalam Members, Yasalam Guest or the public.
+                security risks or technical issues that could harm Royal, Royal
+                Members, Royal Guest or the public.
               </li>
             </List>
 
             <Content>
               We may store and process information collected via our Services in
-              the UAE or any other country in which Yasalam or its affiliates,
+              the UAE or any other country in which Royal or its affiliates,
               subsidiaries or agents maintain facilities, and by using our
               Services, you consent to any such transfer of your information
               outside of your country.

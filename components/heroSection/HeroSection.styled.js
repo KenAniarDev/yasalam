@@ -1,8 +1,8 @@
-import tw from "tailwind-styled-components";
+import tw from 'tailwind-styled-components';
 
 export const Background = tw.div`
-   bg-black
-   opacity-50
+   bg-[#D25235]
+   opacity-80
    absolute
    inset-0
    z-10

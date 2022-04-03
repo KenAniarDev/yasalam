@@ -20,7 +20,7 @@ const HeroSection = () => {
         alt='Background Image'
         layout='fill'
         objectFit='cover'
-        className='z-0'
+        className='z-0 grayscale'
         quality={75}
         priority
         unoptimized
@@ -32,15 +32,16 @@ const HeroSection = () => {
             <SecondaryText>Level up your life style with</SecondaryText>
             <ImageLeft>
               <Image
+                className='object-contain'
                 src='/yasalamlogo.png'
                 alt='Yasalam Logo'
                 layout='responsive'
-                width={160}
-                height={270}
+                width={220}
+                height={250}
                 unoptimized
               />
             </ImageLeft>
-            <PrimaryText>YaSalam</PrimaryText>
+            <PrimaryText>Royal</PrimaryText>
           </LeftContent>
           <RightContent>
             <ImageRight>

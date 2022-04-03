@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import tw from "tailwind-styled-components";
+import styled from 'styled-components';
+import tw from 'tailwind-styled-components';
 
 export const Container = tw.div`
     relative 
@@ -51,18 +51,16 @@ export const Title = tw.div`
 `;
 
 export const ContactLinks = styled.a`
-   display: grid;
-   grid-template-columns: repeat(1, 250px);
-   grid-gap: 1px;
-   padding: 5px 0;
-   align-items: stretch;
-   position: relative;
-   font-size: 1.4rem;
+  display: flex;
+  padding: 5px 0;
+  align-items: stretch;
+  position: relative;
+  font-size: 1.4rem;
 `;
 
 export const LinkText = styled.span`
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 `;

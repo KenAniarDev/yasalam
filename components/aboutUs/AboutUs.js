@@ -41,7 +41,7 @@ const AboutUs = () => {
               dishes and more. It&apos;s about creating a place for everyone!
             </InformationDetails>
             <InformationHighlight>
-              ALL IN ONE PLACE. THAT IS YASALAM
+              ALL IN ONE PLACE. THAT IS ROYAL
             </InformationHighlight>
             <InformationDetails>
               With our passion for helping you stay emotionally engaged, active
@@ -54,7 +54,7 @@ const AboutUs = () => {
         <Section>
           <InformationContainer>
             <InformationHighlight>
-              YaSalam will initially start in Abu Dhabi where we are partnered
+              Royal will initially start in Abu Dhabi where we are partnered
               with:
             </InformationHighlight>
             <List>

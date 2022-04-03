@@ -92,7 +92,7 @@ const Pricing = () => {
                       <path d='M20 6L9 17l-5-5'></path>
                     </svg>
                   </span>
-                  Enjoy unlimited free access to all our Yasalam participating
+                  Enjoy unlimited free access to all our Royal participating
                   outlets.
                 </p>
                 <p className='flex items-center mb-2 text-gray-600'>
@@ -220,7 +220,7 @@ const Pricing = () => {
                       <path d='M20 6L9 17l-5-5'></path>
                     </svg>
                   </span>
-                  Enjoy unlimited free access to all our Yasalam participating
+                  Enjoy unlimited free access to all our Royal participating
                   outlets.
                 </p>
                 <p className='flex items-center mb-2 text-gray-600'>

@@ -24,7 +24,7 @@ function PageContent({ outlets, categories, newMember }) {
       <CategoryList data={categories} heading='All Categories' />
       <OutletListSlider
         data={newMember}
-        title='New to YaSalam'
+        title='New to Royal'
         subTitle='outlets'
       />
       <Pricing />
