@@ -60,6 +60,12 @@ const Footer = () => {
               +971 50 72 88 316
             </FooterLink>
           </Link>
+          <Link href='tel:+971 50 90 12 030' passHref>
+            <FooterLink>
+              <RiPhoneLine />
+              +971 50 90 12 030
+            </FooterLink>
+          </Link>
         </Wrapper>
         <Wrapper>
           <FooterTitle>Pages</FooterTitle>

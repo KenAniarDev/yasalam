@@ -56,6 +56,14 @@ const ContactUs = () => {
               </div>
             </ContactLinks>
           </Link>
+          <Link href='tel:+971 50 90 12 030' passHref>
+            <ContactLinks>
+              <div className='flex justify-center items-center text-2xl'>
+                <RiPhoneLine className='mr-2' />
+                +971 50 90 12 030
+              </div>
+            </ContactLinks>
+          </Link>
         </ContentContainer>
       </Wrapper>
     </Container>
