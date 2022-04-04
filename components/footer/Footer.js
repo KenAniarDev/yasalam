@@ -60,18 +60,6 @@ const Footer = () => {
               +971 50 72 88 316
             </FooterLink>
           </Link>
-          <Link href='tel:+971 50 72 56 316' passHref>
-            <FooterLink>
-              <RiPhoneLine />
-              +971 50 72 56 316
-            </FooterLink>
-          </Link>
-          <Link href='tel:+971 56 54 74 636' passHref>
-            <FooterLink>
-              <RiPhoneLine />
-              +971 56 54 74 636
-            </FooterLink>
-          </Link>
         </Wrapper>
         <Wrapper>
           <FooterTitle>Pages</FooterTitle>
@@ -95,6 +83,14 @@ const Footer = () => {
           </Link>
           <Wrapper>
             Royal is a product of{' '}
+            <Link href='http://www.316sport.ae' passHref>
+              <FooterLinkUnderline rel='noopener noreferrer' target='_blank'>
+                Diqa technologies
+              </FooterLinkUnderline>
+            </Link>
+          </Wrapper>
+          <Wrapper>
+            Managed by{' '}
             <Link href='http://www.316sport.ae' passHref>
               <FooterLinkUnderline rel='noopener noreferrer' target='_blank'>
                 316 sport services

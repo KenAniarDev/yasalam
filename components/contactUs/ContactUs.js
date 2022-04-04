@@ -42,34 +42,18 @@ const ContactUs = () => {
           <Title>Contact Us</Title>
           <Link href='mailto:info@yasalamae.ae' passHref>
             <ContactLinks>
-              <LinkText>
-                <RiMailLine />
+              <div className='flex justify-center items-center text-2xl'>
+                <RiMailLine className='mr-2' />
                 info@yasalamae.ae
-              </LinkText>
+              </div>
             </ContactLinks>
           </Link>
           <Link href='tel:+971 50 72 88 316' passHref>
             <ContactLinks>
-              <LinkText>
-                <RiPhoneLine />
+              <div className='flex justify-center items-center text-2xl'>
+                <RiPhoneLine className='mr-2' />
                 +971 50 72 88 316
-              </LinkText>
-            </ContactLinks>
-          </Link>
-          <Link href='tel:+971 50 72 56 316' passHref>
-            <ContactLinks>
-              <LinkText>
-                <RiPhoneLine />
-                +971 50 72 56 316
-              </LinkText>
-            </ContactLinks>
-          </Link>
-          <Link href='tel:+971 56 54 74 636' passHref>
-            <ContactLinks>
-              <LinkText>
-                <RiPhoneLine />
-                +971 56 54 74 636
-              </LinkText>
+              </div>
             </ContactLinks>
           </Link>
         </ContentContainer>
