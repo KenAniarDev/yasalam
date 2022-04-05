@@ -1,12 +1,12 @@
 import tw from 'tailwind-styled-components';
 
 export const Background = tw.div`
-   bg-[#D25235]
    opacity-80
    absolute
    inset-0
    z-10
 `;
+// bg-[#D25235]
 
 export const Container = tw.div`
     relative 

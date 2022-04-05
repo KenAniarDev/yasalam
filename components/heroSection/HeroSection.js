@@ -16,11 +16,11 @@ const HeroSection = () => {
   return (
     <Container>
       <Image
-        src='/pattern1920x1080.png'
+        src='/pattern1920x1080.jpg'
         alt='Background Image'
         layout='fill'
         objectFit='cover'
-        className='z-0 grayscale'
+        className='z-0'
         quality={75}
         priority
         unoptimized
