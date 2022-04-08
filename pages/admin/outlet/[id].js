@@ -185,7 +185,6 @@ export default function EditOutletPage() {
       outletgroupName: outletgroup.name,
       outletgroupId: outletgroup.id,
     };
-
     try {
       await updateOutlet(id, outlet);
       toast.success('Outlet updated');
@@ -440,7 +439,7 @@ export default function EditOutletPage() {
               placeholder='latitude'
               className='input input-bordered'
               value={coords.lat}
-              onChange={(e) => setCoords({ coords, lat: e.target.value })}
+              onChange={(e) => setCoords({ ...coords, lat: e.target.value })}
             />
           </div>
           <div className='form-control flex-grow ml-1 mb-2'>
@@ -452,7 +451,7 @@ export default function EditOutletPage() {
               placeholder='longitude'
               className='input input-bordered'
               value={coords.long}
-              onChange={(e) => setCoords({ coords, long: e.target.value })}
+              onChange={(e) => setCoords({ ...coords, long: e.target.value })}
             />
           </div>
         </div>

@@ -132,6 +132,8 @@ export default function AddOutletPage() {
       outletgroupName: outletgroup.name,
       outletgroupId: outletgroup.id,
     };
+    console.log(outlet.latitude);
+    console.log(outlet.longitude);
     try {
       await addOutlet(outlet);
       toast.success('New outlet added');
@@ -377,7 +379,7 @@ export default function AddOutletPage() {
               placeholder='latitude'
               className='input input-bordered'
               value={coords.lat}
-              onChange={(e) => setCoords({ coords, lat: e.target.value })}
+              onChange={(e) => setCoords({ ...coords, lat: e.target.value })}
             />
           </div>
           <div className='form-control flex-grow ml-1 mb-2'>
@@ -389,7 +391,7 @@ export default function AddOutletPage() {
               placeholder='longitude'
               className='input input-bordered'
               value={coords.long}
-              onChange={(e) => setCoords({ coords, long: e.target.value })}
+              onChange={(e) => setCoords({ ...coords, long: e.target.value })}
             />
           </div>
         </div>

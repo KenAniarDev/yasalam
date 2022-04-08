@@ -165,7 +165,18 @@ export default function OutletPage() {
                           </Link>
                         </li>
                         <li>
-                          <a onClick={() => deleteOut(outlet.id)}>Delete</a>
+                          <a
+                            onClick={() => {
+                              const confirm = window.confirm(
+                                'Are you sure you want to delete this outlet?'
+                              );
+                              if (confirm) {
+                                deleteOut(outlet.id);
+                              }
+                            }}
+                          >
+                            Delete
+                          </a>
                         </li>
                       </ul>
                     </div>
