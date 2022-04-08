@@ -450,7 +450,7 @@ export default function EditOutletPage() {
               type='text'
               placeholder='longitude'
               className='input input-bordered'
-              value={coords.lat}
+              value={coords.long}
               onChange={(e) => setCoords({ coords, long: e.target.value })}
             />
           </div>
