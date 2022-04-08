@@ -180,8 +180,8 @@ export default function EditOutletPage() {
       featureName: feat.name,
       featureId: feat.id,
       featureRef: feat.id,
-      latitude: coords.lat,
-      longitude: coords.long,
+      latitude: String(coords.lat),
+      longitude: String(coords.long),
       outletgroupName: outletgroup.name,
       outletgroupId: outletgroup.id,
     };
@@ -190,6 +190,7 @@ export default function EditOutletPage() {
       await updateOutlet(id, outlet);
       toast.success('Outlet updated');
     } catch (error) {
+      console.log(error);
       toast.error('Error updating outlet');
     }
   };

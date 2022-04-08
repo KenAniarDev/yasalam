@@ -127,8 +127,8 @@ export default function AddOutletPage() {
       featureName: feat.name,
       featureId: feat.id,
       featureRef: feat.id,
-      latitude: coords.lat,
-      longitude: coords.long,
+      latitude: String(coords.lat),
+      longitude: String(coords.long),
       outletgroupName: outletgroup.name,
       outletgroupId: outletgroup.id,
     };
