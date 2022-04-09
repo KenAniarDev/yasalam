@@ -211,7 +211,7 @@ const PrivacyPolicy = () => {
             <Content>
               if you are no longer a Member, you can request to have all your
               information deleted and no longer receive any promotional
-              communications from us by emailing info@yasalamae.ae and
+              communications from us by emailing info@royalmembership.ae and
               specifying which information you would like to have deleted.
             </Content>
           </Wrapper>
@@ -250,7 +250,7 @@ const PrivacyPolicy = () => {
             <TertiaryTitle>Contact us</TertiaryTitle>
             <Content>
               If you require further details about our Privacy Policy, you may
-              contact us at info@yasalamae.ae
+              contact us at info@royalmembership.ae
             </Content>
           </Wrapper>
         </Section>

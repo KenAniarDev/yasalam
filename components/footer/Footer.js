@@ -48,10 +48,10 @@ const Footer = () => {
         />
         <Wrapper>
           <FooterTitle>Contact</FooterTitle>
-          <Link href='mailto:info@yasalamae.ae' passHref>
+          <Link href='mailto:info@royalmembership.ae' passHref>
             <FooterLink>
               <RiMailLine />
-              info@yasalamae.ae
+              info@royalmembership.ae
             </FooterLink>
           </Link>
           <Link href='tel:+971 50 72 88 316' passHref>

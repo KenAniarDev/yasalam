@@ -40,11 +40,11 @@ const ContactUs = () => {
           </ImageContainer>
 
           <Title>Contact Us</Title>
-          <Link href='mailto:info@yasalamae.ae' passHref>
+          <Link href='mailto:info@royalmembership.ae' passHref>
             <ContactLinks>
               <div className='flex justify-center items-center text-2xl'>
                 <RiMailLine className='mr-2' />
-                info@yasalamae.ae
+                info@royalmembership.ae
               </div>
             </ContactLinks>
           </Link>

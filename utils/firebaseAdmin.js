@@ -565,7 +565,7 @@ export const memberPaid = async (email, update) => {
       Sincerely,  <br/>
       YaSalam Team`;
     const mailOptions = {
-      from: 'confirmation@yasalamae.ae',
+      from: 'confirmation@royalmembership.ae',
       to: email,
       subject: `Welcome to Yasalam ${member.userType} Membership - Account Activation`,
       text: message,
