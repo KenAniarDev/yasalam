@@ -12,7 +12,7 @@ const data = [
   },
   {
     title: 'How do I become a Royal Member?',
-    data: 'If you are looking to join Royal, please visit our website and fill in your details and follow the instructions to purchase your membership and activate it. You can also drop us an email to info@Yasalamae.ae or WhatsApp us on +971- 50 000 0000. Someone from our membership team will get in touch with you.',
+    data: 'If you are looking to join Royal, please visit our website and fill in your details and follow the instructions to purchase your membership and activate it. You can also drop us an email to info@royalmembership.ae or WhatsApp us on +971- 50 000 0000. Someone from our membership team will get in touch with you.',
   },
   {
     title: 'How often I can use my membership?',
