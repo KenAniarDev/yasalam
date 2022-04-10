@@ -24,7 +24,7 @@ const AboutUs = () => {
           <ImageContainer>
             <ImageSubContainer>
               <Image
-                src='/yasalam1.PNG'
+                src='/about-us-iphone.png'
                 alt='SmartPhone Image'
                 layout='responsive'
                 width='100%'
@@ -95,7 +95,7 @@ const AboutUs = () => {
           <ImageContainer>
             <ImageSubContainer>
               <Image
-                src='/yasalam3.PNG'
+                src='/yasalam-map.jpg'
                 alt='SmartPhone Image'
                 layout='responsive'
                 width='100%'
