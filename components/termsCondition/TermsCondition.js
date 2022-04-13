@@ -354,7 +354,7 @@ const TermsCondition = () => {
             </TermsTitle>
             <li>
               You can terminate your Membership at any time by sending an email
-              with your termination request to info@Royalae.ae.
+              with your termination request to info@royalmembership.ae.
             </li>
             <li>
               Termination of your Membership will be effective from the date of
@@ -392,7 +392,7 @@ const TermsCondition = () => {
             <li>
               Pausing request will be handled on a case by case basis. Please
               write to our customer service team by sending an email to
-              info@Royalae.ae with supporting documentation.
+              info@royalmembership.ae with supporting documentation.
             </li>
           </TermsList>
           <TermsList type='A'>
@@ -440,7 +440,7 @@ const TermsCondition = () => {
               Three Sixteen sport Services is registered in Abu Dhabi, United
               Arab Emirates with commercial registration number CN-3930465.
               Should you wish to contact us, please send an email to
-              info@Royalae.ae.
+              info@royalmembership.ae.
             </p>
           </TermsList>
         </Section>
