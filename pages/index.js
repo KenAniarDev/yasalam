@@ -38,7 +38,8 @@ export default function Home() {
   const categories = useStore((state) => state.categories);
   const regions = useStore((state) => state.regions);
   const features = useStore((state) => state.features);
-  const newMember = outlets.slice(Math.max(outlets.length - 5, 0)).reverse();
+  const out = outlets.filter((e) => e.isBranch === false);
+  const newMember = out.slice(Math.max(out.length - 5, 0)).reverse();
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {

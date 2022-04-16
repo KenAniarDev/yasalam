@@ -20,6 +20,9 @@ const OutletLogo = ({ data }) => {
         <div>
           <Slider {...settingsLogo}>
             {data?.map((item, i) => {
+              if (item.isBranch) {
+                return;
+              }
               return (
                 <DataContainer key={i}>
                   <ImageContainer>

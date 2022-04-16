@@ -3,19 +3,41 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Geocode from 'react-geocode';
 import BannerSlider from './BannerSlider';
-import Outlet from '../outletListSlider/Outlet';
 import useStore from 'hooks/useStore';
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLEMAP_API_KEY);
 Geocode.enableDebug();
 
+const Outlet = ({ outlet, logo, category, link }) => {
+  return (
+    <div className='outle-item'>
+      <Link href={`/single-outlet/${outlet.id}`}>
+        <a>
+          <div className='body'>
+            <div className='bg-gradient'></div>
+            <img src={logo ? logo : outlet.logo} alt='' />
+            <div className='content'>
+              <div className='bottom-content'>
+                <div className='badge badge-secondary outlet-category'>
+                  {category ? category : outlet.name}
+                </div>
+                <h3 style={{ margin: 0 }}>{outlet.name}</h3>
+              </div>
+            </div>
+          </div>
+        </a>
+      </Link>
+    </div>
+  );
+};
 const SingleOutlet = ({ data }) => {
   const outlets = useStore((state) => state.outlets);
   const branches = outlets.filter(
-    (e) => e.id !== data.id && e.outletgroupId === data.outletgroupId
+    (e) => e.outletgroupId === data.outletgroupId
   );
   const [locUrl, setLocUrl] = useState('');
   useEffect(() => {
+    console.log(branches);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         setLocUrl(`${position.coords.latitude},${position.coords.longitude}`);
@@ -159,18 +181,19 @@ const SingleOutlet = ({ data }) => {
           <div className='youtube-embed-container'>{parse(data.video)}</div>
         </div>
       </div>
-
-      <div className='outlet-list'>
-        <div className='container'>
-          {branches.length > 0 && (
-            <div className='outlets'>
-              {branches.map((outlet, i) => {
-                return <Outlet key={i} outlet={outlet} logo={outlet.logo} />;
-              })}
-            </div>
-          )}
+      {data.outletgroupId !== '4UKVHjzY2mtYF3m17ZGT' && (
+        <div className='outlet-list'>
+          <div className='container'>
+            {branches.length > 0 && (
+              <div className='outlets'>
+                {branches.map((outlet, i) => {
+                  return <Outlet key={i} outlet={outlet} logo={outlet.logo} />;
+                })}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

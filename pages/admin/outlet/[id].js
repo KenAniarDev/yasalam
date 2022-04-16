@@ -54,6 +54,7 @@ export default function EditOutletPage() {
 
   const [yasalam, setYasalam] = useState(true);
   const [experience, setExperience] = useState(false);
+  const [isBranch, setIsBranch] = useState(false);
 
   const uploadImage = (file, type) => {
     if (!file) return;
@@ -147,6 +148,8 @@ export default function EditOutletPage() {
 
       setExperience(data.experience);
 
+      setIsBranch(data.isBranch);
+
       setCategories(category);
       setFeatures(feature);
       setRegions(region);
@@ -171,6 +174,7 @@ export default function EditOutletPage() {
       description,
       yasalam,
       experience,
+      isBranch,
       categoryName: cat.name,
       categoryId: cat.id,
       categoryRef: cat.id,
@@ -605,7 +609,23 @@ export default function EditOutletPage() {
             </label>
           </div>
         </div>
-
+        <div className='card bordered'>
+          <div className='form-control'>
+            <label className='cursor-pointer label'>
+              <span className='label-text text-xl'>Is Branch?</span>
+              <div className='flex items-center'>
+                <input
+                  type='checkbox'
+                  className='toggle toggle-lg toggle-accent'
+                  checked={isBranch && 'checked'}
+                  name='isBranch'
+                  value={isBranch}
+                  onChange={(e) => setIsBranch(!isBranch)}
+                />
+              </div>
+            </label>
+          </div>
+        </div>
         <button type='submit' className='btn btn-primary mt-4'>
           Submit
         </button>

@@ -59,7 +59,7 @@ export default function OutletPage() {
       {/* first row */}
       <div className='flex flex-wrap justify-between items-center p-2'>
         <div className='flex items-center mb-2'>
-          <h2 className='text-4xl font-medium mr-2'>Outlets</h2>
+          <h2 className='text-4xl font-medium mr-2'>Outlets - Branches</h2>
           <Link href='/admin/outlet/add'>
             <a className='btn btn-primary'> Add New</a>
           </Link>
@@ -110,6 +110,7 @@ export default function OutletPage() {
               <th></th>
               <th>Name</th>
               <th>Category</th>
+              <th>Type</th>
               <th>Group</th>
             </tr>
           </thead>
@@ -141,6 +142,11 @@ export default function OutletPage() {
                 <td>
                   <div className='flex justify-between items-center'>
                     {outlet.categoryName}
+                  </div>
+                </td>
+                <td>
+                  <div className='flex justify-between items-center'>
+                    {outlet.isBranch ? 'Branch' : 'Main Outlet'}
                   </div>
                 </td>
                 <td>

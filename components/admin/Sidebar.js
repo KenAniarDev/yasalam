@@ -15,7 +15,7 @@ const sidebarLinks = [
     link: '/admin/manager',
   },
   {
-    title: 'Outlet',
+    title: 'Outlet - Branches',
     link: '/admin/outlet',
   },
   {

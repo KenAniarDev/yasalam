@@ -42,8 +42,8 @@ const Footer = () => {
         <Image
           src='/yasalamlogo.png'
           alt='YaSalam Logo'
-          width={64}
-          height={94}
+          width={62}
+          height={62}
           unoptimized
         />
         <Wrapper>
