@@ -17,7 +17,7 @@ const ContactUs = () => {
   return (
     <Container>
       <Image
-        src='/pattern1920x1080.png'
+        src='https://firebasestorage.googleapis.com/v0/b/yasalam-55cc7.appspot.com/o/mobile-app-images%2Fbanner-img.jpg?alt=media&token=e60945e7-0cec-4c27-b63a-90c7539c56e8'
         alt='Background Image'
         layout='fill'
         objectFit='cover'
