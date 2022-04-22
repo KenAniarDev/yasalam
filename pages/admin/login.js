@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, signInUser } from '../../utils/firebase';
+import { auth } from '../../utils/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const user = await signInUser(email, password);
+      const user = await signInWithEmailAndPassword(auth, email, password);
       if (typeof user === 'string') throw new Error('Error logging in');
       toast.success('Login success!');
     } catch (error) {
