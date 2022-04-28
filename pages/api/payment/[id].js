@@ -33,8 +33,8 @@ export default async function handler(req, res) {
         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
         price:
           member.userType === 'individual'
-            ? 'price_1KXESmIiGYm0gLPFfd0DpQSn'
-            : 'price_1KXERzIiGYm0gLPFIZXTjuji',
+            ? 'price_1KtW3wIiGYm0gLPFdSeCzg4b'
+            : 'price_1KtW5OIiGYm0gLPFepoD63D2',
         quantity: 1,
       },
     ],
@@ -45,3 +45,12 @@ export default async function handler(req, res) {
 
   res.redirect(303, session.url);
 }
+
+// {
+//   // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+//   price:
+//     member.userType === 'individual'
+//       ? 'price_1KXESmIiGYm0gLPFfd0DpQSn'
+//       : 'price_1KXERzIiGYm0gLPFIZXTjuji',
+//   quantity: 1,
+// },
