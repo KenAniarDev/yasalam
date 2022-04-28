@@ -57,10 +57,10 @@ const Pricing = () => {
                   <span className='flex items-center'>
                     {havePromo ? (
                       <span>
-                        AED <span className='line-through'>3500</span> 2625
+                        AED <span className='line-through'>4999</span> 2625
                       </span>
                     ) : (
-                      <span>AED 3500</span>
+                      <span>AED 4999</span>
                     )}
                     <span className='ml-1 text-lg font-normal text-gray-500'>
                       /year
@@ -154,10 +154,10 @@ const Pricing = () => {
                   <span className='flex items-center'>
                     {havePromo ? (
                       <span>
-                        AED <span className='line-through'>4900</span> 3675
+                        AED <span className='line-through'>7299</span> 3675
                       </span>
                     ) : (
-                      <span>AED 4900</span>
+                      <span>AED 7299</span>
                     )}
                     <span className='ml-1 text-lg font-normal text-gray-500'>
                       /year
