@@ -21,11 +21,11 @@ function PageContent({ outlets, categories, newMember }) {
       <HeroSection />
       <TextBlock />
       <OutletLogo data={outlets} />
-      <CategoryList data={categories} heading='All Categories' />
+      <CategoryList data={categories} heading="All Categories" />
       <OutletListSlider
         data={newMember}
-        title='New to Royal'
-        subTitle='outlets'
+        title="New to Royal"
+        subTitle="outlets"
       />
       <Pricing />
     </NavFooter>
@@ -38,9 +38,22 @@ export default function Home() {
   const categories = useStore((state) => state.categories);
   const regions = useStore((state) => state.regions);
   const features = useStore((state) => state.features);
-  const out = outlets.filter((e) => e.isBranch === false);
-  const newMember = out.slice(Math.max(out.length - 5, 0)).reverse();
+  const out = outlets.filter(
+    (e) =>
+      e.isBranch === false && e.id !== 'eb7fd350-87eb-11ec-b6f8-dbc87dcb7fcf'
+  );
+  const picked = [
+    'lnY8OzTZIEOZQLK80EQ5',
+    'yyfXJqaclUG4sxgJwrjh',
+    'dUm2uE5l7gTf1bGGbxbU',
+    '4qV6c4Iw7OWS1osaGsOs',
+  ];
+  const newMember = out.filter((e) => picked.includes(e.id));
+  // const newMember = out.slice(Math.max(out.length - 5, 0)).reverse();
+
   const [loading, setLoading] = useState(true);
+
+  const yasalam = outlets.filter((items) => items.yasalam === true);
 
   const fetchData = async () => {
     const outletDb = await getOutlets();
@@ -64,7 +77,7 @@ export default function Home() {
         <Loading />
       ) : (
         <PageContent
-          outlets={outlets}
+          outlets={yasalam}
           categories={categories}
           newMember={newMember}
         />

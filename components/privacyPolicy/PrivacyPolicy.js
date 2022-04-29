@@ -27,10 +27,10 @@ const PrivacyPolicy = () => {
             <SecondaryTitle>Introduction</SecondaryTitle>
             <Content>
               This Privacy Policy set outs details on how Royal (later referred
-              to as “us” or “we”), as provider of the website
-              <Link href='www.yasalamae.ae'>
-                <a rel='noopener noreferrer' target='_blank'>
-                  www.yasalamae.ae
+              to as “us” or “we”), as provider of the website{' '}
+              <Link href="www.royalmembership.ae">
+                <a rel="noopener noreferrer" target="_blank">
+                  www.royalmembership.ae
                 </a>
               </Link>
               , and other operational sites including but not limited to sub

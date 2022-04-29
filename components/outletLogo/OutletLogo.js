@@ -28,11 +28,13 @@ const OutletLogo = ({ data }) => {
                   <ImageContainer>
                     <Image
                       src={item.logo}
-                      alt='Outlets Logo'
-                      layout='responsive'
-                      width='100%'
-                      height='100%'
+                      alt="Outlets Logo"
+                      layout="responsive"
+                      width="100%"
+                      height="100%"
+                      objectFit="contain"
                       unoptimized
+                      className="grayscale"
                     />
                   </ImageContainer>
                 </DataContainer>
