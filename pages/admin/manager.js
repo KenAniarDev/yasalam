@@ -43,7 +43,6 @@ function PageContent({ user }) {
 
       const data = await getOutlets();
       setOutlets(data);
-      setSelectedOutlet(data[0].id);
       toast.success('Data fetching success!');
     } catch (error) {
       toast.error('Error fetching data');
@@ -53,10 +52,17 @@ function PageContent({ user }) {
   };
 
   const handleSubmit = async (e) => {
-    setShowModal(false);
     e.preventDefault();
-    const outlet = outlets.find((e) => (e.id = selectedOutlet));
     try {
+      setShowModal(false);
+
+      let outlet;
+      for (let index = 0; index < outlets.length; index++) {
+        if (selectedOutlet === outlets[index].id) {
+          outlet = outlets[index];
+        }
+      }
+
       const idToken = await user.getIdToken(true);
       await axios.post(`${baseUrl}/manager/create`, {
         idToken,
@@ -68,7 +74,6 @@ function PageContent({ user }) {
 
       setEmail('');
       setPassword('');
-      setSelectedOutlet(outlets[0].id);
       toast.success('Added new user!');
       fetchData();
     } catch (error) {
@@ -133,58 +138,58 @@ function PageContent({ user }) {
   return (
     <>
       {/* first row */}
-      <div className='flex flex-wrap justify-between items-center p-2'>
-        <div className='flex'>
-          <h2 className='text-4xl font-medium mb-2 mr-2'>Manager</h2>
+      <div className="flex flex-wrap justify-between items-center p-2">
+        <div className="flex">
+          <h2 className="text-4xl font-medium mb-2 mr-2">Manager</h2>
           <button
-            className='btn btn-primary'
+            className="btn btn-primary"
             onClick={() => setShowModal(true)}
           >
             {' '}
             Add New
           </button>
         </div>
-        <div className='flex items-center mb-2'>
-          <div className='form-control w-60'>
+        <div className="flex items-center mb-2">
+          <div className="form-control w-60">
             <form
-              className='relative'
+              className="relative"
               onSubmit={(e) => {
                 e.preventDefault();
                 filter(searchText);
               }}
             >
               <input
-                type='text'
-                placeholder='Search'
-                className='w-full pr-16 input input-primary input-bordered'
+                type="text"
+                placeholder="Search"
+                className="w-full pr-16 input input-primary input-bordered"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
               <button
-                type='submit'
-                className='absolute top-0 right-0 rounded-l-none btn btn-primary'
+                type="submit"
+                className="absolute top-0 right-0 rounded-l-none btn btn-primary"
               >
                 SEARCH
               </button>
             </form>
           </div>
           <button
-            className='btn btn-square btn-primary ml-2'
+            className="btn btn-square btn-primary ml-2"
             onClick={() => {
               filter('');
               setSearchText('');
             }}
           >
-            <i className='fad fa-sync-alt'></i>
+            <i className="fad fa-sync-alt"></i>
           </button>
         </div>
       </div>
       {/* second row */}
       {filteredManagers.length === 0 && (
-        <p className='text-center text-2xl font-bold'>loading....</p>
+        <p className="text-center text-2xl font-bold">loading....</p>
       )}
       {filteredManagers.length > 0 && (
-        <table className='table w-full mt-4'>
+        <table className="table w-full mt-4">
           <thead>
             <tr>
               <th></th>
@@ -197,9 +202,9 @@ function PageContent({ user }) {
               <tr key={manager.uid}>
                 <th>{i + 1}</th>
                 <td>
-                  <div className='flex items-center space-x-3'>
+                  <div className="flex items-center space-x-3">
                     <div>
-                      <div className='font-bold'>{manager.email}</div>
+                      <div className="font-bold">{manager.email}</div>
                       {/* <div className='text-sm opacity-50'>
                       
                       </div> */}
@@ -207,17 +212,17 @@ function PageContent({ user }) {
                   </div>
                 </td>
                 <td>
-                  <div className='flex justify-between items-center'>
+                  <div className="flex justify-between items-center">
                     {typeof manager.customClaims !== 'undefined'
                       ? manager.customClaims.outletName
                       : 'Not Assigned'}
-                    <div className='dropdown dropdown-end ml-2'>
-                      <div tabIndex='0' className='m-1 btn btn-xs btn-accent'>
-                        <i className='fas fa-ellipsis-v'></i>{' '}
+                    <div className="dropdown dropdown-end ml-2">
+                      <div tabIndex="0" className="m-1 btn btn-xs btn-accent">
+                        <i className="fas fa-ellipsis-v"></i>{' '}
                       </div>
                       <ul
-                        tabIndex='0'
-                        className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
+                        tabIndex="0"
+                        className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
                       >
                         <li>
                           <a
@@ -245,83 +250,78 @@ function PageContent({ user }) {
       )}
       <div>
         <input
-          type='checkbox'
-          id='my-modal-2'
-          className='modal-toggle'
+          type="checkbox"
+          id="my-modal-2"
+          className="modal-toggle"
           checked={showModal}
           readOnly
         />
-        <div className='modal center-modal'>
-          <div className='modal-box'>
-            <h3 className='text-xl text-center font-bold uppercase'>
+        <div className="modal center-modal">
+          <div className="modal-box">
+            <h3 className="text-xl text-center font-bold uppercase">
               Add Manager
             </h3>
             <form onSubmit={(e) => handleSubmit(e)}>
-              <div className='form-control'>
-                <label className='label'>
-                  <span className='label-text'>Email</span>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Email</span>
                 </label>
                 <input
-                  type='email'
-                  name='email'
-                  placeholder='email'
-                  className='input input-bordered'
+                  type="email"
+                  name="email"
+                  placeholder="email"
+                  className="input input-bordered"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className='form-control'>
-                <label className='label'>
-                  <span className='label-text'>Password</span>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Password</span>
                 </label>
                 <input
-                  type='password'
-                  name='password'
-                  placeholder='password'
-                  className='input input-bordered'
+                  type="password"
+                  name="password"
+                  placeholder="password"
+                  className="input input-bordered"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div name='feature' className='form-control mr-1'>
-                <label className='label'>
-                  <span className='label-text'>Outlets</span>
+              <div name="feature" className="form-control mr-1">
+                <label className="label">
+                  <span className="label-text">Outlets</span>
                 </label>
                 <select
-                  className='select select-bordered w-full'
+                  className="select select-bordered w-full"
                   onChange={(e) => {
                     setSelectedOutlet(e.target.value);
                   }}
                 >
                   {outlets.map((e, i) => (
-                    <option
-                      key={i}
-                      value={e.id}
-                      selected={selectedOutlet === e.id}
-                    >
+                    <option key={i} value={e.id}>
                       {e.name}
                     </option>
                   ))}
                 </select>
               </div>
-              <div className='modal-action flex justify-center'>
+              <div className="modal-action flex justify-center">
                 <button
-                  htmlFor='my-modal-2'
-                  className='btn btn-primary'
-                  type='submit'
+                  htmlFor="my-modal-2"
+                  className="btn btn-primary"
+                  type="submit"
                 >
                   ADD
                 </button>
                 <label
-                  htmlFor='my-modal-2'
-                  className='btn'
+                  htmlFor="my-modal-2"
+                  className="btn"
                   onClick={() => {
                     setShowModal(false);
                     setEmail('');
                     setPassword('');
-                    setSelectedOutlet(outlets[0].id);
                   }}
                 >
                   Cancel
@@ -333,44 +333,44 @@ function PageContent({ user }) {
       </div>
       <div>
         <input
-          type='checkbox'
-          id='my-modal-2'
-          className='modal-toggle'
+          type="checkbox"
+          id="my-modal-2"
+          className="modal-toggle"
           checked={passwordShowModal}
           readOnly
         />
-        <div className='modal center-modal'>
-          <div className='modal-box'>
-            <h3 className='text-xl text-center font-bold uppercase'>
+        <div className="modal center-modal">
+          <div className="modal-box">
+            <h3 className="text-xl text-center font-bold uppercase">
               UPDATE PASSWORD
             </h3>
             <form onSubmit={(e) => handleUpdate(e)}>
-              <div className='form-control'>
-                <label className='label'>
-                  <span className='label-text'>Password</span>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Password</span>
                 </label>
                 <input
-                  type='password'
-                  name='password'
-                  placeholder='password'
-                  className='input input-bordered'
+                  type="password"
+                  name="password"
+                  placeholder="password"
+                  className="input input-bordered"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
-              <div className='modal-action flex justify-center'>
+              <div className="modal-action flex justify-center">
                 <button
-                  htmlFor='my-modal-2'
-                  className='btn btn-primary'
-                  type='submit'
+                  htmlFor="my-modal-2"
+                  className="btn btn-primary"
+                  type="submit"
                 >
                   UPDATE
                 </button>
                 <label
-                  htmlFor='my-modal-2'
-                  className='btn'
+                  htmlFor="my-modal-2"
+                  className="btn"
                   onClick={() => {
                     setPasswordShowModal(false);
                     setPassword('');
