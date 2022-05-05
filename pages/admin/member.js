@@ -87,7 +87,7 @@ import { useStore } from '../../components/admin/';
 //   },
 // ];
 
-function getColumns(deleteUser, resendPaymentEmail) {
+function getColumns(deleteUser, resendPaymentEmail, resetMember) {
   return [
     {
       Header: 'Name',
@@ -122,16 +122,16 @@ function getColumns(deleteUser, resendPaymentEmail) {
       disableFilters: true,
       Cell: ({ value, row }) => (
         <>
-          <div className='dropdown dropdown-end'>
-            <div tabIndex='0' className='m-1 btn btn-sm'>
-              <i className='fas fa-ellipsis-v'></i>
+          <div className="dropdown dropdown-end">
+            <div tabIndex="0" className="m-1 btn btn-sm">
+              <i className="fas fa-ellipsis-v"></i>
             </div>
             <ul
-              tabIndex='0'
-              className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-72'
+              tabIndex="0"
+              className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-72"
             >
               <li>
-                <a className='' onClick={() => deleteUser(value)}>
+                <a className="" onClick={() => deleteUser(value)}>
                   Delete Member
                 </a>
               </li>
@@ -151,8 +151,13 @@ function getColumns(deleteUser, resendPaymentEmail) {
                 </a>
               </li> */}
               <li>
-                <a className='' onClick={() => resendPaymentEmail(value)}>
+                <a className="" onClick={() => resendPaymentEmail(value)}>
                   Resend Confirmation Email
+                </a>
+              </li>
+              <li>
+                <a className="" onClick={() => resetMember(value)}>
+                  Reset Member
                 </a>
               </li>
             </ul>
@@ -266,7 +271,24 @@ function PageContent({ user }) {
       toast.error('Error resending email');
     }
   };
-
+  const resetMember = async (id) => {
+    const confirm = window.confirm('Confirm?');
+    if (!confirm) {
+      return;
+    }
+    try {
+      const result = await axios.post(`${baseUrl}/member/reset`, {
+        id,
+      });
+      toast.success('Member Reset');
+      console.log(result);
+      alert('Member Reset');
+    } catch (error) {
+      console.log('error');
+      console.log(error);
+      toast.error('Error Resetting Member');
+    }
+  };
   useEffect(() => {
     fetchData();
 
@@ -277,48 +299,48 @@ function PageContent({ user }) {
   }, [useEffectTrigger]);
   return (
     <>
-      <div className='flex justify-between flex-wrap'>
-        <h2 className='text-4xl font-medium mb-2'>Member</h2>
-        <div className='flex flex-wrap'>
-          <div className='flex justify-center mr-2'>
+      <div className="flex justify-between flex-wrap">
+        <h2 className="text-4xl font-medium mb-2">Member</h2>
+        <div className="flex flex-wrap">
+          <div className="flex justify-center mr-2">
             <select
               value={option}
               onChange={(e) => setOption(e.target.value)}
-              className='select select-bordered select-accent w-full max-w-xs mb-3'
+              className="select select-bordered select-accent w-full max-w-xs mb-3"
             >
-              <option value='currentMonth'>Current Month</option>
-              <option value='all'>All</option>
-              <option value='month'>Set Month and Year</option>
-              <option value='date'>Set Specific Date</option>
+              <option value="currentMonth">Current Month</option>
+              <option value="all">All</option>
+              <option value="month">Set Month and Year</option>
+              <option value="date">Set Specific Date</option>
             </select>
           </div>
           {option === 'date' && (
             <input
               value={date}
               defaultValue={date}
-              id='date'
-              type='date'
+              id="date"
+              type="date"
               onChange={(e) => {
                 setDate(e.target.value);
               }}
-              className='flex-0 justify-self-start btn btn-accent pl-2 mb-3 mr-2'
+              className="flex-0 justify-self-start btn btn-accent pl-2 mb-3 mr-2"
             />
           )}
           {option === 'month' && (
             <input
               value={month}
-              id='date'
-              type='month'
+              id="date"
+              type="month"
               onChange={(e) => {
                 console.log(e.target.value);
                 setMonth(e.target.value);
               }}
-              className='flex-0 justify-self-start btn btn-accent pl-2 mb-3 mr-2'
+              className="flex-0 justify-self-start btn btn-accent pl-2 mb-3 mr-2"
             />
           )}
 
           <button
-            className='btn btn-accent mr-2'
+            className="btn btn-accent mr-2"
             onClick={() => {
               setuseEffectTrigger(new Date());
             }}
@@ -328,8 +350,8 @@ function PageContent({ user }) {
           <CSVLink
             data={CSV}
             filename={'members.csv'}
-            className='btn btn-primary'
-            target='_blank'
+            className="btn btn-primary"
+            target="_blank"
           >
             DOWNLOAD MEMBERS
           </CSVLink>
@@ -338,7 +360,7 @@ function PageContent({ user }) {
       {!loading && (
         <Table
           dataDb={members}
-          COLUMNS={getColumns(deleteUser, resendPaymentEmail)}
+          COLUMNS={getColumns(deleteUser, resendPaymentEmail, resetMember)}
           hiddenColumns={['expiryDate', 'issueDate', 'otp']}
         />
       )}
