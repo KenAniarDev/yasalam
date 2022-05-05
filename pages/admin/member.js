@@ -285,7 +285,6 @@ function PageContent({ user }) {
     } catch (error) {
       console.log('error');
       console.log(error);
-      toast.error('Error Resetting Member');
     }
   };
   useEffect(() => {
