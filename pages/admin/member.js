@@ -276,13 +276,12 @@ function PageContent({ user }) {
     if (!confirm) {
       return;
     }
+    console.log('reset');
+    toast.success('Member Reset');
     try {
       const result = await axios.post(`${baseUrl}/member/reset`, {
         id,
       });
-      toast.success('Member Reset');
-      console.log(result);
-      alert('Member Reset');
     } catch (error) {
       console.log('error');
       console.log(error);

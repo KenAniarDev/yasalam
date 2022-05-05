@@ -95,74 +95,74 @@ export default function OutletGroupPage() {
 
   return (
     <Container>
-      <div className='flex flex-wrap justify-between items-center p-2'>
-        <h2 className='text-4xl font-medium mb-2'>Outlet Group</h2>
-        <div className='flex items-center mb-2'>
-          <div className='form-control w-60'>
+      <div className="flex flex-wrap justify-between items-center p-2">
+        <h2 className="text-4xl font-medium mb-2">Outlet Group</h2>
+        <div className="flex items-center mb-2">
+          <div className="form-control w-60">
             <form
-              className='relative'
+              className="relative"
               onSubmit={(e) => {
                 e.preventDefault();
                 filter(searchText);
               }}
             >
               <input
-                type='text'
-                placeholder='Search'
-                className='w-full pr-16 input input-primary input-bordered'
+                type="text"
+                placeholder="Search"
+                className="w-full pr-16 input input-primary input-bordered"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
               <button
-                type='submit'
-                className='absolute top-0 right-0 rounded-l-none btn btn-primary'
+                type="submit"
+                className="absolute top-0 right-0 rounded-l-none btn btn-primary"
               >
                 SEARCH
               </button>
             </form>
           </div>
           <button
-            className='btn btn-square btn-primary ml-2'
+            className="btn btn-square btn-primary ml-2"
             onClick={() => {
               filter('');
               setSearchText('');
             }}
           >
-            <i className='fad fa-sync-alt'></i>
+            <i className="fad fa-sync-alt"></i>
           </button>
         </div>
       </div>
-      <div className='md:flex'>
-        <div className='mt-6 flex-grow pl-1' style={{ maxWidth: '400px' }}>
-          <h2 className='text-2xl font-medium'>
+      <div className="md:flex">
+        <div className="mt-6 flex-grow pl-1" style={{ maxWidth: '400px' }}>
+          <h2 className="text-2xl font-medium">
             {isEdit ? 'Edit Outlet Group' : ' Add New'}
           </h2>
-          <form className='mt-6' onSubmit={(e) => handleSubmit(e)}>
-            <div className='form-control flex-grow mr-4 mb-4'>
-              <label className='label'>
-                <span className='label-text'>Name</span>
+          <form className="mt-6" onSubmit={(e) => handleSubmit(e)}>
+            <div className="form-control flex-grow mr-4 mb-4">
+              <label className="label">
+                <span className="label-text">Name</span>
               </label>
               <input
-                type='text'
+                type="text"
                 required
-                placeholder='outlet group name'
-                className='input mb-2'
+                placeholder="outlet group name"
+                className="input mb-2"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
-            <div className='mt-4'>
+            <div className="mt-4">
               <input
-                type='submit'
-                value={isEdit ? 'UPDATE REGION' : ' ADD NEW'}
-                className='btn btn-primary'
+                type="submit"
+                value={isEdit ? 'UPDATE OUTLET GROUP' : ' ADD NEW'}
+                className="btn btn-primary"
               />
             </div>
           </form>
         </div>
-        <div className='mt-6 flex-grow'>
-          <table className='table w-full mt-4'>
+        <div className="mt-6 flex-grow">
+          <table className="table w-full mt-4">
             <thead>
               <tr>
                 <td>Name</td>
@@ -183,13 +183,13 @@ export default function OutletGroupPage() {
                   <td>{region.name}</td>
                   <td>
                     {region.name.toString().toLowerCase() !== 'single' && (
-                      <div className='dropdown dropdown-end ml-2'>
-                        <div tabIndex='0' className='m-1 btn btn-xs btn-accent'>
-                          <i className='fas fa-ellipsis-v'></i>{' '}
+                      <div className="dropdown dropdown-end ml-2">
+                        <div tabIndex="0" className="m-1 btn btn-xs btn-accent">
+                          <i className="fas fa-ellipsis-v"></i>{' '}
                         </div>
                         <ul
-                          tabIndex='0'
-                          className='p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52'
+                          tabIndex="0"
+                          className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
                         >
                           <li>
                             <a onClick={() => editOutGroup(region.id)}>Edit</a>
